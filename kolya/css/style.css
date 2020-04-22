@@ -1,0 +1,75 @@
+* {
+    box-sizing: border-box;
+}
+
+.tabs {
+    position: relative;
+    width: 500px;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+.firstTab, .secondTab {
+    display: inline-block;
+}
+
+label {
+    display: inline-block;
+    font-size: 15px;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 5px;
+    
+
+}
+
+.tab__first {
+    margin-right: 20px;
+}
+
+label span {
+    font-size: 25px;
+}
+
+input {
+    display: none;
+}
+
+.tab__first__text, .tab__second__text  {
+    position: absolute;
+    left: 0px;
+    padding-top: 15px;
+    font-size: 25px;
+    width: 100%;
+    line-height: 40px;
+    text-align: justify;
+    left: -9999px;
+    opacity: 0;
+}
+
+
+
+#first:checked ~ .tab__first__text, #second:checked ~ .tab__second__text{
+    transition: 0.3s all;
+    left: 0px;
+    opacity: 1;
+}
+
+#first:checked ~ label.tab__first{
+    
+    
+    border: 2px solid black;
+    
+    transform: scale(1.3);
+    transition: 1s ease-in-out;
+}
+#second:checked ~ label.tab__second{
+    border: 2px solid black;
+    transform: scale(1.2);
+    transition: 0.5s all;
+}
+
+
+
+/* Форма */
+
