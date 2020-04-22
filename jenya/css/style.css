@@ -1,0 +1,20 @@
+/* Комбинатор '~' выбирает элементы, которые находятся на этом же уровне вложенности, после указанного элемента, с тем же родителем. */
+.main-menu > ul li > ul{
+    /* Комбинатор '>' в отличие от пробела выбирает только те элементы, которые являются дочерними непосредственно по отношению к указанному элементу. */
+    list-style-type: none;
+    display: none;
+}
+.main-menu > ul li:hover > ul{
+    display: block;
+}
+.main-menu > ul li > ul li:hover ~ li{
+    background-color: aqua;
+} 
+.main-menu > ul li + li{
+    background-color: burlywood;
+    /* только если два элемента стоят рядом */
+}
+p.text + div {
+    background-color: burlywood;
+}
+

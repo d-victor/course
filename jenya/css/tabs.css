@@ -1,0 +1,94 @@
+body{
+    background-color: #272626;
+    color: rgb(226, 204, 204);
+}
+.main_block{
+    overflow: hidden;
+}
+.main_block > ul{
+    text-align: center;
+    margin-bottom: 0;
+    padding: 0;
+}
+.main_block ul li{
+    list-style-type: none;
+    display: inline-block;
+}
+.main_block ul li > div{
+    left: 0;
+    margin: 0px 10%;
+    text-align: start;
+}
+.main_block ul li label{
+    display: inline-block;
+    border: 1px solid rgb(47, 94, 116);
+    padding: 10px;
+    background: none;
+    transition: 0.3s;
+    position: relative;
+}
+.main_block ul li label:hover{
+    background: rgb(47, 94, 116);
+    cursor: pointer;
+}
+.main_block ul li input{
+   display: none;
+}
+.main_block div{
+    border: 1px solid #fff;
+    padding: 20px;
+    position: absolute;
+    opacity: 0;
+    transition: 0.5s ease-in-out;
+    top: -500px;
+    border: 1px solid rgb(47, 94, 116);
+}
+input:checked + div{
+    top: 64px;
+    opacity: 1;
+}
+.tabs_nav li div{
+    list-style-type: none;
+}
+.tabs_nav li div h3{
+    display: block;
+    position: relative;
+}
+.tabs_nav li div h3::before{
+    content: '';
+    width: 15%;
+    top: 25px;
+    position: absolute;
+    border-bottom: 1px solid #fff;
+    transition: 2.4s ease-out;
+}
+input:checked ~ div h3::before{
+    width: 5%;
+}
+.tabs_nav li div ul li{
+    display: inline-block;
+    position: relative;
+    margin: 7px;
+}
+.tabs_nav li div ul li::after{
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    transform: scale(0);
+    border-bottom: 1px solid darkgoldenrod;
+    transition: 0.3s ease-in-out;
+}
+.tabs_nav li div ul li:nth-child(2n+1)::after{
+    border-bottom: 1px solid rgb(187, 81, 31);
+}   
+.tabs_nav li div ul li:hover::after{
+    transform: scale(1);
+}
+.tabs_nav li div ul li a{
+    text-decoration: none;
+    color: darkgoldenrod;
+}
+.tabs_nav li div ul li:nth-child(2n+1) a{
+    color: rgb(187, 81, 31);
+}

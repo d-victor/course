@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*var undefinedType = undefined;
 var u;
 
@@ -186,3 +187,6 @@ console.log(personal.reduce(function (previousValue, item, index, array) {
     return (isNaN(+previousValue)) ? item.experience : previousValue + item.experience;
 }));
 
+=======
+
+>>>>>>> 974f512... tabs

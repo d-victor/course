@@ -121,3 +121,140 @@
 <script src="js/scripts.js"></script>
 </body>
 </html>
+=======
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,
+          user-scalable=no,
+          initial-scale=1.0,
+          maximum-scale=1.0,
+          minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Html Course</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+    <p><a href="forms.html" title="Forms">Forms</a></p>
+    <p><a href="css.html" title="Css">Css</a></p>
+</nav>
+
+<nav>
+    <a href="#" title="fff">
+        <img width="400" height="100" src="images/base.d-45738_1.jpg" alt="time is money"/>
+    </a>
+</nav>
+
+<main>
+    <div class="content">
+        <form action="/"
+              method="post"
+              autocomplete="off"
+              enctype="multipart/form-data"
+              name="name">
+            <input type="text" hidden name="form-key" value="13245645"/>
+            
+            <fieldset disabled>
+                <legend>About Us</legend>
+                <p>
+                    <label><span>First Name</span>
+                        <input name="firstName" type="text" maxlength="30" minlength="3" autofocus required placeholder="First Name" tabindex="1"/>
+                    </label>
+                </p>
+                <div>
+                    <label for="lastName">last Name</label>
+                    <input id="lastName" name="firstName" type="text" tabindex="3"/>
+                </div>
+                <p>IP:</p>
+                <p>
+                    <input type="text" name="ip" pattern="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" tabindex="2"/>
+                </p>
+            </fieldset>
+            
+            <p>Access</p>
+            <div>
+                <label><span>1</span>
+                    <input type="checkbox" name="checkbox" value="1"/>
+                </label>
+    
+                <label><span>2</span>
+                    <input type="checkbox" name="checkbox" value="2"/>
+                </label>
+    
+                <label><span>3</span>
+                    <input type="checkbox" name="checkbox" value="3" checked/>
+                </label>
+            </div>
+            
+            <p>Colors</p>
+            <div>
+                <label><span>Red</span>
+                    <input type="radio" name="radio" value="red" disabled/>
+                </label>
+    
+                <label><span>Black</span>
+                    <input type="radio" name="radio" value="black" checked/>
+                </label>
+    
+                <label><span>White</span>
+                    <input type="radio" name="radio" value="white"/>
+                </label>
+            </div>
+            <p>
+                <label><span>Select 1</span>
+                    <select name="select">
+                        <optgroup label="Group 1">
+                            <option value="1">1</option>
+                            <option value="2" selected>2</option>
+                            <option value="3">3</option>
+                        </optgroup>
+                        <optgroup label="Group 2">
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                        </optgroup>
+                    </select>
+                </label>
+            </p>
+            <p>
+                <label><span>Select 2</span><br/>
+                    <select name="select" multiple size="4">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                </label>
+            </p>
+            <p>
+                <label for="text">TextArea</label><br/>
+                <textarea id="text" rows="10" cols="40"></textarea>
+            </p>
+            <p>
+                <button type="button">Button</button>
+                <button type="reset">Reset</button>
+                <button type="submit">Submit</button>
+                
+                <input type="reset" value="reset" name="reset" />
+                <input type="submit" value="submit" name="submit" />
+            </p>
+        </form>
+    </div>
+    <aside>
+    
+    </aside>
+</main>
+
+<footer>
+
+</footer>
+
+<script src="js/scripts.js"></script>
+</body>
+</html>
