@@ -1,0 +1,218 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+.wraper{
+    height: 700px;
+    background: #8ca9c7;
+}
+.flex-menu{
+    background: #1e2727;
+}
+.flex-menu *{
+    margin: 0;
+    padding: 0;
+}
+.flex-menu i{
+    margin: 0 5px;
+}
+.flex-menu ul{
+    list-style-type: none;
+}
+.flex-menu > ul{
+    display: flex;
+    justify-content: center;
+}
+.flex-menu > ul li a{
+    display: block;
+    background: rgb(70, 59, 59);
+    padding: 15px 30px;
+    text-align: center;
+    font-size: 14px;
+    color: rgb(221, 221, 221);
+    text-decoration: none;
+    position: relative;
+}
+.flex-menu > ul > li > a::after{
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    transform: scale(0);
+    border-bottom: 1px solid rgb(128, 221, 213);
+    transition: 0.3s ease-in-out;
+}
+.flex-menu > ul > li > a:hover::after{
+    transform: scale(0.5);
+}
+.flex-menu > ul > li{
+    border-right: 1px solid #fff;
+}
+.flex-menu > ul > li:last-child{
+    border: none;
+}
+.flex-menu li ul{
+    position: absolute;
+    top: -500px;
+    opacity: 0;
+    transition: 0.3s;
+    z-index: 99;
+}
+.flex-menu li > ul li{
+    border: 1px solid #fff;
+}
+.flex-menu li > ul li a{
+    padding: 10px;
+    transition: 0,3s ease-in;
+}
+.flex-menu li > ul li a:hover{
+    background: rgb(42, 156, 141);
+}
+.flex-menu li:hover > ul{
+    top: 46px;
+    opacity: 1;
+}
+.flex-menu li > ul li ul{
+    position: absolute;
+    right: -58px;
+    top: 76px;
+}
+.flex-menu li:hover > ul li>ul li > ul{
+    top: 76px;
+    right: -87px;
+}
+/* -----float-menu-style-begin------------------- */
+.float-menu{
+    margin-top: 130px;
+    background: #35774f;
+}
+i{
+    margin: 0 20px;
+}
+.float-menu ul{
+    padding: 0;
+    margin: 0;
+}
+.float-menu > ul{
+    margin: 0 auto;
+}
+.float-menu > ul::after{
+    content: '';
+    display: block;
+    clear: both;
+}
+.float-menu ul li{
+    background: #35774f;
+    position: relative;
+    list-style-type: none;
+}
+.float-menu > ul > li{
+    float: left;
+}
+.float-menu ul li a{
+    display: block;
+    padding: 0 15px;
+    color: #fff;
+    text-decoration: none;
+    line-height: 50px;
+    font-size: 20px;
+    transition: 0.3s ease-in;
+}
+.float-menu ul li a:hover{
+    background: #244732;
+}
+.float-menu ul ul{
+    position: absolute;
+    top: 50px;
+    left: -900px;
+    opacity: 0;
+    z-index: 999;
+    transition: 0.3s;
+}
+.float-menu ul li:hover > ul{
+    left: 0;
+    opacity: 1;
+}
+.float-menu ul ul li{
+    width: 150px;
+    float: none;
+    position: relative;
+}
+.float-menu ul ul ul li{
+    position: relative;
+    top: -50px;
+    left: 150px;
+}
+.float-menu ul ul span{
+    display: block;
+    position: relative;
+    width: 5px;
+    height: 1px;
+    background: #fff;
+}
+/* -----------inline-menu-style-begin-------------- */
+.inline-menu{
+    margin-top: 50px;
+    background: #023a3a;
+}
+.inline-menu *{
+    margin: 0;
+    padding: 0;
+}
+.inline-menu ul{
+    list-style-type: none;
+    text-align: start;
+}
+.inline-menu>ul{
+    text-align: center;
+    font-size: 0px;
+}
+.inline-menu ul li{
+    position: relative;
+}
+.inline-menu > ul > li{
+    display: inline-block;
+    transition: 0.3s;
+    font-size: 16px;
+}
+.inline-menu > ul > li:hover{
+    background: #3cc5c5;
+}
+.inline-menu a{
+    padding: 10px 20px;
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    background: rgba(2, 58, 58, 0.7);
+}
+.inline-menu ul ul{
+    position: absolute;
+    opacity: 0;
+    transform: scaleX(0);
+    transition: 0.3s;
+}
+.inline-menu ul li:hover > ul{
+    opacity: 1;
+    transform: scaleX(1);
+}
+.inline-menu ul ul ul{
+    transform: rotate3d(1, 1, 1, 45deg);
+    position: absolute;
+    left: 140px;
+    transition: 0.5s;
+    top: 0;
+}
+.inline-menu ul ul li:hover > ul{
+    transform: rotate3d(1);
+}
+.inline-menu ul ul li{
+    width: 140px;
+    transition: 0.3s ease-in;
+    position: relative;
+}
+.inline-menu ul ul li:hover{
+    transform: scale(1.2);
+    margin: 4px;
+}
+
