@@ -1,0 +1,39 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Inter", sans-serif;
+}
+.container {
+  max-width: 1110px;
+  margin: 0 auto;
+}
+nav{
+  padding: 20px 0;
+}
+.menu{
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.menu li{
+  margin: 0 15px;
+}
+#menu_logo{
+  margin: 0 15px;
+}
+.menu li a {
+  text-decoration: none;
+  color: #1C1C1C;
+  font-weight: 600;
+  font-size: 15px;
+}
+.burger_menu{
+  display: none;
+}
+.search_for_menu{
+  display: none;
+}
