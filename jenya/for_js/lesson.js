@@ -56,6 +56,7 @@ var names = "Петя, Коля,Вася".split(',').map(function (item) {
 });
 console.log(names);
 console.log(personal.sort(function (a, b) {
-    console.log(personal.map(a.skill));
-    // return a.experience - b.experience;
+    console.log(personal.map(function (item) {
+        return item.skill;
+    }).toString().split());
 }));
