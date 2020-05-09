@@ -158,25 +158,31 @@ var personal = [
 }));*/
 
 //console.log(array.join('--'));
-var names = "Петя, Коля,Вася".split(',').map(function (item) {
+/*var names = "Петя, Коля,Вася".split(',').map(function (item) {
     return item.trim();
 });
 
 console.log(names);
 
-console.log(array.join('::').split('::'));
-
-
-
+console.log(array.join('::').split('::'));*/
 
 /*console.log(personal.sort(function (a, b) {
     return a.experience - b.experience;
 }));*/
 
-
-console.log(personal.map(function (elem) {
+/*console.log(personal.map(function (elem) {
     return elem.skill;
-}).toString().split(','));
+}).toString().split(',').filter(function (item, i, arr) {
+    return arr.indexOf(item) === i;
+}).sort());
+
+console.log(array.reduce(function (accum, sum) {
+    return accum + sum;
+}));*/
 
 
+console.log(personal.reduce(function (previousValue, item, index, array) {
+    console.log(index)
+    return (isNaN(+previousValue)) ? item.experience : previousValue + item.experience;
+}));
 
