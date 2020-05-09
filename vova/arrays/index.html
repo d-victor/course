@@ -40,6 +40,12 @@
         }).toString().split(',').filter(function (item, index, arr) {
             return arr.indexOf(item) === index;
         }).sort())
+
+        console.log(personal.map(function (item) {
+            return item.experience;
+        }).reduce(function (sum, current) {
+            return sum + current;
+        }))
     </script>
 </body>
 
