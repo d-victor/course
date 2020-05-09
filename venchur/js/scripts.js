@@ -95,6 +95,19 @@ var skills = personal.map(function (item) {
 var filtered = skills.filter(function(item, index) {
     return skills.indexOf(item) === index;
 }).sort();
-
 console.log(filtered);
+// Sum of the elements
+var sum_experience = personal.map(function (item) {
+    return item.experience;
+}).reduce(function(sum, current) {
+    return sum + current;
+});
+console.log(sum_experience);
+//Sum of skills
 
+// var sum_skills = personal.map(function (item) {
+//     return item.skill;
+// }).toString().split(',').reduce(function(sum, current,index) {
+//     return sum + index;
+// });
+// console.log(sum_skills);
