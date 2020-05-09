@@ -83,13 +83,13 @@ var personal = [
 ];
 
 // Creating skills array
-var skill = personal.map(function (elem) {
+var skills = personal.map(function (elem) {
     return elem.skill;
 }).toString().split(',');
 // Deleting the same elements and sorting array
 var sorted = [];
-skill.filter(function(elem, index) {
-    if (skill.indexOf(elem) === index) {
+skills.filter(function(elem, index) {
+    if (skills.indexOf(elem) === index) {
             sorted.push(elem);
         }
 });
