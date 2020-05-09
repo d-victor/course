@@ -3,36 +3,28 @@
     padding: 0;
 }
 body{
-    font-family: sans-serif;
+    font-family: "Inter", sans-serif;
     font-size: 16px;
-    max-width: 100%;
-    overflow-x: hidden;
 }
 h2{
-    font-family: "InterBold";
     font-size: 48px;
     line-height: 60px;
+    font-weight: 700;
 }
 h4{
-    font-family: "InterSemibold";
-    font-style: normal;
     font-weight: 600;
     font-size: 24px;
     line-height: 32px;
     color: #1C1C1C;
 }
 a{
-    font-family: "InterSemibold";
-    font-style: normal;
     font-weight: 600;
     font-size: 15px;
     line-height: 22px;
     color: #1C1C1C;
 }
 p{
-    font-family: "InterRegular";
-    font-style: normal;
-    font-weight: normal;
+    font-weight: 400;
     font-size: 20px;
     line-height: 30px;
     letter-spacing: -0.3px;
@@ -53,9 +45,6 @@ input{
     padding: 9px 0 9px 15px;
     margin: 10px 0;
 }
-.wrapper{
-    max-width: 1400px;
-}
 .container{
     max-width: 1110px;
     margin:0 auto;
@@ -65,8 +54,6 @@ input{
     margin:0 auto;
 }
 .primary_btn{
-    font-family: "InterSemibold";
-    font-style: normal;
     font-weight: 600;
     font-size: 20px;
     line-height: 26px;
@@ -92,7 +79,7 @@ nav{
 header{
     border-bottom: 1px solid #DBDBDB;
 }
-.section_block{
+.container{
     border-bottom: 1px solid #DBDBDB;
 }
 input .burger{
@@ -109,29 +96,45 @@ nav > label{
     height: 20px;
     cursor: pointer;
 }
-.burger_item{
+.menu_style label span{
+     position: relative;
+     margin: 6px 0;
+}
+.menu_style label span::after,.menu_style label span::before{
+    content: '';
+    position: absolute;
+    width: 100%;
+}
+.menu_style label span::after{
+    top: 6px;
+}
+.menu_style label span::before{
+    top: 12px;
+}
+.menu_style label span,.menu_style label span::after,.menu_style label span::before{
     display: block;
     height: 3px;
-    margin: 3px;
     background: #969696;
     border-radius: 2px;
     transition: 0.2s;
 }
-nav > input:checked ~ label .burger_item:nth-child(2){
-    transform: rotate(-45deg);
+nav > input:checked ~ label span{
+    transform: rotate(45deg);
+    margin-top: 12px;
+}
+nav > input:checked ~ label span::after{
+    transform: rotate(-90deg);
     margin-top: -6px;
 }
-nav > input:checked ~ label .burger_item:nth-child(1){
-    transform: rotate(45deg);
-    margin-top: 9px;
-}
-nav > input:checked ~ label .burger_item:nth-child(3){
+nav > input:checked ~ label span::before{
     display: none;
 }
-.logo_container{
+.link_logo{
+    display: block;
     position: absolute;
-    top: 23px;
-    display: none;
+    top: 20px;
+    z-index: 10;
+    cursor: pointer;
 }
 .menu_style ul{
     list-style-type: none;
@@ -141,10 +144,10 @@ nav > input:checked ~ label .burger_item:nth-child(3){
 .menu_style ul li{
     display: block;
     margin: 33px 0;
-    padding: 0 30px;
+    padding: 0 15px;
 }
-.menu_style ul li:nth-child(4){
-    margin: 22px 0;
+.menu_style ul li:nth-child(3){
+    margin-right: 108px;
 }
 .menu_style ul li a{
     display: block;
@@ -152,7 +155,7 @@ nav > input:checked ~ label .burger_item:nth-child(3){
     outline: none;
     position: relative;
 }
-.menu_style ul li a:not(.link_logo)::after{
+.menu_style ul li a::after{
     content: '';
     display: block;
     position: absolute;
@@ -188,7 +191,7 @@ nav > input:checked ~ label .burger_item:nth-child(3){
     padding: 3px 5px;
     border: 1px solid #969696;
     border-radius: 6px;
-    font-family: "InterRegular";
+    font-weight: 400;
     font-size: 14px;
     line-height: 17px;
     outline: none;
@@ -209,9 +212,9 @@ nav > input:checked ~ label .burger_item:nth-child(3){
     padding: 133px 0 15px 77px;
 }
 .banner__item__form form {
-    padding: 30px 131px 0 0;
+    padding: 30px 55px 0 0;
 }
-.banner__item__form form input{
+.banner__item__form form div, .banner__item__form input{
     width: 100%;
 }
 .banner__item__form p{
@@ -265,22 +268,26 @@ nav > input:checked ~ label .burger_item:nth-child(3){
     justify-content: space-between;
     flex-flow: row;
 }
-.service__item__container{
+.service_description ul{
+    list-style-type: none;
     max-width: 46%;
     padding: 140px 30px 142px 0;
 }
-.service__item:nth-child(2){
+.service_description ul li:nth-child(2){
     padding: 40px 0;
 }
-.service__item__title{
-    display: flex;
-    justify-content: start;
-    align-items: center;
+.service_description ul li h4{
+    margin: 0 46px;
+    display: block;
+    position: relative;
 }
-.service__item__title h4{
-    margin: 0 15px;
+.service_description ul li h4::before{
+    content: url(../css/images/star.png);
+    display: block;
+    position: absolute;
+    left: -44px;
 }
-.service__item p {
+.service_description p {
     font-size: 15px;
     line-height: 22px;
     padding: 10px 0;
@@ -289,7 +296,7 @@ nav > input:checked ~ label .burger_item:nth-child(3){
     padding: 110px 0;
 }
 /* ///////////////// */
-.statistic_wrapper{
+.statistic{
     display: flex;
     justify-content: space-around;
     flex-flow: row wrap;
@@ -299,45 +306,53 @@ nav > input:checked ~ label .burger_item:nth-child(3){
 .statistic__col{
     max-width: 33%;
 }
-.statistic__item{
+.statistic > ul{
     display: flex;
     justify-content: space-between;
 }
-.box{
-    position: relative;
+.statistic ul{
+    list-style-type: none;
 }
-.box > div{
+.statistic ul span{
     display: block;
-    width: 24px;
-    height: 24px;
-    position: absolute;
-    top: 10px;
-    left: 0;
-    border-radius: 50%;
+    padding-left: 49px;
+    font-size: 15px;
+    line-height: 22px;
 }
-.statistic__item__block:nth-child(1) .box:nth-child(1) > div{
-    background: #FF8364;
-}
-.statistic__item__block:nth-child(1) .box:nth-child(2) > div{
-    background: #DBDBDB;
-}
-.statistic__item__block:nth-child(2) .box:nth-child(1) > div{
-    background: #FFE0D8;
-}
-.statistic__item__block:nth-child(2) .box:nth-child(2) > div{
-    background: #F7F7F7;
-}
-.box{
+.statistic ul ul li{
     position: relative;
-    padding: 0 77px 40px 30px;
+    padding: 0 22px 40px 30px;
 }
-.box p{
-    font-family: "InterBold";
-    font-style: normal;
-    font-weight: bold;
+.statistic ul ul li p{
+    font-weight: 700;
     font-size: 36px;
     line-height: 46px;
     color: #1C1C1C;
+    display: block;
+    position: relative;
+    padding-left: 50px;
+}
+.statistic ul ul li p::before{
+    content: '';
+    display: block;
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    left: 0;
+    top: 10px;
+    border-radius: 50%;
+}
+.statistic ul > li:nth-child(1) > ul > li:nth-child(1) p::before{
+    background: #FF8364;
+}
+.statistic ul > li:nth-child(1) > ul > li:nth-child(2) p::before{
+    background: #FFE0D8;
+}
+.statistic ul > li:nth-child(2) > ul > li:nth-child(1) p::before{
+    background: #DBDBDB;
+}
+.statistic ul > li:nth-child(2) > ul > li:nth-child(2) p::before{
+    background: #F7F7F7;
 }
 .statistic_description{
     margin-top: -35px;
@@ -351,7 +366,7 @@ nav > input:checked ~ label .burger_item:nth-child(3){
     color: #585757;
     padding-bottom: 20px;
 }
-.statistic_description span{
+.statistic_description p:nth-child(2){
     font-style: normal;
     font-weight: 400;
     font-size: 13px;
@@ -366,13 +381,14 @@ nav > input:checked ~ label .burger_item:nth-child(3){
 .team h2{
     padding: 110px 0 20px;
 }
-.our_team{
+.team ul{
     display: flex;
     justify-content: center;
     flex-flow: row wrap;
+    list-style-type: none;
     padding: 60px 0;
 }
-.photo-box{
+.team a{
     display: block;
     width: 64px;
     height: 64px;
@@ -383,17 +399,19 @@ nav > input:checked ~ label .burger_item:nth-child(3){
 .photo-box img{
     width: 100%;
 }
-.our_team_item{
+.team ul li{
     font-style: normal;
     font-weight: 600;
     font-size: 15px;
     line-height: 22px;
+    display: inline-block;
 }
 .team_img{
     width: 100%;
 }
 .team_img img{
     width: 100%;
+    display: block;
 }
 /* slider-style-start////////////////////////// */
 
@@ -464,7 +482,7 @@ nav > input:checked ~ label .burger_item:nth-child(3){
 .slide_item img{
     padding: 20px 0;
 }
-.slide_item p b{
+.slide_item p strong{
     font-size: 20px;
     line-height: 26px;
     font-style: normal;
@@ -478,7 +496,7 @@ nav > input:checked ~ label .burger_item:nth-child(3){
     font-weight: 400;
     color: #585757;
 }
-.slider_container button{
+.slide_item a{
     font-weight: 600;
     font-size: 15px;
     margin: 40px auto;
@@ -488,10 +506,12 @@ nav > input:checked ~ label .burger_item:nth-child(3){
     border: none;
     line-height: 22px;
     display: flex;
-    outline: none;
     transition: 0,3s;
+    text-align: center;
+    display: block;
+    text-decoration: none;
 }
-.slider_container button:hover{
+.slide_item a:hover{
     color: rgb(202, 106, 82);
 }
 /* slider-style-end////////////////////////////////// */
@@ -678,35 +698,29 @@ footer p{
     .head_banner{
         padding: 0 15px;
     }
+    .menu_style ul li:nth-child(3){
+        margin-right: 70px;
+    }
     .banner__item__form{
         padding: 133px 0 14px 12px;
     }
     .banner__item__form form {
         padding: 30px 81px 0 0;
     }
-    .service__image{
-        width: 54%;
-    }
-    .service__image img{
-        width: 100%;
-    }
-    .service__item__container{
+    .service_description ul{
         padding-top: 113px;
     }
-    .service__item:nth-child(2) {
+    .service_description ul li:nth-child(2) {
         padding: 25px 0;
     }
-    .statistic_wrapper{
+    .statistic{
         flex-flow: row wrap;
-    }
-    .circle.statistic__col{
-        max-width: 50%;
     }
     .statistic_description{
         max-width: 100%;
         padding: 60px 0 0 56px;
     }
-    .photo-box{
+    .team a{
         margin: 10px 53px;
     }
     .cards .container{
@@ -748,21 +762,16 @@ footer p{
         z-index: 8;
         left: 0;
     }
-    .menu li:nth-child(4){
-        display: none;
-    }
     .menu li{
         margin: 18px 0;
         padding: 0 15%;
     }
+    .menu_style ul li:nth-child(3) {
+        margin-right: 0;
+    }
     nav > input:checked ~ .menu{
         left: 0;
         top: 0;
-    }
-    .logo_container{
-        display: block;
-        z-index: 9;
-        left: 44%
     }
     .search_mobile{
         display: block;
@@ -807,7 +816,7 @@ footer p{
     .circle.statistic__col {
         max-width: 100%;
     }
-    .statistic__item{
+    .statistic > ul{
         justify-content: space-around;
         max-width: 100%;
         padding: 30px 0 0 0;
@@ -848,7 +857,7 @@ footer p{
     .footer p{
         padding: 0 78px 30px;
     }
-    .box {
+    .statistic__col ul li{
         position: relative;
         padding: 0 5px 40px 30px;
     }
@@ -856,10 +865,7 @@ footer p{
 @media screen and (max-width: 480px){
     .global_search {
         z-index: 10;
-        left: -223px;
         top: 45px;
-        width: 153px;
-        width: 209px;
     }
     .banner{
         top: 12px;
@@ -876,34 +882,33 @@ footer p{
     .subscribe_item form input{
         margin: 10px 0;
     }
-    .slide_arrows label{
+    .slide_arrows label::before{
         display: none;
     }
-    .slide_arrows_mobile{
+    .slide_arrows{
         display: flex;
         justify-content: center;
         margin: 20px 0;
     }
-    .slide_arrows_mobile label{
+    .slide_arrows label{
         display: block;
         width: 8px;
         height: 8px;
         background: #DBDBDB;
-        /* padding: 3px; */
         margin: 6px;
         border-radius: 50%;
         cursor: pointer;
     }
-    #slide_1:checked ~ .slide_arrows_mobile label:nth-child(1){
+    #slide_1:checked ~ .slide_arrows label:nth-child(1){
         background: #FF8364;
     }
-    #slide_2:checked ~ .slide_arrows_mobile label:nth-child(2){
+    #slide_2:checked ~ .slide_arrows label:nth-child(2){
         background: #FF8364;
     }
-    #slide_3:checked ~ .slide_arrows_mobile label:nth-child(3){
+    #slide_3:checked ~ .slide_arrows label:nth-child(3){
         background: #FF8364;
     }
-    #slide_4:checked ~ .slide_arrows_mobile label:nth-child(4){
+    #slide_4:checked ~ .slide_arrows label:nth-child(4){
         background: #FF8364;
     }
     .slider_container button{
@@ -916,7 +921,7 @@ footer p{
         font-size: 36px;
         line-height: 46px;
     }
-    .about, .statistic_wrapper, .team h2, .slide_overflow, .cards .container,.subscribe_wrapper{
+    .about, .statistic, .team h2, .slide_overflow, .cards .container,.subscribe_wrapper{
         padding-top: 40px;
     }
 }
