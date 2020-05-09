@@ -58,30 +58,38 @@ var personal = [
 // console.log(personal.sort(function (a, b) {
 // }));
 // --------------------home-task-begin----------------
-var allSkill = personal.map(function (item) {
-    return item.skill;
+// sorting skills with reduce
+// var allSkill = personal.map(function (item) {
+//     return item.skill;
+// });
+// console.log(allSkill);
+// var flattenSkill = allSkill.reduce(
+//     function (accumulator, currentValue) {
+//         return accumulator.concat(currentValue);
+//     }
+// );
+// console.log(flattenSkill);
+// var countedSkill = flattenSkill.reduce(function (skills, skil) {
+//     if (skil in skills) {
+//         skills[skil]++;
+//     } else {
+//         skills[skil] = 1;
+//     }
+//     return skills;
+// }, {});
+// console.log(countedSkill);
+// var noRepeat = flattenSkill.sort().reduce(function (noSort, current) {
+//     if (noSort.length === 0 || noSort[noSort.length - 1] !== current) {
+//         noSort.push(current);
+//     }
+//     var sorted = noSort;
+//     return sorted;
+// }, []);
+// console.log(noRepeat);
+// ---------------------counting-all-expirience-----------
+var allExpirience = personal.map(function (item) {
+    return item.experience;
+}).reduce(function (all, current) {
+    return all + current;
 });
-console.log(allSkill);
-var flattenSkill = allSkill.reduce(
-    function (accumulator, currentValue) {
-        return accumulator.concat(currentValue);
-    }
-);
-console.log(flattenSkill);
-var countedSkill = flattenSkill.reduce(function (skills, skil) {
-    if (skil in skills) {
-        skills[skil]++;
-    } else {
-        skills[skil] = 1;
-    }
-    return skills;
-}, {});
-console.log(countedSkill);
-var noRepeat = flattenSkill.sort().reduce(function (noSort, current) {
-    if (noSort.length === 0 || noSort[noSort.length - 1] !== current) {
-        noSort.push(current);
-    }
-    var sorted = noSort;
-    return sorted;
-}, []);
-console.log(noRepeat);
+console.log(allExpirience);
