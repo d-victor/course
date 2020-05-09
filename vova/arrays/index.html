@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrays</title>
+</head>
+
+<body>
+    <script>
+        var personal = [
+            {
+                name: 'kolya',
+                age: 15,
+                skill: ['html', 'css'],
+                experience: .5
+            },
+            {
+                name: 'sofiya',
+                age: 26,
+                skill: ['html', 'css', 'js', 'php', 'gulp', 'node'],
+                experience: 9
+            },
+            {
+                name: 'petya',
+                age: 21,
+                skill: ['html', 'css', 'js'],
+                experience: 2
+            },
+            {
+                name: 'vlad',
+                age: 18,
+                skill: ['html', 'css', 'js'],
+                experience: 1
+            }
+        ];
+        console.log(personal.map(function (item) {
+            return item.skill;
+        }).toString().split(',').filter(function (item, index, arr) {
+            return arr.indexOf(item) === index;
+        }).sort())
+    </script>
+</body>
+
+</html>
