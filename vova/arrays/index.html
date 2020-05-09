@@ -46,6 +46,12 @@
         }).reduce(function (sum, current) {
             return sum + current;
         }))
+
+        console.log(personal.map(function (item) {
+            return item.skill;
+        }).toString().split(',').reduce(function (phrase, word, index) {
+            return index + 1;
+        }))
     </script>
 </body>
 
