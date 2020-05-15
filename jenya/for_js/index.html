@@ -16,19 +16,82 @@
     .image-container img {
         width: 100%;
     }
+
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    body,
+    input,
+    button {
+        font-family: Arial, Tahoma, sans-serif;
+        font-size: 20px;
+        line-height: 1.5;
+    }
+
+    .add-form,
+    .gall {
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        padding: 15px;
+    }
+
+    .add-form>input {
+        display: block;
+        flex-grow: 1;
+        padding: 0 15px;
+    }
+
+    .add-form>div {
+        padding-left: 10px;
+        width: 150px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .add-form>div button:first-child {
+        margin-bottom: 5px;
+    }
+
+    .gall {
+        flex-wrap: wrap;
+    }
+
+    .gall>img {
+        display: block;
+        width: calc(100% / 3 - 8px);
+        margin-bottom: 10px;
+    }
+
+    .gall>img:not(:nth-child(3n+3)) {
+        margin-right: 10px;
+    }
 </style>
 
 <body>
     <div id="image" class="image-container">
 
     </div>
-    <button id="buttonDel">Delete</button>
-    <button id="buttonCrt">Create</button>
+    <!-- <button id="buttonDel">Delete</button>
+    <button id="buttonCrt">Create</button> -->
 
+
+
+    <div class="add-form">
+        <input type="text" id="collection">
+        <div>
+            <button id="add">add</button>
+            <button id="remove">remove</button>
+        </div>
+    </div>
+    <div class="gall" id="gallery1"></div>
     <!-- <script src="for.js"></script> -->
     <!-- <script src="lesson.js"></script> -->
-    <!-- <script src="function_lesson.js"></script> -->
-    <script src="for_home.js"></script>
+    <script src="for_lessons.js"></script>
+    <!-- <script src="for_home.js"></script> -->
 </body>
 
 </html>
