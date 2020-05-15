@@ -111,3 +111,41 @@ console.log(sum_experience);
 //     return sum + index;
 // });
 // console.log(sum_skills);
+
+ function counters(start,fn) {
+     var counter = (+start && start > 0) ? (!Array.isArray(start) ? start : 0) : 0;
+     return function () {
+         counter++;
+         fn(counter);
+         return counter;
+     }
+ }
+ function checkNumber(num) {
+     console.log((num % 2) ? "odd number" : "even number");
+
+ };
+
+ var count = counters(1,checkNumber);
+console.log(count());
+
+
+
+
+function rec(i) {
+    console.log(i);
+    if(i++ < 10){
+        rec (i);
+    }
+    console.log(i);
+}
+// rec(0);
+
+function pow(x,n) {
+    if(n===0) return 1;
+
+    if(n===1){return x;
+    }else {
+        return x * pow(x, --n);
+    }
+}
+console.log(pow(2,2));
