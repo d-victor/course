@@ -207,27 +207,155 @@
     // getImg(prompt("Введите адресc Вашей картинки", ""), prompt("Введите описание Вашей картинки", ""), confirm("Добавить картинку?"));
    
 
-    function colection () {
-        var arr = [];
-        return function (src, id) {
+//     function colection () {
+//         var arr = [];
+//         return function (src, id) {
+//             var img = document.createElement('img');
+//             img.setAttribute('src', src);
+//             img.setAttribute('id', id);
+//             arr.push(img);
+//             document.body.appendChild(img);
+//             return arr;
+//         };
+//     }
+//     var btn = document.querySelector('button');
+//     btn.onclick = function () {
+//         var id = prompt("Type id", "");
+//         document.getElementById(id).parentNode.removeChild(document.getElementById(id));
+//     };
+// var images = colection();
+// images('img1.jpg', 'first');
+// images('img2.jpg', 'second');
+// images('img3.jpg', 'third');
+// images('img3.jpg', 'fourth');
+
+
+
+(function () {
+    var addBtn = document.getElementById('add'),
+        removeBtn = document.getElementById('remove');
+    
+    addBtn.addEventListener('click', function () {
+        console.log(slide1(document.getElementById('collection').value));
+    });
+    removeBtn.addEventListener('click', function () {
+        console.log(slide1(document.getElementById('collection').value));
+    });
+    
+    function slider(idWrapper) {
+        var collection = [],
+            galleryWrapper = idWrapper ? document.getElementById(idWrapper) : false;
+        
+        function getAttributes(attr) {
+            return Object.fromEntries(attr.split(',').map(function (item) {
+                return item.split(':');
+            }));
+        }
+        
+        function createImg(item) {
             var img = document.createElement('img');
-            img.setAttribute('src', src);
-            img.setAttribute('id', id);
-            arr.push(img);
-            document.body.appendChild(img);
-            return arr;
-        };
+               
+
+            img.addEventListener('load', function() {
+                status = true;
+                for (var key in item.attributes){
+                    img.setAttribute(key, item.attributes[key])
+                }
+                galleryWrapper.append(img);
+            });
+
+            img.addEventListener('error', function() {
+                removeItem(this.getAttribute('src'));
+                errors('Изображение не существует');
+                
+
+            });
+            
+            
+            img.setAttribute('src', item.src);
+
+            
+            
+            function getImg(img) {
+                return img;
+            }
+            img.addEventListener('click', function () {
+                var forDelete = confirm('Удалить ' + img.alt + '?');
+                if (forDelete) {
+                    img.remove();
+                    
+                }
+        });
+            
+            
+        }
+
+        function removeItem (src) {
+            
+            collection = collection.filter(function (item) {
+                return item.src !== src;
+            });
+        }
+
+        function errors(text) {
+            console.log(text);
+        }
+        
+function addCollection(src, attributes) {
+    collection.push({
+        src: src,
+        attributes: attributes
+    })
+}
+
+function createGallery () {
+    
+    galleryWrapper.innerHTML = '';
+    collection.forEach(function (item) {
+            createImg(item);
+    });
+}
+
+function getCollection () {
+    return collection;
+}
+
+        return function (options) {
+            if (!options) {
+                console.log("вы не передали опции идите лесом");
+                return false;
+            }
+            
+            options = options.split('|');
+            
+            var src = options[0],
+                attributes = getAttributes(options[1]),
+                removable = (options[2] !== undefined) ? (options[2] === 'true') : false,
+                status = src !== '' && attributes.alt !== undefined;
+            
+            if (status && !removable) {
+                addCollection(src, attributes);
+            } else if (!status && !removable){
+                console.log('Вы не указали обязательный параметр ' + ((src === '') ? 'src' : 'alt'));
+            }
+            
+            if (removable) {
+                removeItem(src);
+            }
+            
+            if (galleryWrapper) {
+                createGallery();
+            }
+            
+            return getCollection();
+        }
+        
     }
-    var btn = document.querySelector('button');
-    btn.onclick = function () {
-        var id = prompt("Type id", "");
-        document.getElementById(id).parentNode.removeChild(document.getElementById(id));
-    };
-var images = colection();
-images('img1.jpg', 'first');
-images('img2.jpg', 'second');
-images('img3.jpg', 'third');
-images('img3.jpg', 'fourth');
+    
+    var slide1 = slider('gallery1');
+    
+   
+})();
 
 
 
@@ -272,5 +400,4 @@ images('img3.jpg', 'fourth');
     * реализовать удаление удаляем по пути и третьему параметру
     * доп. задача, вставлять изображение в див с ид который был передан при создании замыкания
     * выполнить все проверки или код не ломается
-    * доп. задача, сделать кнопку при нажатии на которую появляется промт окно куда вводится строка, из котором можно получить все параметры для добавления или удаления */
-    
+    * доп. задача, сделать кнопку при нажатии на которую появляется промт окно куда вводится строка, из котором можно получить все параметры для добавления или удаления*/
