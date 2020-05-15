@@ -1,0 +1,334 @@
+@font-face {
+    font-family: 'Inter';
+    src: url('fonts/inter-regular.ttf'),
+    url('fonts/inter-regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('fonts/inter-semiBold.ttf'),
+    url('fonts/inter-semiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('fonts/inter-bold.ttf'),
+    url('fonts/inter-bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+body {
+    font-family: Inter, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 22px;
+    color: #585757;
+}
+h2 {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 60px;
+    margin: 48px 0 20px;
+    color: #1C1C1C;
+    letter-spacing: -1.2px;
+}
+h3{
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: -0.4px;
+    color: #1C1C1C;
+    margin: 30px 0 10px;
+}
+p.max{
+    font-size: 20px;
+    line-height: 30px;
+    letter-spacing: -0.3px;
+    margin-bottom: 30px;
+}
+p.middle{
+    letter-spacing: -0.2px;
+}
+p.min{
+    font-size: 13px;
+    line-height: 18px;
+    color: #969696;
+    letter-spacing: -0.1px;
+    margin: 20px 0;
+}
+a{
+    color: #1C1C1C;
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+
+.hidden{
+    display: none;
+}
+
+.wrapper {
+    max-width: 1110px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+img{
+    border-radius: 8px;
+}
+
+.main-block{
+    padding: 95px 0;
+    border-bottom: 1px solid #DBDBDB;
+}
+
+input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=submit]):not([type=reset]):not([type=button]){
+    padding: 12px 15px;
+    font-family: inherit;
+    border: none;
+    background-color: #F7F7F7;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    width: 100%;
+    font-size: 20px;
+    box-sizing: border-box;
+}
+input[type=submit],
+input[type=reset],
+input[type=button],
+button {
+    background: #FF8364;
+    border-radius: 6px;
+    padding: 11px 18px;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 26px;
+    text-align: center;
+    letter-spacing: -0.2px;
+    color: white;
+    outline: none;
+    border: none;
+}
+
+header{
+    position: relative;
+}
+header .wrapper{
+    padding: 20px 15px;
+}
+
+header nav .main-menu{
+    list-style-type: none;
+    font-weight: 700;
+    display: flex;
+    max-width: 766px;
+    margin: 0 auto;
+    letter-spacing: -0.1px;
+}
+header nav .main-menu li{
+    padding: 13px 15px;
+}
+header nav .main-menu li:nth-child(3){
+    flex-grow: 1;
+}
+
+header .logo{
+    position: absolute;
+    width: 48px;
+    display: block;
+    left: 50%;
+    transform: translateX(-50%);
+}
+header .logo img{
+    width: 100%;
+    display: block;
+}
+
+.subscribe {
+    overflow: hidden;
+    position: relative;
+}
+
+.subscribe .wrapper,
+.advantages .wrapper,
+.statistic .wrapper{
+    display: flex;
+}
+.subscribe .wrapper{
+    padding-bottom: 11px;
+    margin-top: -25px;
+}
+.subscribe .wrapper > div {
+    width: 50%;
+}
+.subscribe .wrapper > .form-wrap{
+    padding-right: 9%;
+    box-sizing: border-box;
+}
+.subscribe .wrapper > .form-wrap button{
+    margin-top: 10px;
+}
+.subscribe .wrapper > .form-wrap p.min{
+    padding-right: 100px;
+}
+.subscribe .wrapper > .img-wrap{
+    padding-left: 27px;
+}
+.subscribe .wrapper > .img-wrap img{
+    position: absolute;
+    z-index: -1;
+}
+
+.quote .wrapper{
+    text-align: center;
+    padding-bottom: 8px;
+}
+.quote img{
+    width: 96px;
+    margin-bottom: 24px;
+    
+}
+.quote p {
+    padding: 0 17%;
+    margin-bottom: 0;
+}
+
+.advantages h3{
+    margin-left: 48px;
+    position: relative;
+}
+.advantages h3:before{
+    content: '';
+    display: block;
+    width: 32px;
+    height: 32px;
+    background: url("../images/icon_title.svg") no-repeat center / contain;
+    position: absolute;
+    left: -48px;
+}
+.advantages .wrapper > div:first-child{
+    box-sizing: border-box;
+    padding-right: 7%;
+}
+.advantages .wrapper > div p:not(:last-child){
+    margin-bottom: 40px;
+}
+.advantages img{
+    display: block;
+}
+
+.statistic .wrapper{
+    justify-content: space-between;
+    align-items: center;
+}
+.statistic img{
+    width: 260px;
+    display: block;
+    margin-right: 62px;
+}
+.statistic ul{
+    display: flex;
+    flex-wrap: wrap;
+    width: 408px;
+}
+.statistic ul li {
+    width: 190px;
+    position: relative;
+    padding-left: 43px;
+    box-sizing: border-box;
+    
+}
+.statistic ul li:nth-child(-n+2){
+    margin-bottom: 35px;
+}
+.statistic ul li::before{
+    content: '';
+    display: block;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    border-radius: 50%;
+    left: 0;
+    top: 10px;
+}
+.statistic .downloads::before{
+     background-color: #FF8364;
+ }
+.statistic .users::before{
+    background-color: #FFE0D8;
+}
+.statistic .subscribers::before{
+    background-color: #DBDBDB;
+}
+.statistic .products::before{
+    background-color: #F7F7F7;
+}
+.statistic ul li strong{
+    font-size: 36px;
+    line-height: 46px;
+    letter-spacing: -0.8px;
+    color: #1C1C1C;;
+    display: block;
+    margin-bottom: 10px;
+}
+.statistic .wrapper > div{
+    width: 350px;
+}
+
+.features{
+    text-align: center;
+}
+.features,
+.features .wrapper{
+    padding-bottom: 0;
+}
+.features h2{
+    margin-top: 0;
+}
+.features p.max{
+    max-width: 730px;
+    margin: 0 auto 30px;
+}
+.features .features-item{
+    width: 730px;
+    margin: 60px auto 51px;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+.features .features-item li{
+    width: 25%;
+    font-weight: 600;
+}
+.features .features-item a{
+    display: block;
+    margin-bottom: 10px;
+    color: #1C1C1C;
+}
+.features .features-item a img{
+    display: block;
+    margin: 0 auto 7px;
+    border-radius: 50%;
+    
+}
+
+.features .img-center{
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+.crop-img {
+    overflow: hidden;
+    position: relative;
+    padding-top: 39%;
+}
+
+
+
