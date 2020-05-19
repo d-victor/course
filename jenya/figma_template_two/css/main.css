@@ -410,3 +410,7 @@ nav ul li a:hover::after{
 .cards >ul >li ul li:nth-child(2n) p::after{
     content: url(../css/img/comment.png);
 }
+/* last__section style */
+.last__section{
+    padding: 130px 0 116px;
+}
