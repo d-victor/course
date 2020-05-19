@@ -109,7 +109,7 @@ nav{
     justify-content: space-between;
     align-items: center;
 }
-nav > a{
+.link_logo{
     display: flex;
     align-items: center;
 }
@@ -413,4 +413,77 @@ nav ul li a:hover::after{
 /* last__section style */
 .last__section{
     padding: 130px 0 116px;
+}
+/* social section style  */
+.social{
+    padding: 90px 0 108px;
+}
+.link_logo h2{
+    font-size: 23px;
+    padding: 10px;
+}
+.social>ul{
+    display: flex;
+    padding: 60px 0;
+}
+.social>ul>li{
+    display: block;
+}
+.social>ul>li:nth-child(2){
+    padding: 0 30px;
+}
+.social>ul>li:nth-child(4){
+    margin-left: 439px;
+}
+.social p{
+    font-weight: 700;
+}
+.social ul li a{
+    font-weight: 400;
+    color: #585757;
+    padding: 5px 0;
+    display: block;
+}
+.social .social__btn li a{
+    position: relative;
+    padding-left: 28px;
+}
+.social__btn li a::after{
+    content: url(../css/img/social_4.svg);
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 7px;
+}
+.social__btn li:nth-child(2) a::after{
+    content: url(../css/img/social_1.svg);
+}
+.social__btn li:nth-child(3) a::after{
+    content: url(../css/img/social_2.svg);
+}
+.social__btn li:nth-child(4) a::after{
+    content: url(../css/img/social_3.svg);
+}
+/* Copyright section style  */
+.copyright{
+    background: #F7F7F7;
+}
+.copyright__item{
+    padding: 20px 0 22px;
+    display: flex;
+    justify-content: space-between;
+}
+.copyright__item ul{
+    display: flex;
+    align-items: center;
+}
+.copyright__item ul li a{
+    display: block;
+    font-size: 13px;
+    line-height: 18px;
+    outline: none;
+    font-weight: 400;
+}
+.copyright__item ul li:nth-child(2) a{
+    padding: 0 30px;
 }
