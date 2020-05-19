@@ -223,6 +223,7 @@ nav ul li a:hover::after{
 }
 .description{
     text-align: center;
+    padding: 0 15px;
 }
 .description p{
     font-weight: bold;
@@ -232,7 +233,7 @@ nav ul li a:hover::after{
     padding: 95px 174px;
 }
 .stars{
-    padding: 162px 0 100px;
+    padding: 162px 15px 100px;
 }
 .stars ul{
     display: flex;
@@ -261,7 +262,7 @@ nav ul li a:hover::after{
     padding: 10px 0;
 }
 .statistic{
-    padding: 100px 0 54px;
+    padding: 100px 15px 54px;
 }
 .statistic ul{
     display: flex;
@@ -275,7 +276,7 @@ nav ul li a:hover::after{
 }
 .short{
     text-align: center;
-    padding: 110px 0 116px;
+    padding: 110px 15px 116px;
 }
 .short > p{
     padding: 20px 186px 60px;
@@ -303,7 +304,7 @@ nav ul li a:hover::after{
     left: -38px;
 }
 .short ul li:nth-child(2)::after{
-    right: -38px;
+    left: 341px;
 }
 
 .short ul li h3{
@@ -356,16 +357,16 @@ nav ul li a:hover::after{
 }
 /* cards section styles */
 .cards{
-    padding: 110px 0 114px;
+    padding: 110px 15px 114px;
 }
 .cards>ul{
     display: flex;
-    justify-content: space-between;
     align-items: center;
     flex-flow: row;
 }
 .cards ul li{
     display: block;
+    max-width: 25%;
 }
 .cards ul li:not(:nth-child(4)){
     padding-right: 30px;
@@ -416,7 +417,7 @@ nav ul li a:hover::after{
 }
 /* social section style  */
 .social{
-    padding: 90px 0 108px;
+    padding: 90px 15px 108px;
 }
 .link_logo h2{
     font-size: 23px;
@@ -467,6 +468,7 @@ nav ul li a:hover::after{
 /* Copyright section style  */
 .copyright{
     background: #F7F7F7;
+    padding: 0 15px;
 }
 .copyright__item{
     padding: 20px 0 22px;
@@ -483,7 +485,229 @@ nav ul li a:hover::after{
     line-height: 18px;
     outline: none;
     font-weight: 400;
+    color: #969696;
 }
 .copyright__item ul li:nth-child(2) a{
     padding: 0 30px;
+}
+/* media style start ------------------- */
+@media screen and (max-width: 1200px){
+    .cards>ul{
+        flex-flow: row wrap;
+        justify-content: center;
+    }
+    .cards ul li{
+        margin-bottom: 30px;
+    }
+}
+@media screen and (max-width: 992px){
+    .description p{
+        padding: 60px 48px;
+    }
+    .cards ul li{
+        max-width: 50%;
+        padding: 0 5px;
+    }
+    .cards ul li:not(:nth-child(4)) {
+        padding-right: 0;
+    }
+    .cards>ul>li > p{
+        padding: 10px 0 20px;
+    }
+    .cards img{
+        width: 100%;
+    }
+    .social>ul>li:nth-child(4) {
+        margin-left: 182px;
+    }
+    .statistic ul {
+        text-align: center;
+    }
+    .phone__poster {
+        flex-direction: column;
+        padding: 150px 15px 342px;
+    }
+    .phone__poster__item p {
+        padding-right: 0;
+    }
+    .phohe__poster__img img{
+        top: 0;
+        left: 50%;
+        transform: translateX(-200px);
+    }
+    .phone__poster__item {
+        max-width: 100%;
+        text-align: center;
+    }   
+    .phone__poster .photo-box {
+        margin: 0 auto;
+    }
+    
+}
+@media screen and (max-width: 768px){
+    .header__item {
+        padding: 40px 0 346px;
+    }
+    .header__item form {
+        flex-direction: column;
+    }
+    .header__item p.small_txt {
+        padding: 0 0 45px;
+    }
+    .description p {
+        padding: 40px 0 44px;
+    }
+    .primary_btn {
+        margin: 20px 0;
+    }
+    .link_logo {
+        z-index: 9;
+    }
+    nav label {
+        display: block;
+        z-index: 9;
+    }
+    nav ul.navigation{
+        padding: 59px 0 45px;
+        flex-direction: column;
+        background: #FFFFFF;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: -100%;
+        transition: 0.4s ease-in;
+    }
+    nav > input:checked ~ .navigation{
+        top: 0;
+    }
+    .statistic {
+        padding: 40px 15px 50px;
+    }
+    .statistic ul {
+        flex-flow: column;
+    } 
+    .stars {
+        padding: 92px 15px 26px;
+    }
+    .stars ul{
+        flex-direction: column;
+        justify-content: center;
+    }
+    .stars ul li{
+        max-width: 100%;
+    } 
+    .stars ul li:nth-child(2) {
+        margin: 84px 0;
+    }
+    .social>ul>li:nth-child(4) {
+        margin-top: 30px;
+        margin-left: 0;
+    }
+    .short {
+        padding: 53px 15px 116px;
+    }
+    .short > p {
+        padding: 20px 0px 60px;
+    }
+    .short ul {
+        flex-flow: column;
+    }
+    .short ul li:nth-child(2) {
+        margin: 100px 0;
+    }
+    .short ul li{
+        width: 100%;
+    }
+    .short ul li:nth-child(2)::before,
+    .short ul li:nth-child(2)::after{
+        content: url(../css/img/arrow_down.svg);
+        left: 50%;
+        transform: translateX(-23px);
+    }
+    .short ul li:nth-child(2)::before{
+        top: -79px;
+    }
+    .short ul li:nth-child(2)::after{
+        top: 204px;
+    }
+    .cards {
+        padding: 40px 15px;
+    }
+    .cards ul li {
+        max-width: 100%;
+    }
+    .last__section {
+        padding: 40px 0 48px;
+    }
+    .social {
+        padding: 15px;
+    }
+    .social>ul {
+        flex-direction: column;
+    }
+    .social>ul>li:nth-child(2) {
+        padding: 30px 0;
+    }
+    .phone__poster {
+        padding: 40px 15px 342px;
+    }
+}
+@media screen and (max-width: 480px){
+    .statistic ul {
+        text-align: start;
+    }
+    .statistic ul li {
+        width: 100%;
+        padding: 0 0 30px 0;
+    }
+    .short {
+        padding: 40px 15px 46px;
+    }
+    .short > p {
+        padding: 20px 0px 30px;
+    }
+    .short ul li:nth-child(2) {
+        margin: 108px 0;
+    }
+    .phone__poster__item {
+        text-align: start;
+    }
+    .phone__poster .photo-box {
+        margin: 0;
+    }
+    .social {
+        padding: 40px 15px 32px;
+    }
+    .copyright__item {
+        flex-direction: column-reverse;
+    }
+    .copyright {
+        background: #F7F7F7;
+        padding: 20px 15px 26px;
+    }
+    .copyright .container{
+        border-bottom: none;
+    }
+    .copyright__item p{
+        padding: 20px 0 0;
+        display: block;
+    }
+    .header__item form div {
+        width: 100%;
+        display: block;
+    }
+    .header__item form input {
+        margin: 0 auto;
+    }
+    .header__item__img img {
+        width: 100%;
+        transform: translateX(-161px);
+    }
+    .phohe__poster__img {
+        width: 100%;
+    }
+    .phohe__poster__img img {
+        transform: translateX(-145px);
+        width: 100%;
+    }
 }
