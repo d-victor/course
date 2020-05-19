@@ -80,9 +80,9 @@
                 errors('Изображения не существует в базе');
             });
             img.addEventListener('click', function () {
-                checkDel = confirm('Do you want to delete image with alt -' + this.alt);
-                if (checkDel) {
-                    this.remove(this);
+                if (confirm('Do you want to delete image with alt -' + this.alt)) {
+                    removeItem(this.getAttribute('src'));
+                    this.remove();
                 }
 
             })

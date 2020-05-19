@@ -1,0 +1,68 @@
+.container{
+    padding: 15px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.row{
+    margin: -15px;
+    display: flex;
+    flex-flow: row wrap;
+}
+.row > div{
+    min-height: 210px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    position: relative;
+    box-sizing: border-box;
+    text-align: center;
+}
+.row > div:after{
+    content: '';
+    display: block;
+    background-attachment: fixed;
+    background-size: cover;
+    position: absolute;
+    z-index: -1;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+}
+.row > div:nth-of-type(1),
+.row > div:nth-of-type(6),
+.row > div:nth-of-type(9),
+.row > div:nth-of-type(10){
+    width: 50%;
+}
+h2 {
+    font-size: 45px;
+    font-weight: 300;
+    margin: 10px;
+}
+h1{
+    font-size: calc(14px + 26 * ((100vw-320px) / (1480 - 320)));
+     /* мин. размер + желаемый   window max width - min width: ; */
+}
+h2 span {
+    font-size: 30px;
+}
+p {
+    font-size: 20px;
+}
+svg{
+    max-width: 25%;
+}
+.bg1, .bg2{
+    border: 1px solid red;
+    width: 25%;
+}
+.bg1:after{
+    background: url(./slider/bg1.jpg);
+    background-size: cover;
+}
+.bg2:after{
+    background: url(./slider/bg2.jpg);
+    background-size: cover;
+}
