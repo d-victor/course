@@ -6,8 +6,56 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body, input, button{
+            font-family: Arial, Tahoma, sans-serif;
+            font-size: 20px;
+            line-height: 1.5;
+        }
+        .add-form,
+        .gall{
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            padding: 15px;
+        }
+        .add-form > input{
+            display: block;
+            flex-grow: 1;
+            padding: 0 15px;
+        }
+        .add-form > div{
+            padding-left: 10px;
+            width: 150px;
+            display: flex;
+            flex-direction: column;
+        }
+        .add-form > div button:first-child{
+            margin-bottom: 5px;
+        }
+        .gall{
+            flex-wrap: wrap;
+        }
+        .gall > img{
+            display: block;
+            width: calc(100% / 3 - 8px);
+            margin-bottom: 10px;
+        }
+        .gall > img:not(:nth-child(3n+3)){
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
-<script src="../js/fn1.js"></script>
+<button id="add">ADD</button>
+<button id="remove">Remove</button>
+<button id="sort">Sort</button>
+<div class="gall" id="gallery1"></div>
+<script src="../js/fn2.js"></script>
 </body>
 </html>
