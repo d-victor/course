@@ -17,7 +17,7 @@
         </a>
         <nav>
             <input type="checkbox" id="control-menu" class="control-menu hidden">
-            <label for="control-menu">
+            <label class="mobile-only menu-btn" for="control-menu">
                 <span></span>
             </label>
             <ul class="main-menu">
@@ -29,6 +29,7 @@
                 <li><a href="#">Sixth Link</a></li>
             </ul>
         </nav>
+        <label class="search-ico" for="search"></label>
     </div>
 </header>
 <section class="main-block subscribe">
@@ -133,50 +134,86 @@
 </section>
 <section class="main-block promo">
     <div class="wrapper">
-        <div>
-            <p class="max">There is a lot of exciting stuff going on in the stars above us that make astronomy so much fun. The truth is the universe is a constantly changing, moving, some would say “living” thing because you just never know what you are going to see on any given night of stargazing.</p>
-            <img src="images/google.svg" alt="google">
-            <p>Charlie Mendoza</p>
-            <p>Product Designer</p>
-            <a class="more" href="#">Learn more</a>
+        <div class="promo-wrap">
+            <ul>
+                <li>
+                    <p class="max">There is a lot of exciting stuff going on in the stars above us that make astronomy so much fun. The truth is the universe is a constantly changing, moving, some would say “living” thing because you just never know what you are going to see on any given night of stargazing.</p>
+                    <img src="images/google.svg" alt="google">
+                    <p class="author">Charlie Mendoza</p>
+                    <p>Product Designer</p>
+                    <a class="more" href="#">Learn more</a>
+                </li>
+                <li>
+                    <p class="max">There is a lot of exciting stuff going on in the stars above us that make astronomy so much fun. The truth is the universe is a constantly changing, moving, some would say “living” thing because you just never know what you are going to see on any given night of stargazing.</p>
+                    <img src="images/google.svg" alt="google">
+                    <p class="author">Charlie Mendoza</p>
+                    <p>Product Designer</p>
+                    <a class="more" href="#">Learn more</a>
+                </li>
+                <li>
+                    <p class="max">There is a lot of exciting stuff going on in the stars above us that make astronomy so much fun. The truth is the universe is a constantly changing, moving, some would say “living” thing because you just never know what you are going to see on any given night of stargazing.</p>
+                    <img src="images/google.svg" alt="google">
+                    <p class="author">Charlie Mendoza</p>
+                    <p>Product Designer</p>
+                    <a class="more" href="#">Learn more</a>
+                </li>
+            </ul>
         </div>
     </div>
 </section>
 <section class="main-block price">
     <div class="wrapper">
         <input class="hidden" type="radio" id="free" name="price">
-        <input class="hidden" type="radio" id="pro" name="price">
+        <input class="hidden" type="radio" id="pro" name="price" checked>
         <input class="hidden" type="radio" id="business" name="price">
-        <ul>
-            <li>
-                <label for="free"></label>
-                <p>Start</p>
-                <h4>Free</h4>
-                <p>Long Feature One
-                <br>Feature Two
-                <br>Long Feature Three</p>
-                <button type="button">Button</button>
-                <p class="min">Two line long feature example with text description for your project</p>
+        <ul class="price-wrap">
+            <li class="free">
+                <label for="free">
+                    <strong>Start</strong>
+                    <strong class="title">Free</strong>
+                    <span>Long Feature One</span>
+                    <span>Feature Two</span>
+                    <span>Long Feature Three</span>
+                    <button type="button">
+                        <span>Button</span>
+                        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.6666 0.833252C16.7042 0.833252 19.1666 3.29569 19.1666 6.33325V13.6666C19.1666 16.7042 16.7042 19.1666 13.6666 19.1666H6.33331C3.29575 19.1666 0.833313 16.7042 0.833313 13.6666V6.33325C0.833313 3.29569 3.29575 0.833252 6.33331 0.833252L13.6666 0.833252ZM12.75 3.58325H7.24998C5.2863 3.58325 3.68316 5.12689 3.5878 7.06692L3.58331 7.24992V12.7499C3.58331 14.7136 5.12695 16.3167 7.06698 16.4121L7.24998 16.4166H12.75C14.7137 16.4166 16.3168 14.8729 16.4122 12.9329L16.4166 12.7499V7.24992C16.4166 5.28624 14.873 3.6831 12.933 3.58774L12.75 3.58325Z"/>
+                        </svg>
+                    </button>
+                    <span class="min">Two line long feature example with text description for your project</span>
+                </label>
             </li>
-            <li>
-                <label for="pro"></label>
-                <p>Pro</p>
-                <h4>$38 <span>/ mo</span></h4>
-                <p>Long Feature One
-                    <br>Feature Two
-                    <br>Long Feature Three</p>
-                <button type="button">Button</button>
-                <p class="min">Two line long feature example with text description for your project</p>
+            <li class="pro" data-text="Popular">
+                <label for="pro">
+                    <strong>Pro</strong>
+                    <strong class="title">$38 <span>/ mo</span></strong>
+                    <span>Long Feature One</span>
+                    <span>Feature Two</span>
+                    <span>Long Feature Three</span>
+                    <button type="button">
+                        <span>Button</span>
+                        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.6666 0.833252C16.7042 0.833252 19.1666 3.29569 19.1666 6.33325V13.6666C19.1666 16.7042 16.7042 19.1666 13.6666 19.1666H6.33331C3.29575 19.1666 0.833313 16.7042 0.833313 13.6666V6.33325C0.833313 3.29569 3.29575 0.833252 6.33331 0.833252L13.6666 0.833252ZM12.75 3.58325H7.24998C5.2863 3.58325 3.68316 5.12689 3.5878 7.06692L3.58331 7.24992V12.7499C3.58331 14.7136 5.12695 16.3167 7.06698 16.4121L7.24998 16.4166H12.75C14.7137 16.4166 16.3168 14.8729 16.4122 12.9329L16.4166 12.7499V7.24992C16.4166 5.28624 14.873 3.6831 12.933 3.58774L12.75 3.58325Z"/>
+                        </svg>
+                    </button>
+                    <span class="min">Two line long feature example with text description for your project</span>
+                </label>
             </li>
-            <li>
-                <label for="business"></label>
-                <p>Business</p>
-                <h4>$78 <span>/ mo</span></h4>
-                <p>Long Feature One
-                    <br>Feature Two
-                    <br>Long Feature Three</p>
-                <button type="button">Button</button>
-                <p class="min">Two line long feature example with text description for your project</p>
+            <li class="business">
+                <label for="business">
+                    <strong>Business</strong>
+                    <strong class="title">$78 <span>/ mo</span></strong>
+                    <span>Long Feature One</span>
+                    <span>Feature Two</span>
+                    <span>Long Feature Three</span>
+                    <button type="button">
+                        <span>Button</span>
+                        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.6666 0.833252C16.7042 0.833252 19.1666 3.29569 19.1666 6.33325V13.6666C19.1666 16.7042 16.7042 19.1666 13.6666 19.1666H6.33331C3.29575 19.1666 0.833313 16.7042 0.833313 13.6666V6.33325C0.833313 3.29569 3.29575 0.833252 6.33331 0.833252L13.6666 0.833252ZM12.75 3.58325H7.24998C5.2863 3.58325 3.68316 5.12689 3.5878 7.06692L3.58331 7.24992V12.7499C3.58331 14.7136 5.12695 16.3167 7.06698 16.4121L7.24998 16.4166H12.75C14.7137 16.4166 16.3168 14.8729 16.4122 12.9329L16.4166 12.7499V7.24992C16.4166 5.28624 14.873 3.6831 12.933 3.58774L12.75 3.58325Z"/>
+                        </svg>
+                    </button>
+                    <span class="min">Two line long feature example with text description for your project</span>
+                </label>
             </li>
         </ul>
     </div>
@@ -185,7 +222,7 @@
     <div class="wrapper">
         <div>
             <h3>Heading</h3>
-            <p>In the history of modern astronomy, there is probably no one greater leap forward than the building and launch.</p>
+            <p class="middle">In the history of modern astronomy, there is probably no one greater leap forward than the building and launch.</p>
         </div>
         <div>
             <form action="" method="post">
@@ -198,23 +235,36 @@
     </div>
 </section>
 <footer>
-    <a class="footer-logo" href="#">
-        <img src="images/logo.svg" alt="project 1">
-    </a>
-    <ul class="footer-nav">
-        <li><a href="#">First Link</a></li>
-        <li><a href="#">Second Link</a></li>
-        <li><a href="#">Second Link</a></li>
-        <li><a href="#">Fourth Link</a></li>
-        <li><a href="#">Fifth Link</a></li>
-    </ul>
-    <ul>
-        <li><a href="#"><img src="images/facebook.svg" alt="Facebook"></a></li>
-        <li><a href="#"><img src="images/instagram.svg" alt="Instagram"></a></li>
-        <li><a href="#"><img src="images/twitter.svg" alt="Twitter"></a></li>
-        <li><a href="#"><img src="images/youtube.svg" alt="Youtube"></a></li>
-    </ul>
-    <p class="copyright min">© Copyright 2020 Pixsellz - Premium UI Goods for Designers</p>
+    <div class="wrapper">
+        <a class="footer-logo" href="#">
+            <img src="images/logo.svg" alt="project 1">
+        </a>
+        <ul class="footer-nav">
+            <li><a href="#">First Link</a></li>
+            <li><a href="#">Second Link</a></li>
+            <li><a href="#">Third Link</a></li>
+            <li><a href="#">Fourth Link</a></li>
+            <li><a href="#">Fifth Link</a></li>
+        </ul>
+        <ul class="social">
+            <li><a href="#"><img src="images/facebook.svg" alt="Facebook"></a></li>
+            <li><a href="#"><img src="images/instagram.svg" alt="Instagram"></a></li>
+            <li><a href="#"><img src="images/twitter.svg" alt="Twitter"></a></li>
+            <li><a href="#"><img src="images/youtube.svg" alt="Youtube"></a></li>
+        </ul>
+        <p class="copyright min">© Copyright 2020 Pixsellz - Premium UI Goods for Designers</p>
+    </div>
 </footer>
+<section class="search">
+    <input id="search" class="hidden" type="checkbox">
+    <div>
+        <form action="" method="post">
+            <div>
+                <input type="text" name="search">
+                <button type="submit">Search</button>
+            </div>
+        </form>
+    </div>
+</section>
 </body>
 </html>
