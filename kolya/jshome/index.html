@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <style>
+    <!-- <style>
         *{
             padding: 0;
             margin: 0;
@@ -51,16 +52,61 @@
         }
         
         
-    </style>
-    <div class="add-form">
-        <input type="text" id="collection">
-        <div>
-            <button id="add">add</button>
-            <button id="remove">remove</button>
+    </style> -->
+    <div class="container">
+        <h1>Test title for adaptive font size</h1>
+        <div class="row">
+            <div class="bg1">
+                <h2>16 <span>| 24</span></h2>
+                <p>Goals Completed</p>
+            </div>
+            <div class="bg1">
+                <h2><svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="fa"><path fill="currentColor" d="M544 160v64h32v64h-32v64H64V160h480m16-64H48c-26.51 0-48 21.49-48 48v224c0 26.51 21.49 48 48 48h512c26.51 0 48-21.49 48-48v-16h8c13.255 0 24-10.745 24-24V184c0-13.255-10.745-24-24-24h-8v-16c0-26.51-21.49-48-48-48zm-144 96H96v128h320V192z" class=""></path></svg></h2>
+                <p>Respiration</p>
+            </div>
+            <div class="bg2">
+                <h2><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 416 512" class="fa"><path fill="currentColor" d="M272 96c26.51 0 48-21.49 48-48S298.51 0 272 0s-48 21.49-48 48 21.49 48 48 48zM113.69 317.47l-14.8 34.52H32c-17.67 0-32 14.33-32 32s14.33 32 32 32h77.45c19.25 0 36.58-11.44 44.11-29.09l8.79-20.52-10.67-6.3c-17.32-10.23-30.06-25.37-37.99-42.61zM384 223.99h-44.03l-26.06-53.25c-12.5-25.55-35.45-44.23-61.78-50.94l-71.08-21.14c-28.3-6.8-57.77-.55-80.84 17.14l-39.67 30.41c-14.03 10.75-16.69 30.83-5.92 44.86s30.84 16.66 44.86 5.92l39.69-30.41c7.67-5.89 17.44-8 25.27-6.14l14.7 4.37-37.46 87.39c-12.62 29.48-1.31 64.01 26.3 80.31l84.98 50.17-27.47 87.73c-5.28 16.86 4.11 34.81 20.97 40.09 3.19 1 6.41 1.48 9.58 1.48 13.61 0 26.23-8.77 30.52-22.45l31.64-101.06c5.91-20.77-2.89-43.08-21.64-54.39l-61.24-36.14 31.31-78.28 20.27 41.43c8 16.34 24.92 26.89 43.11 26.89H384c17.67 0 32-14.33 32-32s-14.33-31.99-32-31.99z" class=""></path></svg></h2>
+                <p>Miles</p>
+            </div>
+            <div class="bg1">
+                <h2>36 &deg;</h2>
+                <p>Temperature</p>
+            </div>
+            <div class="bg1">
+                <h2><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="fa"><path fill="currentColor" d="M176 256c44.11 0 80-35.89 80-80s-35.89-80-80-80-80 35.89-80 80 35.89 80 80 80zm352-128H304c-8.84 0-16 7.16-16 16v144H64V80c0-8.84-7.16-16-16-16H16C7.16 64 0 71.16 0 80v352c0 8.84 7.16 16 16 16h32c8.84 0 16-7.16 16-16v-48h512v48c0 8.84 7.16 16 16 16h32c8.84 0 16-7.16 16-16V240c0-61.86-50.14-112-112-112z" class=""></path></svg></h2>
+                <p>Sleep Keep</p>
+            </div>
+            <div class="bg2">
+                <h2>98 <span>bpm</span></h2>
+                <p>Heart Rate</p>
+            </div>
+            <div class="bg1">
+                <h2>170 <span>lbs</span></h2>
+                <p>Weight</p>
+            </div>
+            <div class="bg1">
+                <h2>28 <span>%</span></h2>
+                <p>Fat Percentage</p>
+            </div>
+            <div class="bg2">
+                <h2>118 <span>mgdl</span></h2>
+                <p>Blood Glucose</p>
+            </div>
+            <div class="bg2">
+                <h2>680 <span>kcal</span></h2>
+                <p>AVG Consumption</p>
+            </div>
+            <div class="bg2">
+                <h2><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="fa"><path fill="currentColor" d="M104 96H56c-13.3 0-24 10.7-24 24v104H8c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h24v104c0 13.3 10.7 24 24 24h48c13.3 0 24-10.7 24-24V120c0-13.3-10.7-24-24-24zm528 128h-24V120c0-13.3-10.7-24-24-24h-48c-13.3 0-24 10.7-24 24v272c0 13.3 10.7 24 24 24h48c13.3 0 24-10.7 24-24V288h24c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8zM456 32h-48c-13.3 0-24 10.7-24 24v168H256V56c0-13.3-10.7-24-24-24h-48c-13.3 0-24 10.7-24 24v400c0 13.3 10.7 24 24 24h48c13.3 0 24-10.7 24-24V288h128v168c0 13.3 10.7 24 24 24h48c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24z" class=""></path></svg></h2>
+                <p>Workouts</p>
+            </div>
+            <div class="bg2">
+                <h2>85 <span>%</span></h2>
+                <p>Body Hydration</p>
+            </div>
         </div>
     </div>
-    <div class="gall" id="gallery1"></div>
-    <script src="home.js"></script>
+    <script src="home2.js"></script>
     
 </body>
 </html>

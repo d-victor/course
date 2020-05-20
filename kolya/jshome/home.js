@@ -280,7 +280,7 @@
                 return img;
             }
             img.addEventListener('click', function () {
-                var forDelete = confirm('Удалить ' + img.alt + '?');
+                var forDelete = confirm('Удалить ' + img.alt) + '?';
                 if (forDelete) {
                     img.remove();
                     

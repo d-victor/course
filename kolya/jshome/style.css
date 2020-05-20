@@ -1,0 +1,84 @@
+body {
+    background: #333;
+}
+
+svg {
+    width: 25px;
+}
+h1 {
+    font-size: calc(24px + 16 * ((100vw - 320px) / (1280 - 320)));
+    text-align: center;
+}
+h2 {
+    font-size: 45px;
+    font-weight: 300;
+    margin: 10px;
+}
+h2 span {
+    font-size: 30px;
+}
+
+p {
+    font-size: 20px;
+}
+
+.container {
+    margin: 0 auto;
+    width: 1140px;
+}
+
+.row {
+    margin: -15px;
+    width: 100%;
+    display: flex;
+
+    flex-wrap: wrap;
+    
+}
+
+.bg1 {
+    width: 25%;
+}
+.row div {
+    min-height: 210px;
+    padding: 5px;
+    position: relative;
+    box-sizing: border-box;
+}
+.bg2 {
+    width: 25%;
+}
+
+.row > div::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    z-index: -1;
+
+
+}
+.bg1:after {
+    background-image: url('bg2.jpg');
+}
+.bg2:after {
+    background-image: url('bg1.jpg');
+}
+
+.bg1:nth-child(1) {
+    width: 50%;
+}
+.bg2:nth-child(2) {
+    width: 50%;
+}
+
+.bg2:nth-child(3) {
+    width: 50%;
+}
+.bg2:nth-child(4) {
+    width: 50%;
+}
+
