@@ -61,9 +61,11 @@
                     <p class="heading__descr descr">
                         Let’s talk a little about what symptoms a slow computer can have. 
                     </p>
-                    <form action="#" class="heading__form">
-                        <input class="input" type="text" name="yourname" placeholder="Name">
-                        <input class="input" type="email" name="email" placeholder="Email">
+                    <form action="#" class="heading__form" novalidate>
+                        <input class="input" type="text" name="yourname" placeholder="Name" id="textInput">
+                        <span class="errorName" aria-live="polite"></span>
+                        <input class="input" type="email" name="mail" placeholder="Email" id="emailInput">
+                        <span class="error" aria-live="polite"></span>
                         <button class="button">Subscribe</button>
                     </form>
                 </div>
@@ -688,5 +690,6 @@ c3 -44 16 -109 28 -144 l22 -65 34 6 c69 13 182 -71 341 -253 34 -40 89 -89
             
         </div>
     </footer>
+    <script src="js/scripts.js"></script>
 </body>
 </html>
