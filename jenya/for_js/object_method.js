@@ -8,23 +8,33 @@ function slider() {
         collection.sort(function (a, b) {
             /*a = () ? : ;
             b = () ? : ;*/
-            if (condition === 'src') {
-                if (a[condition] > b[condition]) {
-                    return 1;
-                }
-                if (a[condition] < b[condition]) {
-                    return -1;
-                }
-                return 0;
-            } else {
-                if (a.attributes[condition] > b.attributes[condition]) {
-                    return 1;
-                }
-                if (a.attributes[condition] < b.attributes[condition]) {
-                    return -1;
-                }
-                return 0;
+            a = (condition === 'src') ? a[condition] : a.attributes[condition];
+            b = (condition === 'src') ? b[condition] : b.attributes[condition];
+
+            if (a > b) {
+                return 1;
             }
+            if (b > a) {
+                return -1;
+            }
+            return 0;
+            // if (condition === 'src') {
+            //     if (a[condition] > b[condition]) {
+            //         return 1;
+            //     }
+            //     if (a[condition] < b[condition]) {
+            //         return -1;
+            //     }
+            //     return 0;
+            // } else {
+            //     if (a.attributes[condition] > b.attributes[condition]) {
+            //         return 1;
+            //     }
+            //     if (a.attributes[condition] < b.attributes[condition]) {
+            //         return -1;
+            //     }
+            //     return 0;
+            // }
         });
         this.addToHtml(galleryWrapper);
     }
