@@ -1,10 +1,11 @@
-function slider() {
+function slider(wrapper) {
+    var galleryWrapper = document.getElementById(wrapper);
     var collection = [];
-    function removeHtml(src, galleryWrapper) {
+    function removeHtml(src) {
         galleryWrapper.removeChild(galleryWrapper.querySelector('[src="' + src + '"]'));
     }
 
-    function sortCollection(condition, galleryWrapper) {
+    function sortCollection(condition) {
         collection.sort(function (a, b) {
             /*a = () ? : ;
             b = () ? : ;*/
@@ -52,7 +53,7 @@ function slider() {
         }
     }
 
-    function createImg(item, galleryWrapper) {
+    function createImg(item) {
         var img = document.createElement('img');
 
         /*img.addEventListener('click', function () {
@@ -68,10 +69,10 @@ function slider() {
             img.setAttribute(key, item.attributes[key])
         }
 
-        addImg(img, galleryWrapper);
+        addImg(img);
     }
 
-    function addImg(img, galleryWrapper) {
+    function addImg(img) {
         galleryWrapper.append(img);
     }
 
@@ -94,26 +95,26 @@ function slider() {
         getCollection: function () {
             return collection;
         },
-        removeCollection: function (src, galleryWrapper) {
+        removeCollection: function (src) {
             if (error(src)) return false;
             collection = collection.filter(function (item) {
                 return item.src !== src;
             });
-            removeHtml(src, galleryWrapper);
+            removeHtml(src);
         },
-        addToHtml: function (galleryWrapper) {
+        addToHtml: function () {
             galleryWrapper.innerHTML = '';
             collection.forEach(function (item) {
-                createImg(item, galleryWrapper);
+                createImg(item);
             });
         },
-        sortCollection: function (condition, galleryWrapper) {
-            sortCollection.call(this, condition, galleryWrapper);
+        sortCollection: function (condition) {
+            sortCollection.call(this, condition);
         }
     }
 }
 
-var slider1 = slider();
+var slider1 = slider('gallery1');
 var addBtn = document.getElementById('add'),
     removeBtn = document.querySelector('#remove'),
     sortBtn = document.querySelector('#sort');
