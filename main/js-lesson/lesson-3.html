@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id="myForm">
+    <input data-validate="1" type="text" name="name" value="">
+    <input data-validate="1" type="text" name="age" value="">
+    <input data-validate="0" type="text" name="sex" value="">
+</form>
+
+<script>
+    /*var people = {
+        sey: function () {
+            console.log('My name is ' + this.name + '. I am ' + this.age + ' years old.');
+        },
+    };
+
+    var vasya = Object.create(people);
+    vasya.name = 'Vasya';
+    vasya.age = 18;
+    vasya.sex = 'male';
+    vasya.sey = function(){
+        alert(this.name);
+    };*/
+    
+    //vasya.__proto__ = people;
+    //petyaCray.__proto__ = people;
+    
+    
+    //petyaCray.sey();
+    //vasya.sey()
+    //console.log(people, vasya);
+    
+    /*function People() {
+    
+    }
+    
+    People.prototype.sey = sey;
+    People.prototype.sleep = sleeping;
+    
+    function Animal() {
+    
+    }
+    
+    Animal.prototype.sleep = sleeping;
+
+    function sey () {
+        console.log('My name is ' + this.name + '. I am ' + this.age + ' years old.');
+    }
+    
+    function sleeping () {
+        console.log("I am sleeping");
+    }
+    
+    function Men(options) {
+        options = classOf(options, 'object') ? options : {};
+        this.name = options.name || '';
+        this.age = options.age || '';
+        this.sex = 'male';
+    }
+    
+    Men.prototype = new People();
+    
+    var kolya = new Men({
+        name: 'Kolya',
+        age: 25,
+    });
+
+    var vasya = new Men({
+        name: 'Vasya',
+        age: 30,
+    });
+    
+    console.log(kolya.sleep());
+    
+    function classOf(obj, type) {
+        if (type) return isType(obj) === type;
+        
+        return isType(obj);
+    }
+
+    function isType(obj) {
+        return Object.prototype.toString.call(obj).slice(8,-1).toLowerCase();
+    }*/
+    
+    /*var people1 = new People({});
+    
+    console.log(people1);*/
+    
+    /*const s = Object.create({}, {
+        name: {
+            value:"Kolya",
+        },
+        age: {
+            value: 25,
+        }
+    });
+    s.age = 55;
+    console.log(s);
+    for (var key in s){
+        console.log(key);
+    }*/
+    
+    function GlobalValidate() {
+        this.validate = function (inputText) {
+            return inputText !== '';
+        }
+    }
+    
+    function FormValidate(form) {
+        this.formInputs = form.querySelectorAll('input');
+        this.addValidate = function () {
+            console.log(this);
+            this.formInputs.forEach(function (item) {
+                console.log(this);
+                if (+item.dataset.validate) {
+                    item.addEventListener('input', function (e) {
+                        console.log(this.validate(e.target.value));
+                    }.bind(this));
+                }
+            }, this);
+        }
+    }
+    
+    FormValidate.prototype = new GlobalValidate();
+    
+    var myForm = new FormValidate(document.querySelector('#myForm'));
+    console.log(myForm.addValidate());
+    /* Home work */
+    /*
+    * Методо должен принимать объект с настройками
+    * form DOM Element
+    * requiredInput Object
+    *   requiredInputName Object
+    *       message text
+    *       type Array ['+', '-', 'number'];
+    *
+    * реализовать логику прототипного наследования
+    * */
+</script>
+</body>
+</html>
