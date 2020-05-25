@@ -37,8 +37,10 @@
             <p class="big_txt">Poster can be one of the effective marketing and advertising materials. It is also a
                 great tool to use
                 when you want to present your.</p>
-            <form action="#">
-                <div><input type="email" name="email" id="email" placeholder="Email"></div>
+            <form action="#" name="first_form" id="firstForm" onsubmit="validateForm('firstForm')">
+                <div><input type="email" name="email" id="email" placeholder="Email">
+                    <p id="forError">Your email doesn't valid</p>
+                </div>
                 <button class="primary_btn" type="submit">Subscribe</button>
             </form>
             <p class="small_txt">No spam, notifications only about new products, updates and freebies.<br>
@@ -211,8 +213,10 @@
         <h2>Two line long header example for your web project</h2>
         <p class="big_txt">Each and every one of us has that moment when we are suddenly stunned when we come face to
             face with the enormity of the universe.</p>
-        <form action="#">
-            <div><input type="email" name="email" id="email" placeholder="Email"></div>
+        <form action="#" name="second-form" id="secondForm" onsubmit="validateForm('secondForm')">
+            <div><input type="email" name="email" id="email" placeholder="Email">
+                <p id="forError">Your email doesn't valid</p>
+            </div>
             <button class="primary_btn" type="submit">Subscribe</button>
         </form>
         <p class="small_txt">No spam, notifications only about new products, updates and freebies.<br>
@@ -272,6 +276,12 @@
             </ul>
         </div>
     </div>
+
+
+
+
+
+    <script src="js/common.js"></script>
 </body>
 
 </html>

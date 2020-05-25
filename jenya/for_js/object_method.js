@@ -37,7 +37,7 @@ function slider(wrapper) {
             //     return 0;
             // }
         });
-        this.addToHtml(galleryWrapper);
+        this.addToHtml();
     }
 
     function getAttributes(attr) {

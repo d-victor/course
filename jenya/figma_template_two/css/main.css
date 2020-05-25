@@ -206,6 +206,7 @@ nav ul li a:hover::after{
 }
 .header__item form div{
     flex-grow: 1;
+    position: relative;
 }
 .header__item form input{
     margin: 0 18px;
@@ -710,4 +711,29 @@ nav ul li a:hover::after{
         transform: translateX(-145px);
         width: 100%;
     }
+}
+.error{
+    border: 2px solid red;
+    position: relative;
+}
+.error::before{
+    content: 'error';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: red;
+}
+form div p{
+    display: none;
+}
+form div p.error_msg{
+    display: block;
+    position: absolute;
+    padding: 1px 7px;
+    background: #e0e0e0;
+    border-radius: 5px;
+    left: 30px;
+    border: 1px solid #de7070;
+    transition: 0.3s ease-in-out;
 }
