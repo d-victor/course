@@ -1,204 +1,31 @@
-*{
-    margin: 0;
-    padding: 0;
-}
-body{
-    font-family: "Inter", sans-serif;
-    font-size: 16px;
-}
-h1{
-    padding: 10px;
-}
-h2{
-    font-size: 48px;
-    line-height: 60px;
-    font-weight: 700;
-}
-h3{
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 32px;
-}
-h4{
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 26px;
-    color: #1C1C1C;
-}
-ul{
-    list-style-type: none;
-}
-a{
-    font-weight: 600;
-    font-size: 15px;
-    line-height: 22px;
-    color: #1C1C1C;
-    text-decoration: none;
-}
-a.learn_more{
-    cursor: pointer;
-    background: none;
-    color: #FF8364;
-    border: none;
-    line-height: 22px;
-    transition: 0.3s ease;
-}
-a.learn_more:hover{
-    color: rgb(202, 106, 82);
-}
-p{
-    font-weight: 400;
-    font-size: 15px;
-    line-height: 22px;
-    color: #585757;
-}
-p.big_txt{
-    font-size: 20px;
-    line-height: 30px;
-    letter-spacing: -0.3px;
-}
-p.small_txt{
-    font-size: 13px;
-    line-height: 18px;
-    letter-spacing: -0.1px;
-    color: #969696;
-}
-input{
-    background: #f7f7f7;
-    border: none;
-    color: #585757;
-    border-radius: 6px;
-    font-size: 20px;
-    line-height: 30px;
-    padding: 9px 0 9px 15px;
-    margin: 10px 0;
-    width: 100%;
-}
-.container{
-    max-width: 1110px;
+/* .head_line{
     margin:0 auto;
-    padding: 15px;
-}
-.head_line{
-    margin:0 auto;
-}
-.primary_btn{
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 26px;
-    text-align: center;
-    color: #FFFFFF;
-    background: #FF8364;
-    border-radius: 6px;
-    padding: 11px 16px;
-    border: none;
-    outline: none;
-    cursor: pointer;
-}
-.primary_btn:hover{
-    transition: 0.3s ease-in;
-    box-shadow: 0 13px 18px rgba(0,0,0,0.25), 0 4px 2px rgba(0,0,0,0.22);
-}
-nav{
+} */
+/* nav{
     padding: 0 18px;
-    display: flex;
     justify-content: space-around;
-    align-items: center;
-}
-header{
-    border-bottom: 1px solid #DBDBDB;
-}
-.container{
-    border-bottom: 1px solid #DBDBDB;
-}
-input .burger{
+} */
+/* input .burger{
     display: none;
-}
-nav>input{
-    display: none;
-}
-nav label{
-    display: none;
-}
-nav > label{
-    width: 27px;
-    height: 20px;
-    cursor: pointer;
-}
-.menu_style label span{
-     position: relative;
-     margin: 6px 0;
-}
-.menu_style label span::after,.menu_style label span::before{
-    content: '';
-    position: absolute;
-    width: 100%;
-}
-.menu_style label span::after{
-    top: 6px;
-}
-.menu_style label span::before{
-    top: 12px;
-}
-.menu_style label span,.menu_style label span::after,.menu_style label span::before{
-    display: block;
-    height: 3px;
-    background: #969696;
-    border-radius: 2px;
-    transition: 0.2s;
-}
-nav > input:checked ~ label span{
-    transform: rotate(45deg);
-    margin-top: 12px;
-}
-nav > input:checked ~ label span::after{
-    transform: rotate(-90deg);
-    margin-top: -6px;
-}
-nav > input:checked ~ label span::before{
-    display: none;
-}
-.link_logo{
+} */
+/* .link_logo{
     display: block;
     position: absolute;
     top: 20px;
     z-index: 10;
     cursor: pointer;
-}
-.menu_style ul{
-    list-style-type: none;
-    display: flex;
+} */
+/* .menu_style ul{
     justify-content: space-around;
 }
 .menu_style ul li{
-    display: block;
-    margin: 33px 0;
-    padding: 0 15px;
+    margin: 15px 0;
 }
 .menu_style ul li:nth-child(3){
     margin-right: 108px;
-}
-.menu_style ul li a{
-    display: block;
-    text-decoration: none;
-    outline: none;
-    position: relative;
-}
-.menu_style ul li a::after{
-    content: '';
-    display: block;
-    position: absolute;
-    width: 100%;
-    border-bottom: 1px solid #1C1C1C;
-    transform: scale(0);
-    transition: 0.3s;
-    top: 100%;
-}
-.menu_style ul li a:hover::after{
-    opacity: 1;
-    transform: scale(1);
-}
-.search_mobile{
+} */
+
+/* .search_mobile{
     display: none;
 }
 .search_mobile>#search{
@@ -229,9 +56,9 @@ nav > input:checked ~ label span::before{
 }
 .search_mobile > input:checked ~ .global_search{
     transform: scale(1);
-}
+} */
 /* //////////////////// */
-.head_banner{
+/* .head_banner{
     display: flex;
     justify-content: space-between;
     overflow: hidden;
@@ -272,9 +99,9 @@ nav > input:checked ~ label span::before{
 .banner img{
     position: absolute;
     top: 87px;
-}
+} */
 /* \\\\\\\\\\\\\\\\\\\\ */
-.about{
+/* .about{
     text-align: center;
     padding: 110px 0 104px;
 }
@@ -290,9 +117,9 @@ nav > input:checked ~ label span::before{
 }
 .about p{
     padding: 20px 15%;
-}
+} */
 /* /////////////////////// */
-.service_description{
+/* .service_description{
     display: flex;
     justify-content: space-between;
     flex-flow: row;
@@ -311,7 +138,7 @@ nav > input:checked ~ label span::before{
     position: relative;
 }
 .service_description ul li h4::before{
-    content: url(../css/images/star.png);
+    content: url(../css/img/star.png);
     display: block;
     position: absolute;
     left: -44px;
@@ -323,9 +150,9 @@ nav > input:checked ~ label span::before{
 }
 .service__image{
     padding: 110px 0;
-}
+} */
 /* ///////////////// */
-.statistic{
+/* .statistic{
     display: flex;
     justify-content: space-around;
     flex-flow: row wrap;
@@ -402,9 +229,9 @@ nav > input:checked ~ label span::before{
     line-height: 18px;
     letter-spacing: -0.1px;
     color: #969696;
-}
+} */
 /* /////////////////////// */
-.team{
+/* .team{
     text-align: center;
 }
 .team h2{
@@ -424,11 +251,11 @@ nav > input:checked ~ label span::before{
     overflow: hidden;
     border-radius: 50%;
     margin: 10px 60px;
-}
-.photo-box img{
+} */
+/* .photo-box img{
     width: 100%;
-}
-.team ul li{
+} */
+/* .team ul li{
     font-style: normal;
     font-weight: 600;
     font-size: 15px;
@@ -441,10 +268,10 @@ nav > input:checked ~ label span::before{
 .team_img img{
     width: 100%;
     display: block;
-}
+} */
 /* slider-style-start////////////////////////// */
 
-.slider{
+/* .slider{
     width: 80%;
     margin: 0 auto;
     position: relative;
@@ -470,7 +297,7 @@ nav > input:checked ~ label span::before{
 #slide_2:checked ~ .slide_arrows label:nth-child(1)::before,
 #slide_3:checked ~ .slide_arrows label:nth-child(2)::before,
 #slide_4:checked ~ .slide_arrows label:nth-child(3)::before{
-    content: url('../css/images/left.png');
+    content: url('../css/img/left.png');
     display: block;
     position: absolute;
     width: 50px;
@@ -483,7 +310,7 @@ nav > input:checked ~ label span::before{
 #slide_2:checked ~ .slide_arrows label:nth-child(3)::before,
 #slide_3:checked ~ .slide_arrows label:nth-child(4)::before,
 #slide_4:checked ~ .slide_arrows label:nth-child(1)::before{
-    content: url('../css/images/right.png');
+    content: url('../css/img/right.png');
     display: block;
     position: absolute;
     width: 50px;
@@ -542,12 +369,12 @@ nav > input:checked ~ label span::before{
 }
 .slide_item a:hover{
     color: rgb(202, 106, 82);
-}
+} */
 /* slider-style-end////////////////////////////////// */
-.cards input{
+/* .cards-first input{
     display: none;
 }
-.cards .container{
+.cards-first .container{
     padding: 110px 0;
 }
 .card_item_wrapper{
@@ -609,7 +436,7 @@ nav > input:checked ~ label span::before{
     margin: 30px 0;
 }
 .card_item button::after{
-    content: url('../css/images/path.svg');
+    content: url('../css/img/path.svg');
     display: block;
     position: absolute;
     top: 30%;
@@ -628,7 +455,7 @@ nav > input:checked ~ label span::before{
     color: #fff;
 }
 .card_item_wrapper input:checked + label button::after{
-    content: url('../css/images/path-hover.png');
+    content: url('../css/img/path-hover.png');
 }
 .card_item_wrapper input:checked + label::after{
     content: 'Popular';
@@ -651,7 +478,7 @@ nav > input:checked ~ label span::before{
     box-shadow: 0 13px 18px rgba(0,0,0,0.25), 0 4px 2px rgba(0,0,0,0.22);
 }
 /* ------------------------------- */
-.subscribe_wrapper{
+/* .subscribe_wrapper{
     display: flex;
     justify-content: space-between;
     padding: 110px 0 114px;
@@ -681,24 +508,24 @@ nav > input:checked ~ label span::before{
 }
 .form_item:nth-child(1){
     flex-grow: 1;
-}
+} */
 /* ----------------------------------------- */
-.footer_item{
+/*.footer_item{
     display: flex;
     justify-content: space-between;
     flex-flow: row wrap;
     align-items: center;
     padding: 60px 0;
 }
-footer ul{
+.footer_item ul{
     list-style-type: none;
     display: flex;
     justify-content: space-around;
 }
-footer .menu_style ul li:nth-child(4) {
+.footer_item .menu_style ul li:nth-child(4) {
     margin: 33px 0;
 }
-footer .menu_style ul li{
+.footer_item .menu_style ul li{
     padding: 0 15px;
 }
 .social_btn{
@@ -708,16 +535,16 @@ footer .menu_style ul li{
     display: block;
     padding: 0 6px;
 }
-footer p{
+.footer_item p{
     font-style: normal;
     font-weight: normal;
     font-size: 13px;
     line-height: 18px;
     text-align: center;
     padding-bottom: 30px;
-}
+} */
 /* -----------media-style-begining---------- */
-@media screen and (max-width: 992px){
+/* @media screen and (max-width: 992px){
     .container{
         padding: 0 26px;
     }
@@ -752,50 +579,44 @@ footer p{
     .team a{
         margin: 10px 53px;
     }
-    .cards .container{
+    .cards-first .container{
         padding: 110px 15px;
     }
     .active{
         margin: 0 15px;
     }
-    footer .menu_style ul{
+    .footer_item .menu_style ul{
         flex-flow: row wrap;
     }
-    footer .menu_style ul li{
+    .footer_item .menu_style ul li{
         padding: 0 5px;
     }
-    footer .menu_style ul li a{
+    .footer_item .menu_style ul li a{
         font-size: 12px;
     }
-}
-@media screen and (max-width: 768px){
-    nav label{
+} */
+/* @media screen and (max-width: 768px){ */
+    /* nav label{
         display: block;
         position: absolute;
         top: 28px;
         left: 18px;
         z-index: 9;
-    }
-    nav{
+    } */
+    /* nav{
         position: relative;
-    }
-    .menu{
-        flex-direction: column;
+    } */
+    /* .menu{
         padding: 77px 0 0 0;
-        width: 100%;
-        text-align: center;
-        position: absolute;
         background: #c3c1c1;
         top: -670px;
-        transition: 0.3s ease-in;
         z-index: 8;
-        left: 0;
-    }
-    .menu li{
+    } */
+    /* .menu li{
         margin: 18px 0;
         padding: 0 15%;
-    }
-    .menu_style ul li:nth-child(3) {
+    } */
+    /* .menu_style ul li:nth-child(3) {
         margin-right: 0;
     }
     nav > input:checked ~ .menu{
@@ -869,30 +690,30 @@ footer p{
     .subscribe_item form input{
         margin: 0;
     }
-    footer .menu_style ul{
+    .footer_item .menu_style ul{
         position: relative;
         background: none;
         top: 0;
         justify-content: center;
         padding: 30px 0;
     }
-    footer .menu_style ul li{
+    .footer_item .menu_style ul li{
         margin: 5px 15px;
     }
     .footer_item{
         justify-content: center;
         padding: 40px 0;
     }
-    .footer p{
+    .footer_item p{
         padding: 0 78px 30px;
     }
     .statistic__col ul li{
         position: relative;
         padding: 0 5px 40px 30px;
-    }
-}
-@media screen and (max-width: 480px){
-    .global_search {
+    } */
+/* } */
+/* @media screen and (max-width: 480px){ */
+    /* .global_search {
         z-index: 10;
         top: 45px;
     }
@@ -950,7 +771,7 @@ footer p{
         font-size: 36px;
         line-height: 46px;
     }
-    .about, .statistic, .team h2, .slide_overflow, .cards .container,.subscribe_wrapper{
+    .about, .statistic, .team h2, .slide_overflow, .cards-first .container,.subscribe_wrapper{
         padding-top: 40px;
-    }
-}
+    } */
+/* } */
