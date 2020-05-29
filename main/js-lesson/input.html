@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input id="text" type="text" name="name">
+<script>
+    var input = document.getElementById('text');
+    input.addEventListener('input', function () {
+        var regEx = /\d/ig;
+        console.log(regEx.test(this.value));
+        this.value = this.value.replace(regEx, '');
+    });
+    
+    
+</script>
+</body>
+</html>

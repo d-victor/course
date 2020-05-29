@@ -1,0 +1,71 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.timer * {
+    box-sizing: border-box;
+}
+
+.timer {
+    max-width: 450px;
+    margin: 100px auto;
+}
+
+.timer ul {
+    display: flex;
+}
+
+.timer ul li {
+    list-style-type: none;
+    padding: 10px;
+    font-size: 30px;
+    font-weight: bold;
+    border-left: 1px solid black;
+    text-align: center;
+}
+
+.timer ul li:first-child {
+    border-left: none;
+}
+
+.timer ul li span{
+    display: block;
+}
+
+.timer ul li span.label {
+    font-size: 15px;
+}
+.timer ul li svg{
+    display: none;
+}
+
+.timer.animation ul li {
+    width: 110px;
+    padding: 15px 10px;
+    position: relative;
+}
+
+.timer.animation ul li span.label {
+    display: block;
+    margin: 0 auto;
+}
+
+.timer.animation ul li svg {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    stroke-dasharray: 849;
+    stroke-dashoffset: 0;
+    fill: none;
+    stroke: red;
+    stroke-width: 15px;
+    stroke-miterlimit: 10;
+    display: block;
+}
