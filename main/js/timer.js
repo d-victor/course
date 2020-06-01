@@ -17,27 +17,52 @@
                 value:0,
                 text: ['секунда','секунды','секунд'],
             }
-        }
+        },
+        status: false,
     };
     
-    function promotionTimer(date, wrapper) {
+    function promotionTimer(date, wrapper, animationsElem) {
         var endTime = setDate(date);
         
         if (!endTime) return false;
         
         var promotionEndDate = new Date(endTime[0], endTime[1] || 0, endTime[2] || 0, endTime[3] || 0, endTime[4] || 0, endTime[5] || 0);
-        var promoEndTime = ~~(promotionEndDate.getTime() / 1000);
+        promotionOptions.promoEndTime = ~~(promotionEndDate.getTime() / 1000);
+        
+        setDiffTime();
+        
+        buildToHtmlTimer(wrapper);
+        promotionOptions.status = true;
+        promotionOptions.intervalId = setInterval(timer, 1000);
+    }
+    
+    function setDiffTime() {
         var nowTime = ~~(new Date().getTime() / 1000);
-        var diff = promoEndTime - nowTime;
+        var diff = promotionOptions.promoEndTime - nowTime;
         promotionOptions.timers.day.value = ~~(diff / 86400);
         promotionOptions.timers.hours.value = ~~((diff / 60 / 60) % 24);
         promotionOptions.timers.minutes.value = ~~((diff / 60) % 60);
         promotionOptions.timers.seconds.value = ~~(diff % 60);
-        
-        console.log(date, wrapper, endTime, promotionEndDate, promoEndTime, nowTime, diff,
-            promotionOptions.timers.day, promotionOptions.timers.hours,
-            promotionOptions.timers.minutes, promotionOptions.timers.seconds);
-        buildToHtmlTimer(wrapper);
+    }
+    
+    function timer() {
+        setDiffTime();
+        promotionOptions.timers.seconds.elem.firstElementChild.textContent = getNumberToString('seconds');
+        promotionOptions.timers.seconds.elem.lastElementChild.textContent = declOfNum(promotionOptions.timers['seconds'].value, promotionOptions.timers['seconds'].text);
+        if (promotionOptions.timers.seconds.value === 59) {
+            promotionOptions.timers.minutes.elem.firstElementChild.textContent = getNumberToString('minutes');
+            promotionOptions.timers.minutes.elem.lastElementChild.textContent = declOfNum(promotionOptions.timers['minutes'].value, promotionOptions.timers['minutes'].text);
+        }
+        if (promotionOptions.timers.seconds.value === 59 && promotionOptions.timers.minutes.value === 59){
+            promotionOptions.timers.hours.elem.firstElementChild.textContent = getNumberToString('hours');
+            promotionOptions.timers.hours.elem.lastElementChild.textContent = declOfNum(promotionOptions.timers['hours'].value, promotionOptions.timers['hours'].text);
+            promotionOptions.timers.day.elem.firstElementChild.textContent = getNumberToString('day');
+            promotionOptions.timers.day.elem.lastElementChild.textContent = declOfNum(promotionOptions.timers['day'].value, promotionOptions.timers['day'].text);
+        }
+    }
+    
+    function getNumberToString(key) {
+        return (promotionOptions.timers[key].value < 10) ? '0' + promotionOptions.timers[key].value : promotionOptions.timers[key].value;
     }
     
     function buildToHtmlTimer(wrapper) {
@@ -54,23 +79,18 @@
             });
             promotionOptions.timers[key].elem.append(createHtmlElem({
                 elem: 'span',
-                text: promotionOptions.timers[key].value
+                text: getNumberToString(key),
             }));
             promotionOptions.timers[key].elem.append(createHtmlElem({
                 elem: 'span',
                 attr: {
                     class: 'label',
                 },
-                text: getDayText(key)
+                text: declOfNum(promotionOptions.timers[key].value, promotionOptions.timers[key].text),
             }));
             wrap.append(promotionOptions.timers[key].elem);
         }
         wrapper.append(wrap);
-    }
-    
-    function getDayText(keyTimers) {
-        
-        return 'правильный тект из массива'
     }
     
     function createHtmlElem(options) {
@@ -82,7 +102,7 @@
             }
         }
         
-        if (options.text) elem.textContent = options.text;
+        if (options.text !== undefined) elem.textContent = options.text;
         
         return elem;
     }
@@ -101,6 +121,11 @@
         return status ? endTime : status;
     }
     
+    function declOfNum(n, title){
+        return title[(n % 10 === 1 && n % 100 !== 11 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2)];
+    }
+    
     window.promotionTimer = promotionTimer;
+    window.promotionOptions = promotionOptions;
 })();
 

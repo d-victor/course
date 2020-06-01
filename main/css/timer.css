@@ -68,4 +68,14 @@ body {
     stroke-width: 15px;
     stroke-miterlimit: 10;
     display: block;
+    /*animation: svgAnim 5s linear infinite;*/
 }
+
+/*@keyframes svgAnim {
+    from{
+        stroke-dashoffset: 0;
+    }
+    to{
+        stroke-dashoffset: 849;
+    }
+}*/
