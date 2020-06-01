@@ -65,8 +65,8 @@ function GlobalValidate() {
     this.validate = function (inputText) {
         return inputText !== '';
     }
-    this.errorMessage = function(){
-        
+    this.errorMessage = function(elem){
+        console.log(elem);
     }
 }
 
