@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lesson5.js"></script>
+</head>
+<style>
+.timer {
+    display: block;
+    width: 100%;
+    padding-top: 100px;
+}
+.timer ul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+}
+.timer ul li{
+    display: block;
+    padding: 5px 15px;
+    text-align: center;
+}
+.timer ul li span{
+    font-weight: bold;
+    color:#000000;
+    margin: 3px 0;
+    display: block;
+}
+.timer ul li span{
+    font-size: 36px;
+}
+.timer ul li span.label{
+    font-size: 14px;
+}
+.timer ul li:not(.last){
+    border-right: 1px solid black;
+}
+</style>
+
+<body>
+
+    <div class="timer">
+        <!-- <ul>
+            <li>
+                <span>01</span>
+                <span class="label">день</span>
+            </li>
+            <li>
+                <span>02</span>
+                <span class="label">часа</span>
+            </li>
+            <li>
+                <span>10</span>
+                <span class="label">минут</span>
+            </li>
+            <li class="last">
+                <span>01</span>
+                <span class="label">секунд</span>
+            </li>
+        </ul> -->
+    </div>
+
+<script>
+    var endDate = '2020-10-22-19-55-00';
+    promotionTimer(endDate, document.querySelector('.timer'));
+</script>
+
+
+    
+</body>
+
+</html>

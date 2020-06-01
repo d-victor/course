@@ -65,24 +65,27 @@ function GlobalValidate() {
     this.validate = function (inputText) {
         return inputText !== '';
     }
+    this.errorMessage = function(){
+        
+    }
 }
 
 function FormValidate(form) {
-    this.formInputs = form.querySelector('input');
+    this.formInputs = form.querySelectorAll('input');
     this.addValidate = function () {
+        console.log(this);
         this.formInputs.forEach(function (item) {
+            console.log(this);
             if (+item.dataset.validate) {
                 item.addEventListener('input', function (e) {
-                    console.log(e.target.value);
-                    this.validate(e.target.validate);
+                    console.log(this.validate(e.target.value));
                 }.bind(this));
             }
-            // console.log(item.dataset.validate);
-        }, this)
+        }, this);
     }
 }
 
 FormValidate.prototype = new GlobalValidate();
 
-var myForm = new FormValidate(document.querySelector("#validFrom"));
+var myForm = new FormValidate(document.querySelector('#validFrom'));
 console.log(myForm.addValidate());
