@@ -1,0 +1,19 @@
+.timer ul li{
+    display: block;
+    padding: 5px 15px;
+    text-align: center;
+    position: relative;
+}
+.timer.animate ul li svg{
+    fill: none;
+    stroke: red;
+    stroke-width: 15px;
+    stroke-dasharray: 849;
+    stroke-dashoffset: 0;
+    position: absolute;
+    top: 0;
+    width: 80%;
+    left: 50%;
+    transform:translateX(-50%);
+    display: block;
+}

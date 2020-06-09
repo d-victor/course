@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<form id="myForm">
+    <input type="text" name="name" value="">
+    <input type="text" name="age" value="">
+    <input type="text" name="sex" value="">
+</form>
+
+
+<script>
+    // var people = {
+    //     name: "Kolya",
+    //     age: 18,
+    //     sex: "male",
+    //     sey: function () {
+    //         console.log('My name is ' + this.name + 'I am ' + this.age + 'years old.');
+    //     },
+    // };
+    // var vasya = {
+    //     name:
+    // }
+    //
+    // console.log(people);
+
+    // function People(options) {
+    //     this.sey = function () {
+    //         console.log('My name is ' + this.name + ' I am ' + this.age + 'years old.');
+    //     };
+    // };
+    //
+    // People.prototype.sleep = function () {
+    //     console.log("I am sleeping");
+    // };
+    //
+    // function Men(options) {
+    //     options = classOf(options,'object') ? options : {};
+    //     this.name = options.name || '';
+    //     this.age = options.age || '';
+    //     this.sex = options.sex || '';
+    // }
+    //
+    // Men.prototype = new People();
+    //
+    // var kolya = new Men({
+    //     name: 'kolya',
+    //     age:25,
+    // });
+    // var vasya = new Men({
+    //     name: 'vasya',
+    //     age:30,
+    // });
+    // kolya.sey = sey;
+    // vasya.sey = sey;
+    // function sey(){
+    //     alert(this.name);
+    // }
+    // console.log(vasya.sey());
+    // function classOf(obj, type) {
+    //     if (type) return isType(obj) === type;
+    //     return isType(obj);
+    // };
+    // function isType(obj) {
+    //     return Object.prototype.toString.call(obj).slice(8,-1).toLowerCase();
+    // };
+    // var people1 = new People('54');
+    // console.log(people1);
+
+
+    function GlobalValidator() {
+        this.validate = function (inputText) {
+            return inputText !== '';
+
+        }
+
+    }
+    function FormValidate(form) {
+        this.formInputs = form.querySelectorAll('input');
+        this.addValidate = function () {
+            this.formInputs.forEach(function (item) {
+                if (+item.dataset.validate) {
+                    item.addEventListener('input', function (e) {
+                        console.log(this.validate(e.target));
+                    }.bind(this));
+                }
+            },this);
+        }
+    }
+
+    FormValidate.prototype = new GlobalValidator();
+    var myForm = new FormValidate({
+        form:document.querySelector("#myForm"),
+        validate:{
+            name: {
+                message:"",
+                type: ['number','-','+']
+            }
+        }
+    });
+    console.log(myForm.addValidate());
+</script>
+</body>
+</html>
