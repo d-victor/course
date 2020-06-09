@@ -23,7 +23,8 @@
 
     
     
-    function promotionTimer(date, wrapper) {
+    function promotionTimer(date, wrapper, animationElem) {
+        // console.log(animationElem);
         var endTime = setDate(date);
         
         if (!endTime) return false;
@@ -35,7 +36,7 @@
         // console.log(date, wrapper, endTime, promotionEndDate, promoEndTime, nowTime, diff,
         //     promotionOptions.timers.day, promotionOptions.timers.hours,
         //     promotionOptions.timers.minutes, promotionOptions.timers.seconds);
-        buildToHtmlTimer(wrapper);
+        buildToHtmlTimer(wrapper, animationElem);
         promotionOptions.status = true;
         promotionOptions.intervalId = setInterval(timer, 1000);
     }
@@ -70,7 +71,8 @@
         return (promotionOptions.timers[key].value < 10) ? '0'+ promotionOptions.timers[key].value : promotionOptions.timers[key].value;
     }
 
-    function buildToHtmlTimer(wrapper) {
+    function buildToHtmlTimer(wrapper, animationSvg) {
+        console.log(animationSvg);
         var wrap = createHtmlElem({
             elem:'ul'
         });

@@ -1,0 +1,245 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-family: 'Montserrat','Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: #ffffff;
+}
+h1,h2,h3{
+    font-weight: 700;
+}
+h1{
+    font-size: 30px;
+}
+h1,a{
+    color: #ffffff;
+}
+h2{
+    font-size: 150px;
+    line-height: 140px;
+    padding: 42px 0 71px;
+}
+p.kaushan, h3{
+    color: #333333;
+}
+h3{
+    font-size: 30px;
+}
+ul{
+    list-style-type: none;
+}
+p, span{
+    font-family: 'Roboto';
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 24px;
+}
+p{
+    color: #999999;
+}
+p.upper, a{
+    font-family: 'Montserrat';
+    font-size: 14px;
+    font-weight: 400;
+    text-transform: uppercase;
+    text-decoration: none;
+    outline: none;
+}
+p.kaushan{
+    font-family: "Kaushan";
+    font-size: 24px;
+    font-weight: 400;
+}
+span, input{
+    font-style: italic;
+}
+.container{
+    max-width: 1201px;
+    margin: 0 auto;
+    padding: 109px 0;
+}
+img{
+    width: 100%;
+}
+.primary__btn{
+    padding: 15px 32px 14px 33px;
+    font-family: 'Montserrat';
+    font-weight: 700;
+    font-size: 14px;
+}
+input{
+    font-family: 'Roboto';
+    padding: 14px 13px 13px;
+    border: 1px solid #e7e7e7;
+    background-color: #ffffff;
+}
+header{
+    background-color: rgba(252, 227, 138, 0.1);
+    background-image: linear-gradient(to top, rgba(252, 227, 138, 0.9) 0%, rgba(243, 129, 129, 0.9) 100%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+video{
+    position: relative;
+    min-width: 100%;
+    left: 0;
+    top: 0;
+}
+header .container{
+    padding: 28px 0;
+}
+nav, nav>ul{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+input#search{
+    display: none;
+}
+nav ul li:nth-child(2n+1){
+    padding: 0 58px;
+}
+nav ul li a{
+    display: block;
+    position: relative;
+}
+nav ul li a:hover{
+    color: #fce38a;
+    transition: 0.3s ease-in;
+}
+nav ul li a::after{
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    height: 1px;
+    background: #fce38a;
+    transform: scale(0);
+    transition: 0.3s ease-in;
+    top: 26px;
+}
+nav ul li a:hover::after{
+    transform: scale(1);
+}
+nav ul li svg:hover{
+    cursor: pointer;
+}
+.slider{
+    position: relative;
+}
+.slider input{
+    display: none;
+}
+.slide_overflow{
+    overflow: hidden;
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 164px;
+}
+.slide_item_wrapper{
+    width: 400%;
+    display: flex;
+    transition: 0.5s ease-in-out;
+}
+.slide_item{
+    width: 100%;
+    text-align: center;
+}
+.slide_arrows{
+    display: flex;
+    justify-content: space-between;
+}
+.slide_arrows label{
+    display: block;
+    width: 25%;
+}
+.slide_arrows label:hover{
+    cursor: pointer;
+}
+.slide_arrows label:not(:last-child){
+    margin-right: 30px;
+}
+.line{
+    width: 100%;
+}
+.line{
+    background: rgba(255, 255, 255, 0.4);
+}
+.line hr{
+    width: 0%;
+    height: 3px;
+    border: none;
+    display: block;
+    background: none;
+    transition: 0.3s ease-in;
+}
+#slide_1:checked ~ #sl .slide_item_wrapper{
+    margin-left: 0;
+}
+#slide_2:checked ~ #sl .slide_item_wrapper{
+    margin-left: -100%;
+}
+#slide_3:checked ~ #sl .slide_item_wrapper{
+    margin-left: -200%;
+}
+#slide_4:checked ~ #sl .slide_item_wrapper{
+    margin-left: -300%;
+}
+#slide_1:checked ~ .slide_arrows label:nth-child(1) .line,
+#slide_2:checked ~ .slide_arrows label:nth-child(2) .line,
+#slide_3:checked ~ .slide_arrows label:nth-child(3) .line,
+#slide_4:checked ~ .slide_arrows label:nth-child(4) .line{
+    background: rgba(255, 255, 255, 1);
+    transition: 0.3s ease-in;
+}
+#slide_1:checked ~ .slide_arrows label:nth-child(1) .line hr,
+#slide_2:checked ~ .slide_arrows label:nth-child(2) .line hr,
+#slide_3:checked ~ .slide_arrows label:nth-child(3) .line hr,
+#slide_4:checked ~ .slide_arrows label:nth-child(4) .line hr{
+    width: 20%;
+    background-color: #f38181;
+}
+.slide_arrows label p{
+    padding: 25px 0 0;
+    font-family: "Montserrat";
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.6);
+}
+.slide_arrows label p strong{
+    font-size: 24px;
+    font-weight: 700;
+}
+.slide_item p.kaushan{
+    color: #ffffff;
+    font-size: 72px;
+}
+.slide_item hr{
+    width: 60px;
+    height: 3px;
+    background: #ffffff;
+    border: none;
+    margin: 0 auto;
+}
+.slide_item button{
+    font-family: "Montserrat";
+    text-transform: uppercase;
+    margin: 50px 0;
+    padding: 15px 32px 14px 33px;
+    background: none;
+    border: 3px solid #ffffff;
+    font-weight: 700;
+    color: #ffffff;
+}
+.slide_item button:hover{
+    background: #ffffff;
+    color: rgba(252, 227, 138, 0.8);
+    transition: 0.3s ease-in;
+    cursor: pointer;
+}
