@@ -161,7 +161,7 @@ nav ul li svg:hover{
 }
 .slide_overflow{
     overflow: hidden;
-    width: 80%;
+    width: 100%;
     margin: 0 auto;
     padding-top: 164px;
 }
@@ -214,9 +214,9 @@ nav ul li svg:hover{
 #slide_4:checked ~ #sl .slide_item_wrapper{
     margin-left: -300%;
 }
-#slide_1:checked ~ .slide_arrows label:nth-child(1) .line,
-#slide_2:checked ~ .slide_arrows label:nth-child(2) .line,
-#slide_3:checked ~ .slide_arrows label:nth-child(3) .line,
+#slide_1:checked ~ .slide_arrows label:nth-child(1) .line, 
+#slide_2:checked ~ .slide_arrows label:nth-child(2) .line, 
+#slide_3:checked ~ .slide_arrows label:nth-child(3) .line, 
 #slide_4:checked ~ .slide_arrows label:nth-child(4) .line{
     background: rgba(255, 255, 255, 1);
     transition: 0.3s ease-in;
@@ -227,6 +227,12 @@ nav ul li svg:hover{
 #slide_4:checked ~ .slide_arrows label:nth-child(4) .line hr{
     width: 20%;
     background-color: #f38181;
+}
+#slide_1:checked ~ .slide_arrows label:nth-child(1) p, 
+#slide_2:checked ~ .slide_arrows label:nth-child(2) p, 
+#slide_3:checked ~ .slide_arrows label:nth-child(3) p, 
+#slide_4:checked ~ .slide_arrows label:nth-child(4) p{
+    color: #ffffff;
 }
 .slide_arrows label p{
     padding: 25px 0 0;
@@ -278,6 +284,9 @@ nav ul li svg:hover{
 .about ul li:nth-child(2n){
     padding: 0 30px;
 }
+.about_item:hover{
+    cursor: pointer;
+}
 /* ---------------------- */
 .active{
     background: #95e1d3;
@@ -320,4 +329,49 @@ nav ul li svg:hover{
     background-color: rgba(0,0,0,0);
     background-image: linear-gradient(to top, rgba(252, 227, 138, 0.9) 0%, rgba(243, 129, 129, 0.9) 100%);
     transform: translate(-10px, -10px);
+}
+.progress{
+    background:#95e1d3;
+}
+.progress .container{
+    padding: 0 15px;
+}
+.progress ul{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.progress ul li{
+    display: block;
+    padding: 90px 0;
+    width: 20%;
+    text-align: center;
+}
+.progress ul li:nth-child(2n+1){
+    border-left: 1px solid #b5eae0;
+    border-right: 1px solid #b5eae0;
+}
+.progress ul li h3,
+.progress ul li p{
+    color: #ffffff;
+}
+.progress ul li h3{
+    font-size: 72px;
+}
+.services ul{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+.services ul li{
+    display: block;
+    padding: 0 20px;
+    width: 333px;
+}
+.services ul li p.upper{
+    color: #333333;
+}
+.services ul hr{
+    width: 100%;
+    margin: 51px 0 47px;
 }
