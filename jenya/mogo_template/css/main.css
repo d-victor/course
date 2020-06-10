@@ -77,13 +77,21 @@ input{
     border: 1px solid #e7e7e7;
     background-color: #ffffff;
 }
+hr.short_line{
+    width: 60px;
+    height: 3px;
+    border: none;
+    margin: 0 auto;
+}
 header{
     background-color: rgba(252, 227, 138, 0.1);
     background-image: linear-gradient(to top, rgba(252, 227, 138, 0.9) 0%, rgba(243, 129, 129, 0.9) 100%);
     width: 100%;
+    position: relative;
+    overflow: hidden;
 }
 video{
-    position: fixed;
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
@@ -223,11 +231,7 @@ nav ul li svg:hover{
     font-size: 72px;
 }
 .slide_item hr{
-    width: 60px;
-    height: 3px;
     background: #ffffff;
-    border: none;
-    margin: 0 auto;
 }
 .slide_item button{
     font-family: "Montserrat";
@@ -245,9 +249,7 @@ nav ul li svg:hover{
     transition: 0.3s ease-in;
     cursor: pointer;
 }
-.block{
-    width: 100%;
-    display: block;
-    height: 500px;
-
+/* section about style start  */
+.about{
+    background: #fff;
 }
