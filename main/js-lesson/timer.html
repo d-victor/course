@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Timer</title>
     <link rel="stylesheet" href="../css/timer.css">
-    <script src="../js/timer.js"></script>
+    <script src="../js/timer.o.js"></script>
 </head>
 <body>
 <div class="timer animation"></div>
@@ -33,13 +33,39 @@
     </ul>-->
 
 <script>
-    var endDate  = '2020-07-29-22-02-10';
-    promotionTimer(endDate, document.querySelector('.timer'), '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 283.5 283.5" xml:space="preserve"><path class="st0" d="M141.7,6.5C216.4,6.5,277,67,277,141.7S216.4,277,141.7,277S6.5,216.4,6.5,141.7S67,6.5,141.7,6.5"/></svg>');
+    var endDate  = '2020-07-12-22-11-00';
+    //promotionTimer(endDate, document.querySelector('.timer'), '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 283.5 283.5" xml:space="preserve"><path class="st0" d="M141.7,6.5C216.4,6.5,277,67,277,141.7S216.4,277,141.7,277S6.5,216.4,6.5,141.7S67,6.5,141.7,6.5"/></svg>', 58);
+    var timer = new Timer({
+        date: endDate,
+        wrapper: document.querySelector('.timer'),
+        animateStringElem: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 283.5 283.5" xml:space="preserve"><path class="st0" d="M141.7,6.5C216.4,6.5,277,67,277,141.7S216.4,277,141.7,277S6.5,216.4,6.5,141.7S67,6.5,141.7,6.5"/></svg>',
+        maxDay: 58,
+        callback: {
+            beforeStart: function () {
+            
+            },
+            afterStart: function () {
+            
+            },
+            changeMinutes: function () {
+            
+            },
+            changeHours: function () {
+            
+            },
+            changeDay: function () {
+            
+            },
+            heroDate: [function () {
+            
+            }, '2020-07-10-22-00-00']
+        }
+    });
+    
     var stopTimerBtn = document.getElementById('stop');
 
     stopTimerBtn.addEventListener('click', function () {
-        if (promotionOptions.status) clearInterval(promotionOptions.intervalId);
-        promotionOptions.status = false;
+       timer.stopTimer();
     });
     
 </script>

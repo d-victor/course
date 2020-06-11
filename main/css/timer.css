@@ -61,7 +61,7 @@ body {
     left: 50%;
     transform: translateX(-50%);
     width: 80%;
-    stroke-dasharray: 849;
+    stroke-dasharray: 849.9;
     stroke-dashoffset: 0;
     fill: none;
     stroke: red;

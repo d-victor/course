@@ -8,23 +8,33 @@
             hours: {
                 value: 0,
                 text: ['час','часа','часов'],
+                max: 23
             },
             minutes: {
                 value: 0,
                 text: ['минута','минуты','минут'],
+                max: 59
             },
             seconds: {
                 value:0,
                 text: ['секунда','секунды','секунд'],
+                max: 59
             }
         },
         status: false,
     };
     
-    function promotionTimer(date, wrapper, animationsElem) {
+    function promotionTimer(date, wrapper, animationsElem, maxDay) {
         var endTime = setDate(date);
         
         if (!endTime) return false;
+        
+        if (animationsElem){
+            promotionOptions.animateTag = renderToHtml(animationsElem);
+            promotionOptions.animateLength = promotionOptions.animateTag.firstElementChild.getTotalLength();
+            
+            if (maxDay) promotionOptions.timers.day.max = maxDay;
+        }
         
         var promotionEndDate = new Date(endTime[0], endTime[1] || 0, endTime[2] || 0, endTime[3] || 0, endTime[4] || 0, endTime[5] || 0);
         promotionOptions.promoEndTime = ~~(promotionEndDate.getTime() / 1000);
@@ -45,19 +55,37 @@
         promotionOptions.timers.seconds.value = ~~(diff % 60);
     }
     
+    function renderToHtml(stringHtml) {
+        var elem = document.createElement('div');
+        elem.innerHTML = stringHtml;
+        
+        return elem.firstElementChild;
+    }
+    
+    function getDiameter(key) {
+        return promotionOptions.animateLength - (promotionOptions.animateLength / promotionOptions.timers[key].max * promotionOptions.timers[key].value);
+    }
+    
     function timer() {
         setDiffTime();
         promotionOptions.timers.seconds.elem.firstElementChild.textContent = getNumberToString('seconds');
-        promotionOptions.timers.seconds.elem.lastElementChild.textContent = declOfNum(promotionOptions.timers['seconds'].value, promotionOptions.timers['seconds'].text);
+        promotionOptions.timers.seconds.elem.querySelector('.label').textContent = declOfNum(promotionOptions.timers['seconds'].value, promotionOptions.timers['seconds'].text);
+        if (promotionOptions.animateTag) setSvgDiameter('seconds');
+        
         if (promotionOptions.timers.seconds.value === 59) {
             promotionOptions.timers.minutes.elem.firstElementChild.textContent = getNumberToString('minutes');
-            promotionOptions.timers.minutes.elem.lastElementChild.textContent = declOfNum(promotionOptions.timers['minutes'].value, promotionOptions.timers['minutes'].text);
+            promotionOptions.timers.minutes.elem.querySelector('.label').textContent = declOfNum(promotionOptions.timers['minutes'].value, promotionOptions.timers['minutes'].text);
+            if (promotionOptions.animateTag) setSvgDiameter('minutes');
+            
         }
         if (promotionOptions.timers.seconds.value === 59 && promotionOptions.timers.minutes.value === 59){
             promotionOptions.timers.hours.elem.firstElementChild.textContent = getNumberToString('hours');
-            promotionOptions.timers.hours.elem.lastElementChild.textContent = declOfNum(promotionOptions.timers['hours'].value, promotionOptions.timers['hours'].text);
+            promotionOptions.timers.hours.elem.querySelector('.label').textContent = declOfNum(promotionOptions.timers['hours'].value, promotionOptions.timers['hours'].text);
+            if (promotionOptions.animateTag) setSvgDiameter('hours');
+            
             promotionOptions.timers.day.elem.firstElementChild.textContent = getNumberToString('day');
-            promotionOptions.timers.day.elem.lastElementChild.textContent = declOfNum(promotionOptions.timers['day'].value, promotionOptions.timers['day'].text);
+            promotionOptions.timers.day.elem.querySelector('.label').textContent = declOfNum(promotionOptions.timers['day'].value, promotionOptions.timers['day'].text);
+            if (promotionOptions.animateTag) setSvgDiameter('day');
         }
     }
     
@@ -88,9 +116,21 @@
                 },
                 text: declOfNum(promotionOptions.timers[key].value, promotionOptions.timers[key].text),
             }));
+            if (promotionOptions.animateTag) {
+                promotionOptions.timers[key].animateElem = promotionOptions.animateTag.cloneNode(true);
+                
+                setSvgDiameter(key);
+                
+                promotionOptions.timers[key].elem.append(promotionOptions.timers[key].animateElem);
+            }
             wrap.append(promotionOptions.timers[key].elem);
         }
         wrapper.append(wrap);
+    }
+    
+    function setSvgDiameter(key) {
+        promotionOptions.timers[key].animateLength = getDiameter(key);
+        promotionOptions.timers[key].animateElem.setAttribute('style', 'stroke-dashoffset:' + promotionOptions.timers[key].animateLength);
     }
     
     function createHtmlElem(options) {
