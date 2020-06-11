@@ -361,7 +361,6 @@ nav ul li svg:hover{
 .services ul{
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-between;
 }
 .services ul li{
     display: block;
@@ -370,6 +369,15 @@ nav ul li svg:hover{
 }
 .services ul li p.upper{
     color: #333333;
+    display: block;
+    position: relative;
+}
+.services ul li p.upper::after{
+    content: attr(data-icon);
+    position: absolute;
+    display: block;
+    top: 0;
+    left: -10px;
 }
 .services ul hr{
     width: 100%;
