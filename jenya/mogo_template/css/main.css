@@ -925,14 +925,29 @@ ul.views{
     color: #fff;
     font-weight: 300;
 }
+.map{
+    background: url(../image/map-background.jpg)no-repeat, center;
+    background-size: cover;
+}
+.map_wrapper{
+    text-align: center;
+}
+.map h3{
+    font-size: 24px;
+    padding: 13px 0 25px;
+    color: #f38181;
+}
+.map .container{
+    padding: 48px 15px;
+}
 footer > ul{
     display: flex;
     flex-flow: row;
+    justify-content: space-between;
 }
 footer > ul li.footer__item{
     display: block;
     flex: 33%;
-    max-width: 33%;
 }
 .footer__item a h1{
     color: #cccccc;
@@ -978,8 +993,17 @@ footer img{
 footer input{
     width: 100%;
 }
+.footer__item:nth-child(1){
+    max-width: 420px;
+}
 .footer__item:nth-child(2){
-    padding: 10px 114px;
+    max-width: 360px;
+    padding-left: 30px;
+    padding-top: 10px;
+}
+.footer__item:nth-child(3){
+    max-width: 275px;
+    padding-top: 12px;
 }
 .footer__item:nth-child(2) ul.some__news li{
     display: flex;
@@ -1010,8 +1034,10 @@ ul.some__news li:nth-child(2){
 ul.inst_gallery{
     display: flex;
     flex-wrap: wrap;
+    padding-top: 27px;
 }
 ul.inst_gallery li{
     width: auto;
     padding: 0;
 }
+
