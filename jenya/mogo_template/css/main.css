@@ -940,6 +940,56 @@ ul.views{
 .map .container{
     padding: 48px 15px;
 }
+.modal__map{
+    opacity: 0;
+    width: 0;
+    height: 0;
+    background: rgba(0,0,0,0.9);
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal__map:target{
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    position: absolute;
+}
+.modal__map:target > a::before {
+    content: '';
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    z-index: 20;
+    left: 0;
+}
+.modal__map:target figure a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: -1rem;
+    right: -1rem;
+    border-radius: 50%;
+    font-size: 24px;
+    background: #f38181;
+    font-weight: 800;
+    z-index: 22;
+    text-decoration: none;
+    color: #fff;
+    transition: 0.3s ease-out;
+}
+.modal__map figure{
+    width: 600px;
+    position: relative;
+    z-index: 99;
+}
+/* ------------------- */
 footer > ul{
     display: flex;
     flex-flow: row;
