@@ -3,9 +3,9 @@ for(var i = 0; i < cards.length; i++){
     cards[i].addEventListener('click', function(){
         var active = document.getElementsByClassName("active");
         if(active.length > 0){
-            active[0].className = active[0].className.replace(" active", "");
+            active[0].classList = active[0].classList.remove("active");
         }
-        this.className += " active"
+        this.classList.add('active');
     });
 }
 var toggleBox = document.getElementsByClassName('toggle__accordeon');
