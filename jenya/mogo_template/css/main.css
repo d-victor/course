@@ -647,6 +647,7 @@ header .slide_item hr{
 .team ul li{
     display: block;
     width: 33%;
+    position: relative;
 }
 .team ul li:nth-child(2){
     padding: 0 30px;
@@ -670,10 +671,13 @@ header .slide_item hr{
     transform: translateX(-50%);
 }
 .social__item{
+    display: none;
+}
+.active .social__item{
     display: flex;
     justify-content: center;
 }
-.team .social__item label{
+.team .active .social__item label{
     display: block;
     margin: 1px;
     width: 56px;
@@ -682,13 +686,13 @@ header .slide_item hr{
     cursor: pointer;
     transition: 0.2s ease-out;
 }
-.social__item label svg{
+.active .social__item label svg{
     margin-top: 24%;
 }
-.social__item label:nth-child(2) svg{
+.active .social__item label:nth-child(2) svg{
     margin-top: 29%;
 }
-.social__item label svg path{
+.active .social__item label svg path{
     fill: #f38181;
 }
 #social_1:checked ~ .social__item label:nth-child(1),
