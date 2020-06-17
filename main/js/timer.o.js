@@ -45,6 +45,20 @@ function Timer(options) {
         var endTime = setDate(options.date);
     
         if (!endTime) return false;
+        if (options.callback && options.callback.beforeStart) options.callback.beforeStart.apply(this);
+        
+        if (options.callback && options.callback.heroDate) {
+            this.options.callback = {};
+            this.options.callback.heroDateHandler = options.callback.heroDate.handler;
+            this.options.callback.heroDateTime = options.callback.heroDate.time.split('-');
+            this.options.callback.heroDateTime = ~~(new Date(this.options.callback.heroDateTime[0],
+                (this.options.callback.heroDateTime[1] !== undefined ? this.options.callback.heroDateTime[1] - 1 : 0),
+                this.options.callback.heroDateTime[2] || 0,
+                this.options.callback.heroDateTime[3] || 0,
+                this.options.callback.heroDateTime[4] || 0,
+                this.options.callback.heroDateTime[5] || 0).getTime() / 1000);
+            this.options.callback.heroDateStatus = false;
+        }
         
         this.options.endTime = ~~(new Date(endTime[0], endTime[1] || 0, endTime[2] || 0, endTime[3] || 0, endTime[4] || 0, endTime[5] || 0).getTime() / 1000);
     
@@ -60,6 +74,8 @@ function Timer(options) {
         buildToHtmlTimer.call(this, options.wrapper);
     
         this.options.intervalId = setInterval(timer.bind(this), 1000);
+        
+        if (options.callback && options.callback.afterStart) options.callback.afterStart.call(this);
     }
     
     function renderToHtml(stringHtml) {
@@ -96,6 +112,13 @@ function Timer(options) {
     function setDiffTime() {
         var nowTime = ~~(new Date().getTime() / 1000);
         var diff = this.options.endTime - nowTime;
+        
+        if (this.options.callback &&
+            this.options.callback.heroDateHandler &&
+            nowTime >= this.options.callback.heroDateTime && !this.options.callback.heroDateStatus) {
+            this.options.callback.heroDateHandler.call(this);
+            this.options.callback.heroDateStatus = true;
+        }
         
         if (diff < 0) {
             this.stopTimer();
@@ -172,13 +195,13 @@ function Timer(options) {
         return elem;
     }
     
-    function setDate(date){
+    function setDate(date) {
         var status = (date !== '' && typeof date === 'string');
         
         if (!status) return status;
         
         var endTime = date.split('-').map(function (item, i) {
-            var num = (i === 1 || i === 3) ? item - 1 : +item;
+            var num = (i === 1) ? item - 1 : +item;
             status = !isNaN(num);
             return num;
         });
