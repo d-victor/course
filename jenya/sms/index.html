@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <script src="https://use.fontawesome.com/e7062cade1.js"></script> -->
+    <!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
+    <!-- <link rel="stylesheet" href="fontawesome/font-awesome-4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="fontawesome/all.css">
+</head>
+<body>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            font-size: 13px;
+            font-family: sans-serif;
+            line-height: 1.2;
+        }
+        .box{
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        .counter{
+            display: inline-block;
+            cursor: pointer;
+            padding: 5px 10px;
+            border: 1px solid gray;
+        }
+        .counter i{
+            margin-right: 10px;
+        }
+        .form textarea{
+            width: 100%;
+            padding: 15px;
+            font-size: 20px;
+            min-height: 250px;
+        }
+        .form-icon,
+        .editBtn{
+            margin: 10px 0;
+        }
+        .editBtn{
+            margin-left: 15px;
+            padding-left: 15px;
+            border-left: 1px solid gray;
+        }
+        .form-icon li,
+        .editBtn li{
+            list-style-type: none;
+            display: inline-block;
+            padding: 10px;
+            border: 1px solid gray;
+            cursor: pointer;
+            font-size: 25px;
+        }
+        .form-icon li:hover,
+        .editBtn li:hover{
+            background-color: lightgrey;
+        }
+        .edit-wrap{
+            display: flex;
+        }
+    </style>
+    <div class="box">
+        <span class="counter"><i class="far fa-heart"></i><span>25</span> </span>
+        <div class="form">
+            <div class="edit-wrap">
+                <ul class="form-icon">
+                    <li data-icon="::one::"><i class="fas fa-heart"></i></li>
+                    <li data-icon="::two::"><i class="far fa-balance-scale-left"></i></li>
+                    <li data-icon="::three::"><i class="fas fa-angry"></i></li>
+                    <li data-icon="::four::"><i class="fas fa-smile-wink"></i></li>
+                </ul>
+            </div>
+            <textarea></textarea>
+        </div>
+        <div class="form-text">
+    
+        </div>
+    </div>
+    
+    <script src="common.js"></script>
+    <script>
+        var counter = new RatingCounter({
+            wrapper: document.querySelector('.counter'),
+        });
+    </script>
+</body>
+</html>

@@ -43,15 +43,14 @@
         maxDay: 58,
         callback: {
             beforeStart: function () {
-                var oleg = "oleg";
-                return oleg;
+                // console.log(this);
+                
             },
             afterStart: function () {
-            
+                // this.stopTimer();
             },
             changeMinutes: function () {
-                var change = "change minutes"
-                return change;
+               
             },
             changeHours: function () {
             
@@ -59,9 +58,12 @@
             changeDay: function () {
             
             },
-            heroDate: [function () {
-            
-            }, '2020-07-10-22-00-00']
+            heroDate: {
+                handler: function(){
+                    console.log(this);
+                },
+                time: '2020-05-17-19-40-00'
+            }, 
         }
     });
     

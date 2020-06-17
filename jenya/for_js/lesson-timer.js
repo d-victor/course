@@ -42,13 +42,26 @@ function Timer(options) {
     }
     
     function init() {
-        callBackTest(options.callback.beforeStart());
+        // callBackTest(options.callback.beforeStart());
         
 
         var endTime = setDate(options.date);
     
         if (!endTime) return false;
+
+        if(options.callback && options.callback.beforeStart) options.callback.beforeStart.apply(this);
         
+
+        if(options.callback && options.callback.heroDate){
+            this.options.callback = {}
+            this.options.callback.heroDateHandler = options.callback.heroDate.handler;
+            console.log(options.callback.heroDate.time);
+            this.options.callback.heroDateTime = setDate(options.callback.heroDate.time.split('-'));
+            this.options.callback.heroDateTime = ~~(new Date(this.options.callback.heroDateTime[0], (this.options.callback.heroDateTime[1] !== undefined ? this.options.callback.heroDateTime[1] - 1 : 0), this.options.callback.heroDateTime[2] || 0, this.options.callback.heroDateTime[3] || 0, this.options.callback.heroDateTime[4] || 0, this.options.callback.heroDateTime[5] || 0).getTime() / 1000);
+            console.log(this.options.callback);
+            this.options.callback.heroDateStatus = false;
+        }
+
         this.options.endTime = ~~(new Date(endTime[0], endTime[1] || 0, endTime[2] || 0, endTime[3] || 0, endTime[4] || 0, endTime[5] || 0).getTime() / 1000);
     
         if (options.animateStringElem) {
@@ -63,6 +76,7 @@ function Timer(options) {
         buildToHtmlTimer.call(this, options.wrapper);
     
         this.options.intervalId = setInterval(timer.bind(this), 1000);
+        if(options.callback && options.callback.beforeStart) options.callback.afterStart.call(this);
     }
     
     function renderToHtml(stringHtml) {
@@ -78,7 +92,7 @@ function Timer(options) {
             if (this.options.animateTag) setSvgDiameter.call(this, 'seconds');
     
             if (this.options.timers.seconds.value === 59) {
-                changeMinutesCallback(options.callback.changeMinutes());
+                // changeMinutesCallback(options.callback.changeMinutes());
                 this.options.timers.minutes.elem.firstElementChild.textContent = getNumberToString.call(this, 'minutes');
                 this.options.timers.minutes.elem.querySelector('.label').textContent = declOfNum(this.options.timers['minutes'].value, this.options.timers['minutes'].text);
                 if (this.options.animateTag) setSvgDiameter.call(this, 'minutes');
@@ -99,6 +113,10 @@ function Timer(options) {
     function setDiffTime() {
         var nowTime = ~~(new Date().getTime() / 1000);
         var diff = this.options.endTime - nowTime;
+        // console.log()
+        if (this.options.callback && this.options.callback.heroDateHandler && nowTime >= this.options.callback.heroDateTime && !this.options.callback.heroDateStatus);
+        this.options.callback.heroDateHandler.call(this);
+        this.options.callback.heroDateStatus = true;
         
         if (diff < 0) {
             this.stopTimer();
@@ -181,7 +199,7 @@ function Timer(options) {
         if (!status) return status;
         
         var endTime = date.split('-').map(function (item, i) {
-            var num = (i === 1 || i === 3) ? item - 1 : +item;
+            var num = (i === 1) ? item - 1 : +item;
             status = !isNaN(num);
             return num;
         });
@@ -193,12 +211,12 @@ function Timer(options) {
         return title[(n % 10 === 1 && n % 100 !== 11 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2)];
     }
     
-    function callBackTest(name){
-        console.log(`${name}  hellooooooo`);
-    }
-    function changeMinutesCallback(string){
-        console.log(string);
-    }
+    // function callBackTest(name){
+    //     console.log(`${name}  hellooooooo`);
+    // }
+    // function changeMinutesCallback(string){
+    //     console.log(string);
+    // }
 
     init.apply(this);
 }
