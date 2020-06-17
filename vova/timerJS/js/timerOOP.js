@@ -1,4 +1,4 @@
-function Timer(options, callback) {
+function Timer(options) {
 
     this.options = {
         timers: {
