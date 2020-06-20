@@ -64,7 +64,8 @@
 </head>
 <body>
 <div class="box">
-    <span class="counter"><i class="far fa-heart"></i><span>25</span></span>
+    <span class="counter"><i class="far fa-heart"></i><span></span></span>
+    <button type="button" id="plus">Plus Count</button>
     <div class="form">
         <div class="edit-wrap">
             <ul class="form-icon">
@@ -84,7 +85,20 @@
 <script>
     var counter = new RatingCounter({
         wrapper: document.querySelector('.counter'),
+        maxDurationActive: 10
     });
+    var plus = document.getElementById('plus');
+    
+    plus.addEventListener('click', function () {
+       counter.options.counter += 10;
+       counter.setCounterHtml();
+       counter.setCookieCounter();
+       counter.options.setHartColor(counter.options.wrapper.querySelector('.fa-heart'), 'far', 'fas');
+       counter.options.resetHartColor();
+       console.log(counter.options)
+    });
+    
+    console.log(counter);
 </script>
 </body>
 </html>

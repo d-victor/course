@@ -6,23 +6,55 @@ function RatingCounter(options) {
     this.options = {
         counter: +getCookie('counter') || 0,
         wrapper: options.wrapper,
+        maxDurationActive: options.maxDurationActive || 10,
+        resetHartColor: resetHartColor.bind(this),
+        setHartColor: setHartColor
     };
     
     this.setCounterHtml = function () {
         this.options.wrapper.querySelector('span').textContent = this.options.counter;
     };
     
-    (function () {
-        this.setCounterHtml();
-        this.options.wrapper.addEventListener('click', function (e) {
-            this.setCounter(e);
-        }.bind(this));
-    }).call(this);
+    this.setCounter = function () {
+        this.options.counter++;
+    };
     
-    this.setCounter = function (e) {
-        console.log(this, e.target)
+    this.setCookieCounter = function () {
+        setCookie('counter', this.options.counter);
+        setCookie('isCounter', '1', {'max-age': this.options.maxDurationActive});
+    };
+    
+    this.setCounterHtml();
+    
+    this.options.wrapper.addEventListener('click', function (event) {
+        if (event.target === event.currentTarget) {
+            // example
+        }
+        if (!getCookie('isCounter')){
+            this.setCounter();
+            this.setCookieCounter();
+            
+            resetHartColor.call(this);
+            
+            this.setCounterHtml();
+            setHartColor(this.options.wrapper.querySelector('.fa-heart'), 'far', 'fas');
+            
+        } else {
+            alert("Вы уже голосовали!!");
+        }
+    }.bind(this));
+    
+    function resetHartColor() {
+        setTimeout(function () {
+            setHartColor(this.options.wrapper.querySelector('.fa-heart'), 'fas', 'far')
+        }.bind(this), this.options.maxDurationActive * 1000);
     }
     
+    function setHartColor(elem, removedClass, addedClass) {
+        var elemClassList = elem.classList;
+        elemClassList.remove(removedClass);
+        elemClassList.add(addedClass);
+    }
 }
 window.RatingCounter = RatingCounter;
     
@@ -67,6 +99,4 @@ window.RatingCounter = RatingCounter;
             'max-age': -1
         })
     }
-
- 
 })();
