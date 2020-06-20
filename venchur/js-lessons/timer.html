@@ -2,71 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Timer</title>
     <link rel="stylesheet" href="../css/timer.css">
-    <script src="../js/timer.js"></script>
+    <script src="../js/timer.o.js"></script>
 </head>
 <body>
-    <div>
-        <div class="timer animate">
-        <ul>
-            <li>
-                <span>01</span>
-                <span class="label">день</span>
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 283.5 283.5" xml:space="preserve"><path class="st0" d="M141.7,6.5C216.4,6.5,277,67,277,141.7S216.4,277,141.7,277S6.5,216.4,6.5,141.7S67,6.5,141.7,6.5"/></svg>
-                
-            </li>
-            <li>
-                <span>02</span>
-                <span class="label">часа</span>
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 283.5 283.5" xml:space="preserve"><path class="st0" d="M141.7,6.5C216.4,6.5,277,67,277,141.7S216.4,277,141.7,277S6.5,216.4,6.5,141.7S67,6.5,141.7,6.5"/></svg>
-            </li>
-            <li>
-                <span>10</span>
-                <span class="label">минут</span>
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 283.5 283.5" xml:space="preserve"><path class="st0" d="M141.7,6.5C216.4,6.5,277,67,277,141.7S216.4,277,141.7,277S6.5,216.4,6.5,141.7S67,6.5,141.7,6.5"/></svg>
-            </li>
-            <li>
-                <span>01</span>
-                <span class="label">секунда</span>
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 283.5 283.5" xml:space="preserve"><path class="st0" d="M141.7,6.5C216.4,6.5,277,67,277,141.7S216.4,277,141.7,277S6.5,216.4,6.5,141.7S67,6.5,141.7,6.5"/></svg>
-            </li>
-        </ul>
-    </div>
-    </div>
-    <button id="stop">Stop</button>
+<div class="timer animation"></div>
+<button id="stop">stop</button>
+<!--<ul>
+        <li>
+            <span>01</span>
+            <span class="label">день</span>
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 283.5 283.5" xml:space="preserve"><path class="st0" d="M141.7,6.5C216.4,6.5,277,67,277,141.7S216.4,277,141.7,277S6.5,216.4,6.5,141.7S67,6.5,141.7,6.5"/></svg>
+        </li>
+        <li>
+            <span>02</span>
+            <span class="label">часа</span>
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 283.5 283.5" xml:space="preserve"><path class="st0" d="M141.7,6.5C216.4,6.5,277,67,277,141.7S216.4,277,141.7,277S6.5,216.4,6.5,141.7S67,6.5,141.7,6.5"/></svg>
+        </li>
+        <li>
+            <span>10</span>
+            <span class="label">минут</span>
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 283.5 283.5" xml:space="preserve"><path class="st0" d="M141.7,6.5C216.4,6.5,277,67,277,141.7S216.4,277,141.7,277S6.5,216.4,6.5,141.7S67,6.5,141.7,6.5"/></svg>
+        </li>
+        <li>
+            <span>01</span>
+            <span class="label">секунда</span>
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 283.5 283.5" xml:space="preserve"><path class="st0" d="M141.7,6.5C216.4,6.5,277,67,277,141.7S216.4,277,141.7,277S6.5,216.4,6.5,141.7S67,6.5,141.7,6.5"/></svg>
+        </li>
+    </ul>-->
 
-    <!-- <div class="timer">
-        <ul class="timer">
-            <li>
-                <span>01</span>
-                <span class="label">день</span>
+<script>
+    var endDate  = '2020-07-12-22-11-00';
+    //promotionTimer(endDate, document.querySelector('.timer'), '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 283.5 283.5" xml:space="preserve"><path class="st0" d="M141.7,6.5C216.4,6.5,277,67,277,141.7S216.4,277,141.7,277S6.5,216.4,6.5,141.7S67,6.5,141.7,6.5"/></svg>', 58);
+    var timer = new Timer({
+        date: endDate,
+        wrapper: document.querySelector('.timer'),
+        animateStringElem: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 283.5 283.5" xml:space="preserve"><path class="st0" d="M141.7,6.5C216.4,6.5,277,67,277,141.7S216.4,277,141.7,277S6.5,216.4,6.5,141.7S67,6.5,141.7,6.5"/></svg>',
+        maxDay: 58,
+        callback: {
+            beforeStart: function () {
+            
+            },
+            afterStart: function () {
+                //this.stopTimer();
+            },
+            changeMinutes: function () {
+            
+            },
+            changeHours: function () {
+            
+            },
+            changeDay: function () {
+            
+            },
+            heroDate: {
+                handler: function () {
+                    console.log(this);
+                },
+                time: '2020-05-17-19-40-00'
+            },
+        }
+    });
+    
+    var stopTimerBtn = document.getElementById('stop');
 
-            </li>
-            <li>
-                <span>02</span>
-                <span class="label">день</span>
-            </li>
-            <li>
-                <span>10</span>
-                <span class="label">день</span>
-            </li>
-            <li>
-                <span>01</span>
-                <span class="label">день</span>
-            </li>
-        </ul>
-    </div> -->
-
-    <script>
-        var endDate =  '2020-10-22-19-55-00';
-        promotionTimer(endDate, document.querySelector('.timer'),'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 283.5 283.5" xml:space="preserve"><path class="st0" d="M141.7,6.5C216.4,6.5,277,67,277,141.7S216.4,277,141.7,277S6.5,216.4,6.5,141.7S67,6.5,141.7,6.5"/></svg>');
-
-        var stopTimerBtn = document.getElementById('stop');
-        stopTimerBtn.addEventListener('click', function(){
-            clearInterval(promotionOptions.intervalId);
-        })
-
-    </script>
+    stopTimerBtn.addEventListener('click', function () {
+       timer.stopTimer();
+    });
+    
+</script>
 </body>
 </html>
