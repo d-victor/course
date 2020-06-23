@@ -60,10 +60,20 @@
         .edit-wrap{
             display: flex;
         }
+        .form-text{
+            padding: 15px;
+        }
+        .item-message{
+            padding: 15px;
+            border-bottom: 1px solid grey;
+        }
+        .item-message:nth-child(odd){
+            background-color: lightgray;
+        }
     </style>
 </head>
 <body>
-<div class="box">
+<div class="box" id="chat">
     <span class="counter"><i class="far fa-heart"></i><span></span></span>
     <button type="button" id="plus">Plus Count</button>
     <div class="form">
@@ -76,9 +86,14 @@
             </ul>
         </div>
         <textarea></textarea>
+        <button id="addMsg" type="button">Add message</button>
     </div>
     <div class="form-text">
     
+    </div>
+    <div class="form-messages">
+        <h3>Ваши сообщения</h3>
+        
     </div>
 </div>
 <script src="../js/new_script.js"></script>
@@ -95,10 +110,10 @@
        counter.setCookieCounter();
        counter.options.setHartColor(counter.options.wrapper.querySelector('.fa-heart'), 'far', 'fas');
        counter.options.resetHartColor();
-       console.log(counter.options)
     });
-    
-    console.log(counter);
+    var message = new ChatMessager({
+        wrapper: document.querySelector('#chat'),
+    });
 </script>
 </body>
 </html>

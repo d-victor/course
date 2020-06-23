@@ -100,3 +100,76 @@ window.RatingCounter = RatingCounter;
         })
     }
 })();
+
+
+(function () {
+    function ChatMessager(options) {
+        options = options || {};
+        if (!options.wrapper) {
+            console.error('Error');
+            return false;
+        }
+        
+        var inputEvent = new Event('input');
+        
+        this.options = {
+            wrapper: options.wrapper,
+            textarea: options.wrapper.querySelector('textarea'),
+            addMsgBtn:options.wrapper.querySelector('#addMsg'),
+            formText: options.wrapper.querySelector('.form-text'),
+            formMessages: options.wrapper.querySelector('.form-messages'),
+            icons: {
+                wrapper: options.wrapper.querySelectorAll('.form-icon li'),
+                iconLists: {}
+            }
+        };
+        
+        this.options.textarea.addEventListener('input', inputText.bind(this));
+        
+        this.options.icons.wrapper.forEach(function (icon) {
+            this.options.icons.iconLists[keyReplace(icon.dataset.icon)] = icon.querySelector('i').classList.value;
+            
+            icon.addEventListener('click', function (e) {
+                this.options.textarea.value += ' ::' + keyReplace(e.currentTarget.dataset.icon) + ':: ';
+                this.options.textarea.dispatchEvent(inputEvent);
+            }.bind(this));
+        }, this);
+    
+        this.options.addMsgBtn.addEventListener('click', addMessage.bind(this));
+        
+        function addMessage() {
+            this.options.textarea.value = '';
+            var message = this.options.formText.innerHTML,
+                newMessageWrapper = document.createElement('div');
+            
+            newMessageWrapper.classList.add('item-message');
+            
+            newMessageWrapper.innerHTML = message;
+            this.options.formMessages.append(newMessageWrapper);
+            this.options.formText.innerHTML = '';
+        }
+        
+        function keyReplace(key){
+            return key.replace(/[:]/g, '');
+        }
+        
+        function inputText(e) {
+            var text = e.currentTarget.value;
+            textPerv.call(this, text);
+        }
+        
+        function textPerv(text) {
+            this.options.formText.innerHTML = setText.call(this, text);
+        }
+        
+        function setText(text) {
+            var list = this.options.icons.iconLists;
+            for (var key in list) {
+                text = text.replace(new RegExp("::" + key + "::", 'g'), '<i class="' + list[key] + '"></i>');
+            }
+            return text;
+        }
+    }
+    
+    window.ChatMessager = ChatMessager;
+})();
