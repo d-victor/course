@@ -66,9 +66,8 @@
         .edit-wrap{
             display: flex;
         }
-
     </style>
-    <div class="box" id="chat">
+    <div class="box">
         <span class="counter"><i class="far fa-heart"></i><span></span></span>
         <button type="button" id="plus">Plus count</button>
         <div class="form">
@@ -81,28 +80,16 @@
                 </ul>
             </div>
             <textarea></textarea>
-            <button type="button" id="addMsg">message</button>
         </div>
         <div class="form-text">
-            
-        </div>
-        <div class="form-messages">
-            <h3>Your message</h3>
+    
         </div>
     </div>
     
     <script src="common.js"></script>
     <script>
-        var counter = new RatingCounter({
-            wrapper: document.querySelector('.counter'),
-        });
-        var plus = document.getElementById('plus');
-        plus.addEventListener('click', function(){
-            counter.setCounter();
-            counter.setCounterHtml();
-        })
-        var message = new ChatMessager({
-            wrapper: document.querySelector('#chat'),
+        var like = new LikeCounter({
+            wrapper: document.querySelector(".counter"),
         });
     </script>
 </body>
