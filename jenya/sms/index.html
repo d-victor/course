@@ -65,6 +65,21 @@
         }
         .edit-wrap{
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .edit-wrap form{
+            display: flex;
+        }
+        .edit-wrap form input{
+            margin: 0 5px;
+            padding: 10px;
+        }
+        .item-message{
+            padding: 10px;
+            margin: 10px 0;
+            background: #cde6e6;
+            border-radius: 3px;
         }
 
     </style>
@@ -79,9 +94,13 @@
                     <li data-icon="::three::"><i class="fas fa-angry"></i></li>
                     <li data-icon="::four::"><i class="fas fa-smile-wink"></i></li>
                 </ul>
+                <form action="#">
+                    <div><input type="text" name="name" id="userName" placeholder="Enter your name"></div>
+                    <div><input type="email" name="email" id="userEmail" placeholder="Enter your email"></div>
+                </form>
             </div>
             <textarea></textarea>
-            <button type="button" id="addMsg">message</button>
+            <button type="button" id="addMsg">Add message</button>
         </div>
         <div class="form-text">
             

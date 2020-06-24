@@ -130,6 +130,8 @@
                 addBtn: options.wrapper.querySelector('#addMsg'),
                 formText: options.wrapper.querySelector('.form-text'),
                 formMessages: options.wrapper.querySelector('.form-messages'),
+                userName: options.wrapper.querySelector('#userName'),
+                userEmail: options.wrapper.querySelector('#userEmail'),
                 icons: {
                     wrapper: options.wrapper.querySelectorAll('.form-icon li'),
                     iconLists: {}
@@ -152,17 +154,29 @@
             this.options.addBtn.addEventListener('click', addMessage.bind(this));
 
             function addMessage(){
+                if(this.options.textarea.value === '') return false;
                 this.options.textarea.value = '';
+                this.options.userEmail.value = '';
+                this.options.userName.value = '';
                 // console.log(this.options.formText.innerHTML);
                 var message = this.options.formText.innerHTML,
+                    email = this.options.userEmail.value.innerHTML,
+                    user = this.options.userName.value.innerHTML,
+                    
                     // dateMessage = (new Date()).toString('dd.MM.yyyy');
                 // console.log(dateMessage, message);
                     newMessageWrapper = document.createElement('div');
-                
+                    console.log(email, user);
+                newMessageWrapper.classList.add('item-message');
                 newMessageWrapper.innerHTML = message;
                 this.options.formMessages.append(newMessageWrapper);
+                // --------------------------------------------------------;
+                var messageHeader = document.createElement('div');
+                messageHeader.classList.add('message-header');
+                messageHeader.innerHTML = user + ' ' + email;
+                newMessageWrapper.append(messageHeader);
+                // ----------------------
                 this.options.formText.innerHTML = '';
-
             }
 
             function keyReplace(key){
