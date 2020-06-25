@@ -146,37 +146,120 @@
                 
                 icon.addEventListener('click', function(e){
                     console.log(this, e.currentTarget, keyReplace(e.currentTarget.dataset.icon));
-                    this.options.textarea.value += " ::" + keyReplace(e.currentTarget.dataset.icon) + ":: ";
+                    // this.options.textarea.value += " ::" + keyReplace(e.currentTarget.dataset.icon) + ":: ";
+                    insertTextAtCursor(this.options.textarea, " ::" + keyReplace(e.currentTarget.dataset.icon) + ":: ", 0);
                     this.options.textarea.dispatchEvent(inputEvent);
                 }.bind(this));
             }, this);
+            // addMessage.bind(this, this.options.textarea.value)
+            this.options.addBtn.addEventListener('click', function(){
+                addMessage.bind(this, this.options.textarea.value);
+            }.bind(this));
 
-            this.options.addBtn.addEventListener('click', addMessage.bind(this));
+            function setLoadingMessage(){
+                var dataMessages = JSON.parse(getLocalStorage('chat'));
+                dataMessages.forEach(function(message){
+                    // console.log(message);
+                    addMessage.call(this, message.message, message.date);
+                }, this);
+                console.log(dataMessages);
+            }
+            setLoadingMessage.call(this);
 
-            function addMessage(){
-                if(this.options.textarea.value === '') return false;
-                this.options.textarea.value = '';
-                this.options.userEmail.value = '';
-                this.options.userName.value = '';
-                // console.log(this.options.formText.innerHTML);
-                var message = this.options.formText.innerHTML,
-                    email = this.options.userEmail.value.innerHTML,
-                    user = this.options.userName.value.innerHTML,
-                    
-                    // dateMessage = (new Date()).toString('dd.MM.yyyy');
-                // console.log(dateMessage, message);
-                    newMessageWrapper = document.createElement('div');
-                    console.log(email, user);
-                newMessageWrapper.classList.add('item-message');
-                newMessageWrapper.innerHTML = message;
+            function nl2br(text, isXhtml){
+                var br = isXhtml ? '<br/>' : '<br>';
+                return text.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + br + '$2');
+            }
+
+            function insertTextAtCursor(el, text, offset){
+                // console.log(el, text, offset);
+                var val = el.value, 
+                    endIndex = el.selecttionEnd;
+                offset = offset || 0;
+
+                el.value = val.slice(0, endIndex) + text + val.slice(endIndex);
+                el.selecttionStart = el.selecttionEnd = endIndex + text.length + offset;
+                el.focus();
+            }
+
+            function addMessage(message, dateMessage){
+                // console.log(message);
+                var newMessageWrapper = document.createElement('div');
+                if(!dateMessage){
+                    year = getDate().year;
+                    time = getDate().time
+                } else {
+                    year = dateMessage.year;
+                    time = dateMessage.time;
+
+                }
+                newMessageWrapper.innerHTML = user + " " + email + "<br>" + message;
                 this.options.formMessages.append(newMessageWrapper);
-                // --------------------------------------------------------;
-                var messageHeader = document.createElement('div');
-                messageHeader.classList.add('message-header');
-                messageHeader.innerHTML = user + ' ' + email;
-                newMessageWrapper.append(messageHeader);
-                // ----------------------
+            }
+
+            function cleanForm(){
+                this.options.textarea.value = '';
                 this.options.formText.innerHTML = '';
+            }
+
+            // function addMessage(){
+            //     if(this.options.textarea.value === '') return false;
+            //     this.options.textarea.value = '';
+            //     // this.options.userEmail.value = '';
+            //     // this.options.userName.value = '';
+            //     // console.log(this.options.formText.innerHTML);
+            //     var message = this.options.formText.innerHTML,
+            //         email = this.options.userEmail.value,
+            //         user = this.options.userName.value,
+                    
+            //         // dateMessage = (new Date()).toString('dd.MM.yyyy');
+            //     // console.log(dateMessage, message);
+            //         newMessageWrapper = document.createElement('div');
+            //     newMessageWrapper.classList.add('item-message');
+            //     // console.log(getDate());
+            //     var {year, time} = getDate();
+            //     console.log(year, time);
+
+            //     newMessageWrapper.innerHTML = user + " " + email + "<br>" + message;
+            //     this.options.formMessages.append(newMessageWrapper);
+            //     // --------------------------------------------------------;
+            //     // var messageHeader = document.createElement('div');
+            //     // messageHeader.classList.add('message-header');
+            //     // messageHeader.innerHTML = user + ' ' + email;
+            //     // newMessageWrapper.append(messageHeader);
+            //     // ----------------------
+
+            //     this.options.formText.innerHTML = '';
+            //     this.options.userEmail.value.innerHTML = '';
+            //     this.options.userName.value.innerHTML = '';
+            //     setLocalStorage({
+            //         message: message,
+            //         date: {
+            //             year:year,
+            //             time: time
+            //         }
+            //     });
+            // }
+
+            function setLocalStorage(dataSaved) {
+                var key = 'chat',
+                    dataChat = JSON.parse(getLocalStorage(key)),
+                    addArray = [];
+
+                if(dataChat){
+                    dataChat.forEach(function(objMessage){
+                        addArray.push(objMessage);
+                    })
+                } 
+
+                addArray.push(dataSaved)
+
+                // console.log(dataChat);
+                localStorage.setItem(key, JSON.stringify(addArray));
+            }
+
+            function getLocalStorage(key){
+                return localStorage.getItem(key)
             }
 
             function keyReplace(key){
@@ -186,7 +269,7 @@
 
             function inputText(e){
                 // console.log(e.currentTarget, this);
-                var text = e.currentTarget.value;
+                var text = nl2br(e.currentTarget.value, false);
                 textPrev.call(this, text);
                 // console.log(text);
 
@@ -194,6 +277,26 @@
 
             function textPrev(text){
                 this.options.formText.innerHTML = setText.call(this, text);
+            }
+
+            function getDate(){
+                var date = new Date(),
+                    optionsYear = {
+                        year: 'numeric',
+                        month: 'numeric',
+                        day: 'numeric'
+                    },
+                    optionsTime = {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        second: 'numeric'
+                    };
+
+
+                return {
+                    year: date.toLocaleString('ru-RU', optionsYear),
+                    time: date.toLocaleString('ru-RU', optionsYear)
+                }
             }
 
             function setText(text){
