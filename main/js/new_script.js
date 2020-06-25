@@ -130,23 +130,99 @@ window.RatingCounter = RatingCounter;
             this.options.icons.iconLists[keyReplace(icon.dataset.icon)] = icon.querySelector('i').classList.value;
             
             icon.addEventListener('click', function (e) {
-                this.options.textarea.value += ' ::' + keyReplace(e.currentTarget.dataset.icon) + ':: ';
+                insertTextAtCursor(this.options.textarea, ' ::' + keyReplace(e.currentTarget.dataset.icon) + ':: ', 0);
                 this.options.textarea.dispatchEvent(inputEvent);
             }.bind(this));
         }, this);
     
-        this.options.addMsgBtn.addEventListener('click', addMessage.bind(this));
+        this.options.addMsgBtn.addEventListener('click', function () {
+            addMessage.call(this, setText.call(this, this.options.textarea.value));
+        }.bind(this));
         
-        function addMessage() {
-            this.options.textarea.value = '';
-            var message = this.options.formText.innerHTML,
-                newMessageWrapper = document.createElement('div');
+        function setLoadingMessages() {
+            var dataMessages = JSON.parse(getLocalStorage('chat'));
+            dataMessages.forEach(function (message) {
+                addMessage.call(this, message.message, message.date);
+            }, this);
             
+        }
+        setLoadingMessages.call(this);
+        
+        function nl2br(text, isXhtml) {
+            var br = isXhtml ? '<br/>' : '<br>';
+            return text.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + br +'$2');
+        }
+        
+        function insertTextAtCursor(el, text, offset) {
+            var val = el.value,
+                endIndex = el.selectionEnd;
+            
+            offset = offset || 0;
+            
+            el.value = val.slice(0, endIndex) + text + val.slice(endIndex);
+            el.selectionStart = el.selectionEnd = endIndex + text.length + offset;
+            el.focus();
+        }
+        
+        function addMessage(message, dateMessage) {
+            var newMessageWrapper = document.createElement('div'),
+                headerWrap = document.createElement('div'),
+                contentWrap = document.createElement('div'),
+                footerWrap = document.createElement('div'),
+                year, time;
+            if (!dateMessage) {
+                year = getDate().year;
+                time = getDate().time;
+                cleanForm.call(this);
+                setLocalStorage({
+                    message: message,
+                    date: {
+                        year: year,
+                        time: time
+                    }
+                });
+            } else {
+                year = dateMessage.year;
+                time = dateMessage.time;
+            }
+            headerWrap.classList.add('header');
+            contentWrap.classList.add('content');
+            footerWrap.classList.add('footer');
+            headerWrap.textContent = year + 'г. Время: ' + time;
+    
             newMessageWrapper.classList.add('item-message');
+    
+            contentWrap.innerHTML = message;
             
-            newMessageWrapper.innerHTML = message;
+            newMessageWrapper.append(headerWrap);
+            newMessageWrapper.append(contentWrap);
+            newMessageWrapper.append(footerWrap);
+    
             this.options.formMessages.append(newMessageWrapper);
+        }
+        
+        function cleanForm() {
+            this.options.textarea.value = '';
             this.options.formText.innerHTML = '';
+        }
+        
+        function setLocalStorage(dataSaved) {
+            var key = 'chat',
+                dataChat = JSON.parse(getLocalStorage(key)),
+                addArray = [];
+            
+            if (dataChat){
+                dataChat.forEach(function (objMessage) {
+                    addArray.push(objMessage);
+                })
+            }
+            
+            addArray.push(dataSaved);
+            localStorage.setItem(key, JSON.stringify(addArray));
+        }
+        
+        function getLocalStorage(key) {
+            return localStorage.getItem(key)
         }
         
         function keyReplace(key){
@@ -154,12 +230,32 @@ window.RatingCounter = RatingCounter;
         }
         
         function inputText(e) {
-            var text = e.currentTarget.value;
+            var text = nl2br(e.currentTarget.value, false);
+            text = setText.call(this, text);
             textPerv.call(this, text);
         }
         
         function textPerv(text) {
-            this.options.formText.innerHTML = setText.call(this, text);
+            this.options.formText.innerHTML = text;
+        }
+        
+        function getDate() {
+            var date = new Date(),
+                optionsYear = {
+                    year: 'numeric',
+                    month:'numeric',
+                    day:'numeric'
+                },
+                optionsTime = {
+                    hour:'numeric',
+                    minute:'numeric',
+                    second:'numeric'
+                };
+            
+            return {
+                year: date.toLocaleString('ru-RU', optionsYear),
+                time: date.toLocaleString('ru-RU', optionsYear)
+            }
         }
         
         function setText(text) {
