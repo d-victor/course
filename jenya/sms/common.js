@@ -6,7 +6,9 @@
         this.options = {
             counter: +getCookie('counter') || 0,
             wrapper: options.wrapper,
-            maxDurationActive: options.maxDurationActive || 10
+            maxDurationActive: options.maxDurationActive || 10,
+            resetHartColor: resetHartColor.bind(this),
+            setHartColor: setHartColor
         };
         
         this.setCounterHtml = function () {
@@ -14,53 +16,45 @@
         };
         
         this.setCounter = function () {
-            // console.log(this, e.target)
             this.options.counter++;
-            // console.log(this.options.counter);
-            setCookie('counter', this.options.counter);
-            setCookie('isCounter','1',{'max-age':this.options.maxDurationActive});
         };
-
-        this.setCookieCounter = function(){
+        
+        this.setCookieCounter = function () {
             setCookie('counter', this.options.counter);
-            setCookie('isCounter','1',{'max-age':this.options.maxDurationActive});
-        }
-
+            setCookie('isCounter', '1', {'max-age': this.options.maxDurationActive});
+        };
+        
         this.setCounterHtml();
-
+        
         this.options.wrapper.addEventListener('click', function (event) {
-            // this.setCounter(e);
-            console.log(getCookie('counter'));
-            if(event.target === event.currentTarget){
+            if (event.target === event.currentTarget) {
                 // example
             }
-            if(!getCookie('isCounter')){
-                // console.log('kbjchbdvkd');
+            if (!getCookie('isCounter')){
                 this.setCounter();
                 this.setCookieCounter();
-                resetHeartColor.call(this);
+                
+                resetHartColor.call(this);
+                
                 this.setCounterHtml();
-                setHeartColor(this.options.wrapper.querySelector('.fa-heart'), 'far', 'fas');
+                setHartColor(this.options.wrapper.querySelector('.fa-heart'), 'far', 'fas');
+                
             } else {
-                alert('You already vote');
+                alert("Вы уже голосовали!!");
             }
         }.bind(this));
-
-            function resetHeartColor(){
-                setTimeout(function(){
-                    setHeartColor(this.options.wrapper.querySelector('.fa-heart'), 'fas', 'far');
-                }.bind(this), this.options.maxDurationActive * 1000);
-            }
-
-            function setHeartColor(elem, removedClass, addedClass){ console.log(elem);
-                var elemClassList = elem.classList;
-                // console.log(arguments, elemClassList);
-                elemClassList.remove(removedClass);
-                elemClassList.add(addedClass);
-            }
         
+        function resetHartColor() {
+            setTimeout(function () {
+                setHartColor(this.options.wrapper.querySelector('.fa-heart'), 'fas', 'far')
+            }.bind(this), this.options.maxDurationActive * 1000);
+        }
         
-        
+        function setHartColor(elem, removedClass, addedClass) {
+            var elemClassList = elem.classList;
+            elemClassList.remove(removedClass);
+            elemClassList.add(addedClass);
+        }
     }
     window.RatingCounter = RatingCounter;
         
@@ -105,212 +99,197 @@
                 'max-age': -1
             })
         }
-    
-        if (!getCookie('test')){
-                    console.log('jhbschsc');
-                    setCookie('test', '1',{'max-age': 10});
-                }
-     
     })();
-    (function (){
-        function ChatMessager(options){
-            // console.log("sbjchbsjchjshdbcscscjhsdgcvh");
-            options = options || {}
-            if(!options.wrapper) {
-                // console.table(console);
+    
+    
+    (function () {
+        function ChatMessager(options) {
+            options = options || {};
+            if (!options.wrapper) {
                 console.error('Error');
                 return false;
             }
-
+            
             var inputEvent = new Event('input');
-
+            
             this.options = {
                 wrapper: options.wrapper,
                 textarea: options.wrapper.querySelector('textarea'),
-                addBtn: options.wrapper.querySelector('#addMsg'),
+                addMsgBtn:options.wrapper.querySelector('#addMsg'),
                 formText: options.wrapper.querySelector('.form-text'),
                 formMessages: options.wrapper.querySelector('.form-messages'),
-                userName: options.wrapper.querySelector('#userName'),
-                userEmail: options.wrapper.querySelector('#userEmail'),
+                // userName: options.wrapper.querySelector('#userName'),
+                // userEmail: options.wrapper.querySelector('#userEmail'),
                 icons: {
                     wrapper: options.wrapper.querySelectorAll('.form-icon li'),
                     iconLists: {}
                 }
-            }
-            // console.log(this.options);
+            };
+            
             this.options.textarea.addEventListener('input', inputText.bind(this));
-
-            this.options.icons.wrapper.forEach( function(icon){
-                // console.log(icon.dataset.icon.replace(/[:]/g, ''));
+            
+            this.options.icons.wrapper.forEach(function (icon) {
                 this.options.icons.iconLists[keyReplace(icon.dataset.icon)] = icon.querySelector('i').classList.value;
                 
-                icon.addEventListener('click', function(e){
-                    console.log(this, e.currentTarget, keyReplace(e.currentTarget.dataset.icon));
-                    // this.options.textarea.value += " ::" + keyReplace(e.currentTarget.dataset.icon) + ":: ";
-                    insertTextAtCursor(this.options.textarea, " ::" + keyReplace(e.currentTarget.dataset.icon) + ":: ", 0);
+                icon.addEventListener('click', function (e) {
+                    insertTextAtCursor(this.options.textarea, ' ::' + keyReplace(e.currentTarget.dataset.icon) + ':: ', 0);
                     this.options.textarea.dispatchEvent(inputEvent);
                 }.bind(this));
             }, this);
-            // addMessage.bind(this, this.options.textarea.value)
-            this.options.addBtn.addEventListener('click', function(){
-                addMessage.bind(this, this.options.textarea.value);
+        
+            this.options.addMsgBtn.addEventListener('click', function () {
+                addMessage.call(this, setText.call(this, this.options.textarea.value));
             }.bind(this));
-
-            function setLoadingMessage(){
+            
+            function setLoadingMessages() {
                 var dataMessages = JSON.parse(getLocalStorage('chat'));
-                dataMessages.forEach(function(message){
-                    // console.log(message);
+                dataMessages.forEach(function (message) {
                     addMessage.call(this, message.message, message.date);
                 }, this);
-                console.log(dataMessages);
+                
             }
-            setLoadingMessage.call(this);
-
-            function nl2br(text, isXhtml){
+            setLoadingMessages.call(this);
+            
+            function nl2br(text, isXhtml) {
                 var br = isXhtml ? '<br/>' : '<br>';
-                return text.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + br + '$2');
+                return text.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + br +'$2');
             }
-
-            function insertTextAtCursor(el, text, offset){
-                // console.log(el, text, offset);
-                var val = el.value, 
-                    endIndex = el.selecttionEnd;
+            
+            function insertTextAtCursor(el, text, offset) {
+                var val = el.value,
+                    endIndex = el.selectionEnd;
+                
                 offset = offset || 0;
-
+                
                 el.value = val.slice(0, endIndex) + text + val.slice(endIndex);
-                el.selecttionStart = el.selecttionEnd = endIndex + text.length + offset;
+                el.selectionStart = el.selectionEnd = endIndex + text.length + offset;
                 el.focus();
             }
-
-            function addMessage(message, dateMessage){
-                // console.log(message);
-                var newMessageWrapper = document.createElement('div');
-                if(!dateMessage){
+            
+            function addMessage(message, dateMessage, inputsValue) {
+                var newMessageWrapper = document.createElement('div'),
+                    headerWrap = document.createElement('div'),
+                    contentWrap = document.createElement('div'),
+                    footerWrap = document.createElement('div'),
+                    // user = this.options.userName.value,
+                    // email = this.options.userEmail.value,
+                    year, time;
+                if (!dateMessage) {
                     year = getDate().year;
-                    time = getDate().time
+                    time = getDate().time;
+                    cleanForm.call(this);
+                    setLocalStorage({
+                        message: message,
+                        date: {
+                            year: year,
+                            time: time
+                        }
+                    });
                 } else {
                     year = dateMessage.year;
                     time = dateMessage.time;
-
                 }
-                newMessageWrapper.innerHTML = user + " " + email + "<br>" + message;
+
+                getInputData();
+                console.log(getInputData());
+
+                headerWrap.classList.add('header_item');
+                contentWrap.classList.add('content_item');
+                footerWrap.classList.add('footer_item');
+                footerWrap.textContent = year + 'year Time: ' + time;
+                // headerWrap.textContent = 'username: ' + user + ' ' + ' email: ' + email;
+        
+                newMessageWrapper.classList.add('item-message');
+        
+                contentWrap.innerHTML = message;
+                
+                newMessageWrapper.append(headerWrap);
+                newMessageWrapper.append(contentWrap);
+                newMessageWrapper.append(footerWrap);
+        
                 this.options.formMessages.append(newMessageWrapper);
             }
-
-            function cleanForm(){
+            
+            function cleanForm() {
                 this.options.textarea.value = '';
                 this.options.formText.innerHTML = '';
+                // this.options.userName.value = '';
+                // this.options.userEmail.value = '';
             }
-
-            // function addMessage(){
-            //     if(this.options.textarea.value === '') return false;
-            //     this.options.textarea.value = '';
-            //     // this.options.userEmail.value = '';
-            //     // this.options.userName.value = '';
-            //     // console.log(this.options.formText.innerHTML);
-            //     var message = this.options.formText.innerHTML,
-            //         email = this.options.userEmail.value,
-            //         user = this.options.userName.value,
-                    
-            //         // dateMessage = (new Date()).toString('dd.MM.yyyy');
-            //     // console.log(dateMessage, message);
-            //         newMessageWrapper = document.createElement('div');
-            //     newMessageWrapper.classList.add('item-message');
-            //     // console.log(getDate());
-            //     var {year, time} = getDate();
-            //     console.log(year, time);
-
-            //     newMessageWrapper.innerHTML = user + " " + email + "<br>" + message;
-            //     this.options.formMessages.append(newMessageWrapper);
-            //     // --------------------------------------------------------;
-            //     // var messageHeader = document.createElement('div');
-            //     // messageHeader.classList.add('message-header');
-            //     // messageHeader.innerHTML = user + ' ' + email;
-            //     // newMessageWrapper.append(messageHeader);
-            //     // ----------------------
-
-            //     this.options.formText.innerHTML = '';
-            //     this.options.userEmail.value.innerHTML = '';
-            //     this.options.userName.value.innerHTML = '';
-            //     setLocalStorage({
-            //         message: message,
-            //         date: {
-            //             year:year,
-            //             time: time
-            //         }
-            //     });
-            // }
-
+            
             function setLocalStorage(dataSaved) {
                 var key = 'chat',
                     dataChat = JSON.parse(getLocalStorage(key)),
                     addArray = [];
-
-                if(dataChat){
-                    dataChat.forEach(function(objMessage){
+                
+                if (dataChat){
+                    dataChat.forEach(function (objMessage) {
                         addArray.push(objMessage);
                     })
-                } 
-
-                addArray.push(dataSaved)
-
-                // console.log(dataChat);
+                }
+                
+                addArray.push(dataSaved);
                 localStorage.setItem(key, JSON.stringify(addArray));
             }
-
-            function getLocalStorage(key){
+            
+            function getLocalStorage(key) {
                 return localStorage.getItem(key)
             }
-
+            
             function keyReplace(key){
                 return key.replace(/[:]/g, '');
             }
-            // console.log(this.options.icons.iconLists);
-
-            function inputText(e){
-                // console.log(e.currentTarget, this);
+            
+            function inputText(e) {
                 var text = nl2br(e.currentTarget.value, false);
-                textPrev.call(this, text);
-                // console.log(text);
-
+                text = setText.call(this, text);
+                textPerv.call(this, text);
             }
-
-            function textPrev(text){
-                this.options.formText.innerHTML = setText.call(this, text);
+            
+            function textPerv(text) {
+                this.options.formText.innerHTML = text;
             }
-
-            function getDate(){
+            
+            function getDate() {
                 var date = new Date(),
                     optionsYear = {
                         year: 'numeric',
-                        month: 'numeric',
-                        day: 'numeric'
+                        month:'numeric',
+                        day:'numeric'
                     },
                     optionsTime = {
-                        hour: 'numeric',
-                        minute: 'numeric',
-                        second: 'numeric'
+                        hour:'numeric',
+                        minute:'numeric',
+                        second:'numeric'
                     };
-
-
+                
                 return {
                     year: date.toLocaleString('ru-RU', optionsYear),
-                    time: date.toLocaleString('ru-RU', optionsYear)
+                    time: date.toLocaleString('ru-RU', optionsTime)
                 }
             }
-
-            function setText(text){
-                var list = this.options.icons.iconLists
-                for(var key in list){
-                    // console.log(list[key]);
+// -------------
+            function getInputData(){
+                optionsInput = {
+                    user: options.wrapper.querySelector('#userName').value,
+                    email: options.wrapper.querySelector('#userEmail').value
+                };
+                // console.log(optionsInput);
+                return {
+                    user: optionsInput.toLocaleString('ru-RU', optionsInput),
+                    email: optionsInput.toLocaleString('ru-RU', optionsInput)
+                }
+            }
+// -------------------
+            
+            function setText(text) {
+                var list = this.options.icons.iconLists;
+                for (var key in list) {
                     text = text.replace(new RegExp("::" + key + "::", 'g'), '<i class="' + list[key] + '"></i>');
                 }
                 return text;
-                // text.replace(new RegExp("::" + ))
             }
-
         }
-
+        
         window.ChatMessager = ChatMessager;
     })();
-    
