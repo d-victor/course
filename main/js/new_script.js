@@ -115,13 +115,16 @@ window.RatingCounter = RatingCounter;
         this.options = {
             wrapper: options.wrapper,
             textarea: options.wrapper.querySelector('textarea'),
+            userName: options.wrapper.querySelector('#name'),
+            userEmail: options.wrapper.querySelector('#email'),
             addMsgBtn:options.wrapper.querySelector('#addMsg'),
             formText: options.wrapper.querySelector('.form-text'),
             formMessages: options.wrapper.querySelector('.form-messages'),
             icons: {
                 wrapper: options.wrapper.querySelectorAll('.form-icon li'),
                 iconLists: {}
-            }
+            },
+            countMessages: 0
         };
         
         this.options.textarea.addEventListener('input', inputText.bind(this));
@@ -138,13 +141,18 @@ window.RatingCounter = RatingCounter;
         this.options.addMsgBtn.addEventListener('click', function () {
             addMessage.call(this, setText.call(this, this.options.textarea.value));
         }.bind(this));
+    
+        window.addEventListener('storage', function (e) {
+            console.log(e);
+        });
         
         function setLoadingMessages() {
             var dataMessages = JSON.parse(getLocalStorage('chat'));
-            dataMessages.forEach(function (message) {
-                addMessage.call(this, message.message, message.date);
-            }, this);
-            
+            if (dataMessages && dataMessages.length > 0) {
+                dataMessages.forEach(function (message) {
+                    addMessage.call(this, message);
+                }, this);
+            }
         }
         setLoadingMessages.call(this);
         
@@ -164,41 +172,79 @@ window.RatingCounter = RatingCounter;
             el.focus();
         }
         
-        function addMessage(message, dateMessage) {
+        function deleteMessages(e) {
+            var idMessage = e.currentTarget.dataset.btnId;
+            this.options.formMessages.querySelector('[data-id="' + idMessage + '"]').remove();
+            
+            deleteLocalStorage(idMessage);
+        }
+        
+        function deleteLocalStorage(id) {
+           var dataChat = JSON.parse(getLocalStorage('chat'));
+           
+            dataChat = dataChat.filter(function (message) {
+               return message.id !== +id;
+            });
+    
+            saveLocalStorage('chat', dataChat);
+        }
+        
+        function addMessage(message) {
             var newMessageWrapper = document.createElement('div'),
                 headerWrap = document.createElement('div'),
                 contentWrap = document.createElement('div'),
                 footerWrap = document.createElement('div'),
-                year, time;
-            if (!dateMessage) {
+                btnDelete = document.createElement('button'),
+                year, time, userName, userEmail;
+            
+            var idMessage = ++this.options.countMessages;
+            
+            btnDelete.classList.add('delete-btn');
+            btnDelete.addEventListener('click', deleteMessages.bind(this));
+            btnDelete.textContent = 'Delete the message';
+            btnDelete.dataset.btnId = typeof message === 'string' ? idMessage : message.id;
+            
+            if (typeof message === 'string') {
                 year = getDate().year;
                 time = getDate().time;
+                userName = this.options.userName.value;
+                userEmail = this.options.userEmail.value;
                 cleanForm.call(this);
                 setLocalStorage({
+                    id: idMessage,
                     message: message,
+                    user: {
+                        name: userName,
+                        email: userEmail
+                    },
                     date: {
                         year: year,
                         time: time
                     }
                 });
             } else {
-                year = dateMessage.year;
-                time = dateMessage.time;
+                year = message.date.year;
+                time = message.date.time;
+                userName = message.user.name;
+                userEmail = message.user.email;
             }
             headerWrap.classList.add('header');
             contentWrap.classList.add('content');
             footerWrap.classList.add('footer');
             headerWrap.textContent = year + 'г. Время: ' + time;
+            headerWrap.textContent += " | Name: " + userName + " | Email: " + userEmail + ".";
     
             newMessageWrapper.classList.add('item-message');
-    
-            contentWrap.innerHTML = message;
+            newMessageWrapper.dataset.id = typeof message === 'string' ? idMessage : message.id;
+            
+            contentWrap.innerHTML = typeof message === 'string' ? message : message.message;
             
             newMessageWrapper.append(headerWrap);
             newMessageWrapper.append(contentWrap);
+            footerWrap.append(btnDelete);
             newMessageWrapper.append(footerWrap);
     
-            this.options.formMessages.append(newMessageWrapper);
+            this.options.formMessages.prepend(newMessageWrapper);
         }
         
         function cleanForm() {
@@ -211,13 +257,20 @@ window.RatingCounter = RatingCounter;
                 dataChat = JSON.parse(getLocalStorage(key)),
                 addArray = [];
             
+            addArray.push(dataSaved);
+            
             if (dataChat){
                 dataChat.forEach(function (objMessage) {
                     addArray.push(objMessage);
                 })
             }
             
-            addArray.push(dataSaved);
+            saveLocalStorage(key, addArray);
+        }
+        
+        function saveLocalStorage(key, addArray) {
+            if(typeof key !== 'string' && typeof addArray === 'object' && addArray.length !== 0) return false;
+            
             localStorage.setItem(key, JSON.stringify(addArray));
         }
         
