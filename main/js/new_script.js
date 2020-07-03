@@ -124,8 +124,11 @@ window.RatingCounter = RatingCounter;
                 wrapper: options.wrapper.querySelectorAll('.form-icon li'),
                 iconLists: {}
             },
-            countMessages: 0
+            countMessages: 0,
+            statusUpdate: false,
+            updateId: null
         };
+        var search = window.location.search;
         
         this.options.textarea.addEventListener('input', inputText.bind(this));
         
@@ -139,17 +142,58 @@ window.RatingCounter = RatingCounter;
         }, this);
     
         this.options.addMsgBtn.addEventListener('click', function () {
-            addMessage.call(this, setText.call(this, this.options.textarea.value));
+            if (!this.options.statusUpdate) {
+                addMessage.call(this, setText.call(this, this.options.textarea.value));
+                
+            } else {
+                var messages = JSON.parse(getLocalStorage('chat'));
+                messages = messages.map(function (message) {
+                    if (this.options.updateId === +message.id) {
+                        message.user.name = this.options.userName.value;
+                        message.user.email = this.options.userEmail.value;
+                        message.message = setText.call(this, this.options.textarea.value);
+                    }
+                    return message;
+                }.bind(this));
+                
+                saveLocalStorage('chat', messages);
+                
+                cleanForm.call(this);
+                
+                this.options.formMessages.innerHTML = '';
+                
+                messages.reverse().forEach(function (message) {
+                    addMessage.call(this, message);
+                }, this);
+                this.options.updateId = null;
+                this.options.statusUpdate = false;
+                this.options.addMsgBtn.textContent = 'Add message';
+            }
         }.bind(this));
     
         window.addEventListener('storage', function (e) {
-            console.log(e);
-        });
+            addMessage.call(this, JSON.parse(e.newValue)[0]);
+        }.bind(this));
+        
+        if (search) {
+            search = search.slice(1).split('&');
+            
+            search.forEach(function (res) {
+                var inputArr = res.split('=');
+                inputArr[1] = decodeURI(inputArr[1]);
+                if (inputArr[0] === 'name') this.options.userName.value = inputArr[1];
+                if (inputArr[0] === 'email') this.options.userEmail.value = inputArr[1];
+                if (inputArr[0] === 'm') {
+                    this.options.textarea.value = inputArr[1];
+                    this.options.textarea.dispatchEvent(inputEvent);
+                }
+            }.bind(this));
+        }
         
         function setLoadingMessages() {
             var dataMessages = JSON.parse(getLocalStorage('chat'));
             if (dataMessages && dataMessages.length > 0) {
-                dataMessages.forEach(function (message) {
+                dataMessages.reverse().forEach(function (message) {
                     addMessage.call(this, message);
                 }, this);
             }
@@ -189,22 +233,44 @@ window.RatingCounter = RatingCounter;
             saveLocalStorage('chat', dataChat);
         }
         
+        function editTextForMessage(text) {
+            var iconList = this.options.icons.iconLists;
+            
+            for (var key in iconList) {
+                text = text.replace(new RegExp('<i class="' + iconList[key] + '"></i>', 'g'), '::' + key + '::');
+            }
+            
+            return text;
+        }
+        
+        function editMessage(e) {
+            var idMessage = +e.currentTarget.dataset.btnId;
+            console.log(idMessage);
+            var messages = JSON.parse(getLocalStorage('chat'));
+            var message = messages.find(function (messageObj) {
+                return +messageObj.id === idMessage;
+            });
+            
+            this.options.userName.value = message.user.name;
+            this.options.userEmail.value = message.user.email;
+            this.options.textarea.value = editTextForMessage.call(this, message.message);
+            this.options.textarea.dispatchEvent(inputEvent);
+            this.options.statusUpdate = true;
+            this.options.updateId = idMessage;
+            this.options.addMsgBtn.textContent = 'Apply';
+        }
+        
         function addMessage(message) {
             var newMessageWrapper = document.createElement('div'),
                 headerWrap = document.createElement('div'),
                 contentWrap = document.createElement('div'),
                 footerWrap = document.createElement('div'),
                 btnDelete = document.createElement('button'),
-                year, time, userName, userEmail;
-            
-            var idMessage = ++this.options.countMessages;
-            
-            btnDelete.classList.add('delete-btn');
-            btnDelete.addEventListener('click', deleteMessages.bind(this));
-            btnDelete.textContent = 'Delete the message';
-            btnDelete.dataset.btnId = typeof message === 'string' ? idMessage : message.id;
+                btnEdit = document.createElement('button'),
+                year, time, userName, userEmail, idMessage;
             
             if (typeof message === 'string') {
+                idMessage = ++this.options.countMessages;
                 year = getDate().year;
                 time = getDate().time;
                 userName = this.options.userName.value;
@@ -223,11 +289,28 @@ window.RatingCounter = RatingCounter;
                     }
                 });
             } else {
+                idMessage = message.id;
+                
+                if (this.options.countMessages < idMessage) {
+                    this.options.countMessages = idMessage;
+                }
+                
                 year = message.date.year;
                 time = message.date.time;
                 userName = message.user.name;
                 userEmail = message.user.email;
             }
+            
+            btnDelete.classList.add('delete-btn');
+            btnDelete.addEventListener('click', deleteMessages.bind(this));
+            btnDelete.textContent = 'Delete the message';
+            btnDelete.dataset.btnId = idMessage;
+            
+            btnEdit.classList.add('edit');
+            btnEdit.addEventListener('click', editMessage.bind(this));
+            btnEdit.dataset.btnId = idMessage;
+            btnEdit.textContent = "Edit";
+            
             headerWrap.classList.add('header');
             contentWrap.classList.add('content');
             footerWrap.classList.add('footer');
@@ -235,13 +318,14 @@ window.RatingCounter = RatingCounter;
             headerWrap.textContent += " | Name: " + userName + " | Email: " + userEmail + ".";
     
             newMessageWrapper.classList.add('item-message');
-            newMessageWrapper.dataset.id = typeof message === 'string' ? idMessage : message.id;
+            newMessageWrapper.dataset.id = idMessage;
             
             contentWrap.innerHTML = typeof message === 'string' ? message : message.message;
             
             newMessageWrapper.append(headerWrap);
             newMessageWrapper.append(contentWrap);
             footerWrap.append(btnDelete);
+            footerWrap.append(btnEdit);
             newMessageWrapper.append(footerWrap);
     
             this.options.formMessages.prepend(newMessageWrapper);
@@ -250,6 +334,8 @@ window.RatingCounter = RatingCounter;
         function cleanForm() {
             this.options.textarea.value = '';
             this.options.formText.innerHTML = '';
+            this.options.userEmail.value = '';
+            this.options.userName.value = '';
         }
         
         function setLocalStorage(dataSaved) {
@@ -259,7 +345,7 @@ window.RatingCounter = RatingCounter;
             
             addArray.push(dataSaved);
             
-            if (dataChat){
+            if (dataChat) {
                 dataChat.forEach(function (objMessage) {
                     addArray.push(objMessage);
                 })
