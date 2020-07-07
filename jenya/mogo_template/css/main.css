@@ -184,6 +184,54 @@ nav ul li a:hover::after{
 nav ul li svg:hover{
     cursor: pointer;
 }
+nav input#burger{
+    display: none;
+}
+nav label{
+    /* display: block; */
+    display: none;
+    cursor: pointer;
+    width: 28px;
+    height: 16px;
+}
+nav label span,
+nav label span::before,
+nav label span::after{
+    display: block;
+    background: #fff;
+    width: 28px;
+    height: 3px;
+    cursor: pointer;
+    transition: 0.3s ease-in;
+}
+nav label span{
+    height: 3px;
+    position: relative;
+}
+nav label span::before{
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 0;
+    height: 3px;
+}
+nav label span::after{
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 0;
+    height: 3px;
+}
+#burger:checked ~ label span::before{
+    opacity: 0;
+}
+#burger:checked ~ label span{
+    transform: rotate(45deg);
+}
+#burger:checked ~ label span::after{
+    top: 0;
+    transform: rotate(-90deg);
+}
 .slider{
     position: relative;
 }
@@ -210,7 +258,7 @@ header .slide_item{
 .slide_arrows{
     display: flex;
     justify-content: space-between;
-    padding-top: 108px;
+    padding-top: 69px;
 }
 .slide_arrows label{
     display: block;
@@ -1093,5 +1141,29 @@ ul.inst_gallery{
 ul.inst_gallery li{
     width: auto;
     padding: 0;
+}
+/* media style begining */
+@media screen and (max-width: 768px){
+    nav>ul{
+        flex-direction: column;
+        position: absolute;
+        top: -350px;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: 0.3s ease-in-out;
+        z-index: 99;
+    }
+    nav label{
+        display: block;
+    }
+    #burger:checked ~ ul.top__menu{
+        top: 65px;
+    }
+    #burger:checked ~ .slider{
+        opacity: 0;
+    }
+    nav ul li:nth-child(2n+1):not(:last-child){
+        padding: 30px 54px;
+    }
 }
 

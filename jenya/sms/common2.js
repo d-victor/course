@@ -126,7 +126,11 @@
                 },
                 countMessages: 0,
                 statusUpdate: false,
-                updateId: null
+                updateId: null,
+                vote: {
+                    positive: 0,
+                    negative: 0
+                }
             };
 
             var search = window.location.search;
@@ -198,7 +202,7 @@
             // --------------------
             function messageReverse(messageInfo){
                 messageInfo.reverse().forEach(function(message){
-                    console.log(message);
+                    // console.log(message);
                     addMessage.call(this, message);
                 }, this);
             }
@@ -280,17 +284,42 @@
 
                 // console.log(message);
             }
+
+            function voteCounter(e){
+                var idMessage = +e.currentTarget.dataset.btnId;
+                // console.log(idMessage);
+                var messages = getJsonMessages('chat');
+                var message = messages.find(function (messageObj){
+                    console.log(messageObj);
+                    return +messageObj.id === idMessage;
+                });
+                var vote = e.currentTarget.classList.value;
+                console.log(message);
+                if( vote === 'btn_plus'){
+                    console.log('like');
+                    ++this.options.vote.positive;
+                } else {
+                    console.log('dislike');
+                    --this.options.vote.negative;
+                }
+                console.log(this.options.vote.positive);
+                message.allVote.plus = this.options.vote.positive;
+                message.allVote.minus = this.options.vote.negative;
+                console.log('local storage - ' + message.allVote.plus);
+            }
             
             function addMessage(message) {
                 var newMessageWrapper = document.createElement('div'),
                     headerWrap = document.createElement('div'),
                     contentWrap = document.createElement('div'),
                     footerWrap = document.createElement('div'),
-                    // user = this.options.userName.value,
-                    // email = this.options.userEmail.value,
+                    voteWrap = document.createElement('div'),
+                    // 
                     btnDelete = document.createElement('button'),
                     btnEdit = document.createElement('button'),
-                    year, time, userName, userEmail, idMessage;
+                    btnVotePlus = document.createElement('button'),
+                    btnVoteMinus = document.createElement('button'),
+                    year, time, userName, userEmail, idMessage, votePlus, voteMinus;
 
                     // var idMessage = ++this.options.countMessages;
 
@@ -301,6 +330,8 @@
                     time = getDate().time;
                     userName = this.options.userName.value;
                     userEmail = this.options.userEmail.value;
+                    votePlus = this.options.vote.positive;
+                    voteMinus = this.options.vote.negative;
                     cleanForm.call(this);
                     setLocalStorage({
                         id: idMessage,
@@ -312,6 +343,10 @@
                         date: {
                             year: year,
                             time: time
+                        },
+                        allVote: {
+                            plus: votePlus,
+                            minus: voteMinus
                         }
                     });
                 } else {
@@ -323,6 +358,8 @@
                     time = message.date.time;
                     userName = message.user.name;
                     userEmail = message.user.email;
+                    votePlus = message.allVote.plus;
+                    voteMinus = message.allVote.minus;
                 }
 
                 btnDelete.classList.add('delete-btn');
@@ -335,11 +372,20 @@
                 btnEdit.dataset.btnId = idMessage;
                 btnEdit.textContent = "Edit";
 
+                btnVotePlus.classList.add('btn_plus');
+                btnVoteMinus.classList.add('btn_minus');
+                btnVotePlus.addEventListener('click', voteCounter.bind(this));
+                btnVoteMinus.addEventListener('click', voteCounter.bind(this));
+                btnVotePlus.dataset.btnId = idMessage;
+                btnVoteMinus.dataset.btnId = idMessage;
+                btnVotePlus.textContent = 'like: ' + votePlus + ' vote';
+                btnVoteMinus.textContent = 'dislike: ' + voteMinus + ' vote';
 
                 btnDelete.dataset.btnId = idMessage;
                 headerWrap.classList.add('header_item');
                 contentWrap.classList.add('content_item');
                 footerWrap.classList.add('footer_item');
+                voteWrap.classList.add('vote_item');
                 footerWrap.textContent = year + 'year Time: ' + time;
                 headerWrap.textContent = 'username: ' + userName + ' ' + ' email: ' + userEmail;
         
@@ -353,6 +399,9 @@
                 footerWrap.append(btnDelete);
                 footerWrap.append(btnEdit);
                 newMessageWrapper.append(footerWrap);
+                headerWrap.append(voteWrap);
+                voteWrap.append(btnVotePlus);
+                voteWrap.append(btnVoteMinus);
         
                 this.options.formMessages.append(newMessageWrapper);
             }
@@ -428,19 +477,6 @@
                     time: date.toLocaleString('ru-RU', optionsTime)
                 }
             }
-// -------------
-            // function getInputData(){
-            //     optionsInput = {
-            //         user: options.wrapper.querySelector('#userName').value,
-            //         email: options.wrapper.querySelector('#userEmail').value
-            //     };
-            //     // console.log(optionsInput);
-            //     return {
-            //         user: optionsInput.toLocaleString('ru-RU'),
-            //         email: optionsInput.toLocaleString('ru-RU')
-            //     }
-            // }
-// -------------------
             
             function setText(text) {
                 var list = this.options.icons.iconLists;
