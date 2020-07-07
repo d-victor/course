@@ -117,7 +117,7 @@ window.RatingCounter = RatingCounter;
             textarea: options.wrapper.querySelector('textarea'),
             userName: options.wrapper.querySelector('#name'),
             userEmail: options.wrapper.querySelector('#email'),
-            addMsgBtn:options.wrapper.querySelector('#addMsg'),
+            addMsgBtn: options.wrapper.querySelector('#addMsg'),
             formText: options.wrapper.querySelector('.form-text'),
             formMessages: options.wrapper.querySelector('.form-messages'),
             icons: {
@@ -172,7 +172,27 @@ window.RatingCounter = RatingCounter;
         }.bind(this));
     
         window.addEventListener('storage', function (e) {
-            addMessage.call(this, JSON.parse(e.newValue)[0]);
+            var newValue = JSON.parse(e.newValue),
+                oldValue = JSON.parse(e.oldValue);
+            
+            console.log(newValue, oldValue);
+            if (newValue.length > oldValue.length) {
+                addMessage.call(this, JSON.parse(e.newValue)[0]);
+                
+            } else if (newValue.length < oldValue.length) {
+                var message = oldValue.find(function (oldMessageValue) {
+                    var messageListId = newValue.map(function (newMessageValue) {
+                        return newMessageValue.id;
+                    });
+                    
+                    return messageListId.indexOf(oldMessageValue.id) === -1;
+                });
+                
+                removeMessageToHtml.call(this, message.id);
+            } else {
+                this.options.formMessages.innerHTML = '';
+                setLoadingMessages.call(this);
+            }
         }.bind(this));
         
         if (search) {
@@ -216,10 +236,14 @@ window.RatingCounter = RatingCounter;
             el.focus();
         }
         
+        function removeMessageToHtml(messageId) {
+            this.options.formMessages.querySelector('[data-id="' + messageId + '"]').remove();
+        }
+    
         function deleteMessages(e) {
             var idMessage = e.currentTarget.dataset.btnId;
-            this.options.formMessages.querySelector('[data-id="' + idMessage + '"]').remove();
-            
+            removeMessageToHtml.call(this, idMessage);
+        
             deleteLocalStorage(idMessage);
         }
         
@@ -260,6 +284,21 @@ window.RatingCounter = RatingCounter;
             this.options.addMsgBtn.textContent = 'Apply';
         }
         
+        function rating(e) {
+            var messageId = e.currentTarget.dataset.btnId,
+                direction = Boolean(+e.currentTarget.dataset.rate),
+                messageList = JSON.parse(getLocalStorage('chat')),
+                message = messageList.find(function (findMessage) {
+                    return +findMessage.id === +messageId;
+                });
+            
+                message.rating = direction ? ++message.rating : --message.rating;
+                
+                saveLocalStorage('chat', messageList);
+                
+            this.options.formMessages.querySelector('[data-id="' + messageId + '"] .footer .rating').textContent = message.rating;
+        }
+        
         function addMessage(message) {
             var newMessageWrapper = document.createElement('div'),
                 headerWrap = document.createElement('div'),
@@ -267,7 +306,10 @@ window.RatingCounter = RatingCounter;
                 footerWrap = document.createElement('div'),
                 btnDelete = document.createElement('button'),
                 btnEdit = document.createElement('button'),
-                year, time, userName, userEmail, idMessage;
+                btnPlus = document.createElement("button"),
+                btnMinus = document.createElement("button"),
+                year, time, userName, userEmail, idMessage,
+                messageRating = 0;
             
             if (typeof message === 'string') {
                 idMessage = ++this.options.countMessages;
@@ -286,7 +328,8 @@ window.RatingCounter = RatingCounter;
                     date: {
                         year: year,
                         time: time
-                    }
+                    },
+                    rating: messageRating
                 });
             } else {
                 idMessage = message.id;
@@ -299,6 +342,7 @@ window.RatingCounter = RatingCounter;
                 time = message.date.time;
                 userName = message.user.name;
                 userEmail = message.user.email;
+                messageRating = message.rating
             }
             
             btnDelete.classList.add('delete-btn');
@@ -310,6 +354,16 @@ window.RatingCounter = RatingCounter;
             btnEdit.addEventListener('click', editMessage.bind(this));
             btnEdit.dataset.btnId = idMessage;
             btnEdit.textContent = "Edit";
+            
+            btnPlus.addEventListener('click', rating.bind(this));
+            btnPlus.dataset.rate = '1';
+            btnPlus.dataset.btnId = idMessage;
+            btnPlus.textContent = '+';
+            
+            btnMinus.addEventListener('click', rating.bind(this));
+            btnMinus.dataset.rate = '0';
+            btnMinus.dataset.btnId = idMessage;
+            btnMinus.textContent = '-';
             
             headerWrap.classList.add('header');
             contentWrap.classList.add('content');
@@ -324,8 +378,17 @@ window.RatingCounter = RatingCounter;
             
             newMessageWrapper.append(headerWrap);
             newMessageWrapper.append(contentWrap);
+            
             footerWrap.append(btnDelete);
             footerWrap.append(btnEdit);
+            footerWrap.append(btnPlus);
+            footerWrap.append(btnMinus);
+            
+            var span = document.createElement('span');
+            span.textContent = messageRating;
+            span.classList.add('rating');
+            footerWrap.append(span);
+            
             newMessageWrapper.append(footerWrap);
     
             this.options.formMessages.prepend(newMessageWrapper);
