@@ -1,0 +1,25 @@
+header {
+    background: $headerBgColor;
+    font-family: $headerFontFamily;
+    
+    &:hover{
+        color: white;
+    }
+    
+    .color & {
+        color: green;
+        
+        &.color{
+            color: white;
+        }
+    }
+    
+    > nav {
+        background: $red;
+    }
+}
+
+main {
+    @extend %position-center;
+    top: 20%;
+}
