@@ -284,6 +284,19 @@
                 this.options.addMsgBtn.textContent = 'Apply';
             }
             
+            function percentRate(like, dislike){
+                // return Math.round((like*100)/allRate);
+                var plus = Math.round(100*(like/(like + dislike)));
+                var minus = Math.round(100*(dislike/(like+dislike)));
+                // console.log(plus, minus);
+                if(plus >= minus){
+                    return plus + '% of likes';
+                } else {
+                    return minus + '% of dislikes';
+                }
+
+            }
+
             function rating(e) {
                 var messageId = e.currentTarget.dataset.btnId,
                     direction = Boolean(+e.currentTarget.dataset.rate),
@@ -291,12 +304,24 @@
                     message = messageList.find(function (findMessage) {
                         return +findMessage.id === +messageId;
                     });
-                
-                    message.rating = direction ? ++message.rating : --message.rating;
-                    
+                    ++message.allRateCounter;
+                    // message.rating = direction ? ++message.rating.like : ++message.rating.dislike;
+                    if(direction === true){
+                        ++message.rating.like;
+                        this.options.formMessages.querySelector('[data-id="' + messageId + '"] .footer .ratingLike').textContent = message.rating.like;
+                    } else {
+                        ++message.rating.dislike;
+                        this.options.formMessages.querySelector('[data-id="' + messageId + '"] .footer .ratingDislike').textContent = message.rating.dislike;
+                    }
+                    message.percentRate = percentRate(message.rating.like, message.rating.dislike);
+                    this.options.formMessages.querySelector('.percent').textContent = message.percentRate;
+                    if(message.rating.like >= message.rating.dislike){
+                        this.options.formMessages.querySelector('.percent').style.color = 'green';
+                    } else {
+                        this.options.formMessages.querySelector('.percent').style.color = 'red';
+                    }
+
                     saveLocalStorage('chat', messageList);
-                    
-                this.options.formMessages.querySelector('[data-id="' + messageId + '"] .footer .rating').textContent = message.rating;
             }
             
             function addMessage(message) {
@@ -309,7 +334,9 @@
                     btnPlus = document.createElement("button"),
                     btnMinus = document.createElement("button"),
                     year, time, userName, userEmail, idMessage,
-                    messageRating = 0;
+                    ratingLike = 0, ratingDislike = 0, allRate = 0, 
+                    percent = 0;
+                    // messageRating = 0;
                 
                 if (typeof message === 'string') {
                     idMessage = ++this.options.countMessages;
@@ -329,12 +356,17 @@
                             year: year,
                             time: time
                         },
-                        rating: messageRating
+                        rating: {
+                            like: ratingLike,
+                            dislike: ratingDislike
+                        },
+                        allRateCounter: allRate,
+                        percentRate: percent
                     });
                 } else {
                     idMessage = message.id;
                     
-                    if (this.options.countMessages < idMessage) {
+                    if(this.options.countMessages < idMessage) {
                         this.options.countMessages = idMessage;
                     }
                     
@@ -342,8 +374,12 @@
                     time = message.date.time;
                     userName = message.user.name;
                     userEmail = message.user.email;
-                    messageRating = message.rating
+                    ratingLike = message.rating.like;
+                    ratingDislike = message.rating.dislike;
+                    allRate = message.allRateCounter;
+                    percent = message.percentRate;
                 }
+
                 
                 btnDelete.classList.add('delete-btn');
                 btnDelete.addEventListener('click', deleteMessages.bind(this));
@@ -358,12 +394,12 @@
                 btnPlus.addEventListener('click', rating.bind(this));
                 btnPlus.dataset.rate = '1';
                 btnPlus.dataset.btnId = idMessage;
-                btnPlus.textContent = 'Like';
+                btnPlus.textContent = 'Like: ';
                 
                 btnMinus.addEventListener('click', rating.bind(this));
                 btnMinus.dataset.rate = '0';
                 btnMinus.dataset.btnId = idMessage;
-                btnMinus.textContent = 'Dislike';
+                btnMinus.textContent = 'Dislike: ';
                 
                 headerWrap.classList.add('header');
                 contentWrap.classList.add('content');
@@ -384,10 +420,24 @@
                 footerWrap.append(btnPlus);
                 footerWrap.append(btnMinus);
                 
-                var span = document.createElement('span');
-                span.textContent = messageRating;
-                span.classList.add('rating');
-                footerWrap.append(span);
+                var spanLike = document.createElement('span');
+                spanLike.textContent = ratingLike;
+                // span.textContent = ratingDislike;
+                spanLike.classList.add('ratingLike');
+                btnPlus.append(spanLike);
+
+                var spanDisLike = document.createElement('span');
+                spanDisLike.textContent = ratingDislike;
+                // span.textContent = ratingDislike;
+                spanDisLike.classList.add('ratingDislike');
+                btnMinus.append(spanDisLike);
+
+                var percentText = document.createElement('span');
+                percentText.textContent = percent;
+                percentText.classList.add('percent');
+                (ratingLike >= ratingDislike) ? percentText.style.color = 'green' : percentText.style.color = 'red';
+                footerWrap.append(percentText);
+                
                 
                 newMessageWrapper.append(footerWrap);
         
