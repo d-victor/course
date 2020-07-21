@@ -1,7 +1,7 @@
 import getHtmlElement from "../anketa/lib/getHtmlElement";
 
 class GetModal {
-    constructor(options = {}){
+    constructor(options = {}) {
         this.option = {
         
         };

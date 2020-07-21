@@ -1,10 +1,11 @@
 import MySuperSlider from "./slider/mySuperSlider";
-import Anketa from "./anketa/anketa";
+import FormBuilder from "./anketa/formBuilder";
 
 const slider = new MySuperSlider();
-const anketa1 = new Anketa({
+const form = new FormBuilder({
     wrapper: document.querySelector('.anketa-js'),
+    elements:{}
 });
 
-console.log(anketa1);
+
 

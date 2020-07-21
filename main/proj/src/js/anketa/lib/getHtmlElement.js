@@ -5,19 +5,19 @@ function getHtmlElement(options) {
         element.setAttribute(key, options.attr[key]);
     }
     
-    const newArr = [];
+    options.className = options.className.split(' ');
     
-    options.className = options.className.forEach((itemClass, i) => {
-        itemClass.split(' ').map((className) => {
-            newArr.push(className);
-        });
-    });
-    
+    element.classList.add(...options.className);
+   
     if (options.content && typeof options.content === 'string') {
         element.textContent = options.content;
+    } else if (options.content !== undefined && typeof options.content !== 'string' && (options.content.nodeType === 1 || options.content.nodeType === 11)) {
+        element.append(options.content);
+    } else if (Array.isArray(options.content)) {
+        options.content.forEach((elem)=>{
+            element.append(elem)
+        });
     }
-    
-    element.classList.add(...newArr);
     
     return element;
 }

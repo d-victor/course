@@ -1,28 +1,22 @@
 import getHtmlElement from "./getHtmlElement";
 
-function getRow(listClasses = [], child = []) {
-    const row = getHtmlElement({
+function getRow(children = [], self) {
+    let options = {
         elem: 'div',
-        className: ['row'],
-    });
+        className: 'row',
+    };
     
-    const colList = listClasses.map((className, index) => {
-        const elemCol = getHtmlElement({
-            elem: 'div',
-            className: [className],
-        });
-        
-        if (child[index] && Array.isArray(child[index])) {
-            child[index].forEach((elem) => {
-                elemCol.append(elem);
-            });
+    if (self && self.rowCount) {
+        options.attr = {
+            'data-id': self.rowCount,
         }
-        
-        row.append(elemCol);
-        
-        return elemCol;
-    });
+    }
     
+    const row = getHtmlElement(options);
+    
+    children.forEach((child) => {
+        row.append(getHtmlElement(child));
+    });
     
     return row;
 }
