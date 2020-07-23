@@ -1,12 +1,12 @@
 {
-  "name": "es6.local",
+  "name": "proj",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Viktor Dehtiarov",
+  "author": "Evgeniy Kamenchuk",
   "license": "ISC",
   "browserslist": [
     "last 1 version",

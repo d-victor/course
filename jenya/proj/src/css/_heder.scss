@@ -14,12 +14,7 @@ header {
         }
     }
     
-    > nav {
+    nav {
         background: $red;
     }
-}
-
-main {
-    @extend %position-center;
-    top: 20%;
 }

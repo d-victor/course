@@ -44,26 +44,26 @@ gulp.task("webserver", function () {
 });
 
 gulp.task("html:build", function () {
-    gulp.src(path.src.html)
+   return gulp.src(path.src.html)
         .pipe(rigger())
         .pipe(gulp.dest(path.build.html))
         .pipe(reload({stream: true}));
 });
 
 gulp.task("images:build", function () {
-    gulp.src(path.src.images)
+   return gulp.src(path.src.images)
         .pipe(gulp.dest(path.build.images))
         .pipe(reload({stream: true}));
 });
 
 gulp.task("fonts:build", function () {
-    gulp.src(path.src.fonts)
+    return gulp.src(path.src.fonts)
         .pipe(gulp.dest(path.build.fonts))
         .pipe(reload({stream: true}));
 });
 
 gulp.task("style:build", function () {
-    gulp.src(path.src.css)
+   return gulp.src(path.src.css)
         .pipe(sourceMaps.init())
         .pipe(sass())
         .pipe(autoprefixer())
@@ -74,7 +74,7 @@ gulp.task("style:build", function () {
 });
 
 gulp.task("js:build", function () {
-    gulp.src(path.src.js)
+   return  gulp.src(path.src.js)
         .pipe(webpack({
             mode: 'development',
             output: {

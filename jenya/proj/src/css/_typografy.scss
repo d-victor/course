@@ -1,0 +1,31 @@
+%defaultPadding {
+    padding: $defaultPadding;
+}
+
+.container {
+    @extend %defaultPadding;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.row {
+    margin: 0 (-$defaultPadding);
+    display: flex;
+}
+
+@include getGrid(12);
+
+[class^=col-] {
+    @extend %defaultPadding;
+}
+.col {
+    @extend %defaultPadding;
+}
+
+@media screen and (max-width: $tablet) {
+    @include getGrid(12, 't');
+}
+
+@media screen and (max-width: $mobile) {
+    @include getGrid(12, 'm');
+}
