@@ -8,7 +8,7 @@ function getRow(children = [], self) {
     };
 
     if (self && self.rowCount){
-        optins.attr = {
+        options.attr = {
             'data-id': self.rowCount,
         }
     } 

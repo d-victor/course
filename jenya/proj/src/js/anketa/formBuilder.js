@@ -39,7 +39,6 @@ class formBuilder {
             content: 'Add form'
         });
 
-        this
 
         getEvent(this.addFormBtn, 'click', this.addForm.bind(this));
         
@@ -92,7 +91,9 @@ class formBuilder {
     }
     
     _addTitle(e) {
-        const textTitle = prompt('Добавьте заголовок!');
+        // const textTitle = prompt('Добавьте заголовок!');
+        const textTitle = GetModal({});
+        console.log(textTitle);
         if(textTitle === null || textTitle === '') return;
 
         this.rowCount = this.rowCount + 1;
