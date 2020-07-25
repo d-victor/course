@@ -1,5 +1,6 @@
 const defaultOptions = {
     wrapper: document.querySelector('body'),
+    storageKey: 'formBuilder',
     elements: {
         html: ['id', 'className', 'customAttr'],
         form: ['action', 'autocomplete', 'method', 'name'],

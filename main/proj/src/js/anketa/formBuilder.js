@@ -3,18 +3,22 @@ import getRow from "./lib/getRow";
 import getEvent from "./lib/getEvent";
 import GetModal from "../modalWindow/getModal";
 import defaultOptions from "./lib/defaultOptions";
+import setLocalStorage from "./lib/localstorage/setLocalstorage";
 
 class FormBuilder {
     constructor(options = {}) {
         this.options = {
             ...defaultOptions,
             ...options,
+            modal: new GetModal({}),
             elements: {
                 ...defaultOptions.elements
             }
         };
         
         this.rowCount = 0;
+        
+        this.formCount = 0;
     
         this.options.mode === 'admin' && this.setAdminTemplate();
     }
@@ -24,10 +28,59 @@ class FormBuilder {
     }
     
     addForm() {
-        this.addFormBtn.classList.add('hidden');
-        this.rowBtn.classList.remove('hidden');
-        this.titleBtn.classList.remove('hidden');
-        
+        const content = [];
+    
+        content.push(
+            {
+                elem: 'input',
+                className: 'input',
+                attr: {
+                    type: 'text',
+                    name: 'name',
+                    placeholder: 'name'
+                },
+            },
+            {
+                elem: 'input',
+                className: 'input',
+                attr: {
+                    type: 'text',
+                    name: 'method',
+                    value: 'POST',
+                    placeholder: 'method',
+                    required: ''
+                },
+            },
+            {
+                elem: 'input',
+                className: 'input action',
+                attr: {
+                    type: 'text',
+                    name: 'action',
+                    value: '',
+                    placeholder: 'action',
+                    required: '',
+                },
+            },
+        );
+    
+        this.options.modal.promt(content, !this.options.modal.content).then(data => {
+            this.addFormBtn.classList.add('hidden');
+            this.rowBtn.classList.remove('hidden');
+            this.titleBtn.classList.remove('hidden');
+            const newForm  = {
+                elem: 'form',
+                attr: {
+                    ...data,
+                    'data-id-form': ++this.formCount
+                },
+            };
+            
+            setLocalStorage(JSON.stringify({
+                activeForm: data
+            }), this.options.storageKey);
+            
+        });
     }
     
     setAdminTemplate() {

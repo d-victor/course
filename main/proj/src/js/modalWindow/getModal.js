@@ -1,18 +1,60 @@
 import getHtmlElement from "../anketa/lib/getHtmlElement";
+import defaultOptions from "./lib/defaultOptions";
+import getTemplate from './lib/getTemplate';
 
 class GetModal {
     constructor(options = {}) {
-        this.option = {
-        
+        this.options = {
+            ...defaultOptions,
+            ...options
         };
+        
+        getTemplate.apply(this);
     }
     
     open() {
-    
+        return new Promise((resolve, reject) => {
+        
+        resolve(data);
+        
+        
+        })
     }
     
-    promt() {
+    promt(content = [], changeContentStatus = false) {
+        if (changeContentStatus) {
+            this.content = content.map((elem)=> {
+                elem = getHtmlElement(elem);
+                this.modalContent.append(elem);
+        
+                return elem;
+            });
+        }
+        
+        return new Promise((resolve, reject) => {
+            this.modal.classList.add('open');
+            this._btnOk.addEventListener('click', () => {
+                const data = {};
+                let validateStatus = true;
     
+                this.content.forEach(elem => {
+                    if (elem.required && elem.value === '') {
+                        validateStatus = false;
+                        elem.classList.add('error');
+                    } else {
+                        elem.classList.remove('error');
+                    }
+    
+                    data[elem.name] = elem.value;
+                });
+                
+                if (validateStatus) {
+                    resolve(data);
+                    this.close();
+                }
+            });
+            
+        });
     }
     
     confirm() {
@@ -24,7 +66,7 @@ class GetModal {
     }
     
     close() {
-    
+        this.modal.classList.remove('open');
     }
     
     addContent() {
