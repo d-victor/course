@@ -86,6 +86,24 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "../../main/proj/src/js/anketa/lib/localstorage/setLocalstorage.js":
+/*!*************************************************************************************************!*\
+  !*** C:/Users/1/Desktop/web/course/main/proj/src/js/anketa/lib/localstorage/setLocalstorage.js ***!
+  \*************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var setLocalStorage = function setLocalStorage(data, key) {
+  if (typeof data !== 'string' && typeof key !== 'string') return;
+  window.localStorage.setItem(key, data);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (setLocalStorage);
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/a-function.js":
 /*!******************************************************!*\
   !*** ./node_modules/core-js/internals/a-function.js ***!
@@ -4815,6 +4833,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_getEvent__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./lib/getEvent */ "./src/js/anketa/lib/getEvent.js");
 /* harmony import */ var _modalWindow_getModal__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../modalWindow/getModal */ "./src/js/modalWindow/getModal.js");
 /* harmony import */ var _lib_defaultOptions__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./lib/defaultOptions */ "./src/js/anketa/lib/defaultOptions.js");
+/* harmony import */ var _main_proj_src_js_anketa_lib_localstorage_setLocalstorage__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../../../../main/proj/src/js/anketa/lib/localstorage/setLocalstorage */ "../../main/proj/src/js/anketa/lib/localstorage/setLocalstorage.js");
 
 
 
@@ -4834,6 +4853,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -4906,8 +4926,9 @@ var formBuilder = /*#__PURE__*/function () {
             'data-id-form': ++_this.formCount
           })
         };
-        setLocalStorage(JSON.stringify(data), _this.options.storageKey);
-        console.log(data, newForm);
+        Object(_main_proj_src_js_anketa_lib_localstorage_setLocalstorage__WEBPACK_IMPORTED_MODULE_12__["default"])(JSON.stringify({
+          activeForm: data
+        }), _this.options.storageKey);
       });
     }
   }, {
@@ -4960,8 +4981,6 @@ var formBuilder = /*#__PURE__*/function () {
   }, {
     key: "_addTitle",
     value: function _addTitle(e) {
-      // const textTitle = prompt('Добавьте заголовок!');
-      // const textTitle = GetModal({});
       console.log(textTitle);
       if (textTitle === null || textTitle === '') return;
       this.rowCount = this.rowCount + 1;
@@ -5022,6 +5041,7 @@ var formBuilder = /*#__PURE__*/function () {
 __webpack_require__.r(__webpack_exports__);
 var defaultOptions = {
   wrapper: document.querySelector('body'),
+  storageKey: 'formBuilder',
   elements: {
     html: ['id', 'className', 'customAttr'],
     form: ['action', 'autocomplete', 'method', 'name'],
@@ -5251,9 +5271,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_10__);
 /* harmony import */ var _anketa_lib_getHtmlElement__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../anketa/lib/getHtmlElement */ "./src/js/anketa/lib/getHtmlElement.js");
-/* harmony import */ var _anketa_lib_getRow__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../anketa/lib/getRow */ "./src/js/anketa/lib/getRow.js");
-/* harmony import */ var _lib_defaultOptions__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./lib/defaultOptions */ "./src/js/modalWindow/lib/defaultOptions.js");
-/* harmony import */ var _lib_getTemplate__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./lib/getTemplate */ "./src/js/modalWindow/lib/getTemplate.js");
+/* harmony import */ var _lib_defaultOptions__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./lib/defaultOptions */ "./src/js/modalWindow/lib/defaultOptions.js");
+/* harmony import */ var _lib_getTemplate__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./lib/getTemplate */ "./src/js/modalWindow/lib/getTemplate.js");
 
 
 
@@ -5282,20 +5301,23 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-
 var GetModal = /*#__PURE__*/function () {
   function GetModal() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
     _classCallCheck(this, GetModal);
 
-    this.options = _objectSpread(_objectSpread({}, _lib_defaultOptions__WEBPACK_IMPORTED_MODULE_13__["default"]), options);
-    _lib_getTemplate__WEBPACK_IMPORTED_MODULE_14__["default"].apply(this);
+    this.options = _objectSpread(_objectSpread({}, _lib_defaultOptions__WEBPACK_IMPORTED_MODULE_12__["default"]), options);
+    _lib_getTemplate__WEBPACK_IMPORTED_MODULE_13__["default"].apply(this);
   }
 
   _createClass(GetModal, [{
     key: "open",
-    value: function open() {}
+    value: function open() {
+      return new Promise(function (resolve, reject) {
+        resolve(data);
+      });
+    }
   }, {
     key: "promt",
     value: function promt() {
@@ -5305,7 +5327,7 @@ var GetModal = /*#__PURE__*/function () {
       var changeContentStatus = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
       if (changeContentStatus) {
-        content = content.map(function (elem) {
+        this.content = content.map(function (elem) {
           elem = Object(_anketa_lib_getHtmlElement__WEBPACK_IMPORTED_MODULE_11__["default"])(elem);
 
           _this.modalContent.append(elem);
@@ -5350,9 +5372,7 @@ var GetModal = /*#__PURE__*/function () {
   }, {
     key: "close",
     value: function close() {
-      // console.log('close', this)
       this.modal.classList.remove('open');
-      this.content = undefined;
     }
   }, {
     key: "addContent",

@@ -8,35 +8,35 @@ class GetModal {
             ...defaultOptions,
             ...options
         };
-        
+
         getTemplate.apply(this);
     }
-    
+
     open() {
         return new Promise((resolve, reject) => {
-        
-        resolve(data);
-        
-        
+
+            resolve(data);
+
+
         })
     }
-    
+
     promt(content = [], changeContentStatus = false) {
         if (changeContentStatus) {
-            this.content = content.map((elem)=> {
+            this.content = content.map((elem) => {
                 elem = getHtmlElement(elem);
                 this.modalContent.append(elem);
-        
+
                 return elem;
             });
         }
-        
+
         return new Promise((resolve, reject) => {
             this.modal.classList.add('open');
             this._btnOk.addEventListener('click', () => {
                 const data = {};
                 let validateStatus = true;
-    
+
                 this.content.forEach(elem => {
                     if (elem.required && elem.value === '') {
                         validateStatus = false;
@@ -44,33 +44,33 @@ class GetModal {
                     } else {
                         elem.classList.remove('error');
                     }
-    
+
                     data[elem.name] = elem.value;
                 });
-                
+
                 if (validateStatus) {
                     resolve(data);
                     this.close();
                 }
             });
-            
+
         });
     }
-    
+
     confirm() {
-    
+
     }
-    
+
     alert() {
-    
+
     }
-    
+
     close() {
         this.modal.classList.remove('open');
     }
-    
+
     addContent() {
-    
+
     }
 }
 

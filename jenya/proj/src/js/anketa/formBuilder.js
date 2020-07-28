@@ -3,6 +3,7 @@ import getRow from "./lib/getRow";
 import getEvent from "./lib/getEvent";
 import GetModal from "../modalWindow/getModal";
 import defaultOptions from "./lib/defaultOptions";
+import setLocalStorage from "../../../../../main/proj/src/js/anketa/lib/localstorage/setLocalstorage";
 
 class formBuilder {
     constructor(options = {}) {
@@ -18,22 +19,22 @@ class formBuilder {
         this.rowCount = 0;
 
         this.formCount = 0;
-    
+
         this.options.mode === 'admin' && this.setAdminTemplate();
     }
 
-    getFormist(){
+    getFormist() {
 
     }
 
-    addForm(){
+    addForm() {
         const content = [];
 
         content.push(
             {
                 elem: 'input',
                 className: 'input',
-                attr:{
+                attr: {
                     name: 'name',
                     type: 'text',
                     placeholder: 'name'
@@ -42,7 +43,7 @@ class formBuilder {
             {
                 elem: 'input',
                 className: 'input',
-                attr:{
+                attr: {
                     name: 'method',
                     type: 'text',
                     value: 'POST',
@@ -52,83 +53,81 @@ class formBuilder {
             {
                 elem: 'input',
                 className: 'input action',
-                attr:{
+                attr: {
                     name: 'method',
                     type: 'text',
                     value: '',
                     placeholder: 'action',
                     required: ''
-                }
+                },
             },
-            )
+        );
 
-        
 
-        
+
+
         this.options.modal.promt(content, !this.options.modal.content).then(data => {
             this.addFormBtn.classList.add('hidden');
             this.rowBtn.classList.remove('hidden');
             this.titleBtn.classList.remove('hidden');
             const newForm = {
                 elem: 'form',
-                attr:{
+                attr: {
                     ...data,
                     'data-id-form': ++this.formCount
                 },
 
             };
 
-            setLocalStorage(JSON.stringify(data), this.options.storageKey);
-            console.log(data, newForm);
-
-
-            
+            setLocalStorage(JSON.stringify({
+                activeForm: data
+            }), this.options.storageKey);
         });
 
 
     }
 
-    
+
     setAdminTemplate() {
         this.addFormBtn = getHtmlElement({
             elem: 'button',
             className: 'add-form-btn',
             attr: {
-                type:'button'
+                type: 'button'
             },
             content: 'Add form'
         });
 
 
         getEvent(this.addFormBtn, 'click', this.addForm.bind(this));
-        
+
         this.rowBtn = getHtmlElement({
             elem: 'button',
             className: 'row-btn hidden',
             attr: {
-                type:'button'
+                type: 'button'
             },
             content: 'Add row'
         });
-        
+
         getEvent(this.rowBtn, 'click', this.addRow.bind(this));
-        
+
         this.titleBtn = getHtmlElement({
             elem: 'button',
             className: 'title-btn hidden',
             attr: {
-                type:'button'
+                type: 'button'
             },
             content: 'Add title'
         });
-    
+
         getEvent(this.titleBtn, 'click', this._addTitle.bind(this));
-        
+
         const container = getHtmlElement({
             elem: 'div',
             className: 'container'
         });
-        
+
         const rowMain = getRow(
             [
                 {
@@ -141,20 +140,18 @@ class formBuilder {
                     className: 'col-10 main-add-form'
                 }
             ]);
-        
+
         this.mainForm = rowMain.querySelector('.main-add-form');
-        
+
         container.append(rowMain);
-        
+
         const wrapper = this.options.wrapper;
         wrapper.append(container);
     }
-    
+
     _addTitle(e) {
-        // const textTitle = prompt('Добавьте заголовок!');
-        // const textTitle = GetModal({});
         console.log(textTitle);
-        if(textTitle === null || textTitle === '') return;
+        if (textTitle === null || textTitle === '') return;
 
         this.rowCount = this.rowCount + 1;
 
@@ -172,18 +169,18 @@ class formBuilder {
         console.log(row);
         this.mainForm.append(row);
     }
-    
-    content(){
+
+    content() {
         console.log(this)
     }
 
-    addRow(e){
+    addRow(e) {
         this.rowCount = this.rowCount + 1;
 
         const addContent = getHtmlElement({
             elem: 'button',
             className: 'addContent',
-            attr:{
+            attr: {
                 type: 'button'
             },
             content: 'Add Content'
