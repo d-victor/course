@@ -9,12 +9,15 @@ class formBuilder {
         this.options = {
             ...defaultOptions,
             ...options,
+            modal: new GetModal({}),
             elements: {
                 ...defaultOptions.elements,
             }
         };
 
         this.rowCount = 0;
+
+        this.formCount = 0;
     
         this.options.mode === 'admin' && this.setAdminTemplate();
     }
@@ -24,10 +27,67 @@ class formBuilder {
     }
 
     addForm(){
-        this.addFormBtn.classList.add('hidden');
-        this.rowBtn.classList.remove('hidden');
-        this.titleBtn.classList.remove('hidden');
+        const content = [];
+
+        content.push(
+            {
+                elem: 'input',
+                className: 'input',
+                attr:{
+                    name: 'name',
+                    type: 'text',
+                    placeholder: 'name'
+                }
+            },
+            {
+                elem: 'input',
+                className: 'input',
+                attr:{
+                    name: 'method',
+                    type: 'text',
+                    value: 'POST',
+                    placeholder: 'method'
+                }
+            },
+            {
+                elem: 'input',
+                className: 'input action',
+                attr:{
+                    name: 'method',
+                    type: 'text',
+                    value: '',
+                    placeholder: 'action',
+                    required: ''
+                }
+            },
+            )
+
+        
+
+        
+        this.options.modal.promt(content, !this.options.modal.content).then(data => {
+            this.addFormBtn.classList.add('hidden');
+            this.rowBtn.classList.remove('hidden');
+            this.titleBtn.classList.remove('hidden');
+            const newForm = {
+                elem: 'form',
+                attr:{
+                    ...data,
+                    'data-id-form': ++this.formCount
+                },
+
+            };
+
+            setLocalStorage(JSON.stringify(data), this.options.storageKey);
+            console.log(data, newForm);
+
+
+            
+        });
+
+
     }
+
     
     setAdminTemplate() {
         this.addFormBtn = getHtmlElement({
@@ -92,7 +152,7 @@ class formBuilder {
     
     _addTitle(e) {
         // const textTitle = prompt('Добавьте заголовок!');
-        const textTitle = GetModal({});
+        // const textTitle = GetModal({});
         console.log(textTitle);
         if(textTitle === null || textTitle === '') return;
 
