@@ -87,9 +87,9 @@
 /******/ ({
 
 /***/ "../../main/proj/src/js/anketa/lib/localstorage/setLocalstorage.js":
-/*!*************************************************************************************************!*\
-  !*** C:/Users/1/Desktop/web/course/main/proj/src/js/anketa/lib/localstorage/setLocalstorage.js ***!
-  \*************************************************************************************************/
+/*!************************************************************************************************************!*\
+  !*** /Users/jeconda/Documents/frontEnd/course/main/proj/src/js/anketa/lib/localstorage/setLocalstorage.js ***!
+  \************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4884,12 +4884,8 @@ var formBuilder = /*#__PURE__*/function () {
     value: function addForm() {
       var _this = this;
 
-      var content = {
-        'promt': [],
-        'confirm': [],
-        'alert': []
-      };
-      content.promt.push({
+      var content = [];
+      content.push({
         elem: 'input',
         className: 'input',
         attr: {
@@ -4917,11 +4913,7 @@ var formBuilder = /*#__PURE__*/function () {
           required: ''
         }
       });
-      content.confirm.push({
-        elem: 'p',
-        className: 'confirm-text'
-      });
-      this.options.modal.promt(content.promt, !this.options.modal.content).then(function (data) {
+      this.options.modal.promt(content, !this.options.modal.content).then(function (data) {
         _this.addFormBtn.classList.add('hidden');
 
         _this.rowBtn.classList.remove('hidden');

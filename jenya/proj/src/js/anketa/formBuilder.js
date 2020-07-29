@@ -28,13 +28,9 @@ class formBuilder {
     }
 
     addForm() {
-        const content = {
-            'promt': [],
-            'confirm': [],
-            'alert': []
-        };
+        const content = [];
 
-        content.promt.push(
+        content.push(
             {
                 elem: 'input',
                 className: 'input',
@@ -66,17 +62,11 @@ class formBuilder {
                 },
             },
         );
-        content.confirm.push(
-            {
-                elem: 'p',
-                className: 'confirm-text',
-            }
-        )
 
 
 
 
-        this.options.modal.promt(content.promt, !this.options.modal.content).then(data => {
+        this.options.modal.promt(content, !this.options.modal.content).then(data => {
             this.addFormBtn.classList.add('hidden');
             this.rowBtn.classList.remove('hidden');
             this.titleBtn.classList.remove('hidden');
