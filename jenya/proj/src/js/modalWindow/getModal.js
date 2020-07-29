@@ -54,8 +54,13 @@ class GetModal {
 
     }
 
-    confirm() {
-
+    confirm(content = []) {
+            this.content = content.map((elem) => {
+                elem = getHtmlElement(elem);
+                this.modalContent.append(elem);
+                elem.textContent = 'test for content';
+                return elem;
+            });
     }
 
     alert() {

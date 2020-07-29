@@ -87,9 +87,9 @@
 /******/ ({
 
 /***/ "../../main/proj/src/js/anketa/lib/localstorage/setLocalstorage.js":
-/*!*************************************************************************************************!*\
-  !*** C:/Users/1/Desktop/web/course/main/proj/src/js/anketa/lib/localstorage/setLocalstorage.js ***!
-  \*************************************************************************************************/
+/*!************************************************************************************************************!*\
+  !*** /Users/jeconda/Documents/frontEnd/course/main/proj/src/js/anketa/lib/localstorage/setLocalstorage.js ***!
+  \************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4938,6 +4938,7 @@ var formBuilder = /*#__PURE__*/function () {
           activeForm: data
         }), _this.options.storageKey);
       });
+      this.options.modal.confirm(content.confirm);
     }
   }, {
     key: "setAdminTemplate",
@@ -5023,6 +5024,7 @@ var formBuilder = /*#__PURE__*/function () {
         },
         content: 'Add Content'
       });
+      Object(_lib_getEvent__WEBPACK_IMPORTED_MODULE_9__["default"])(addContent, 'click', this.addForm.bind(this));
       var row = Object(_lib_getRow__WEBPACK_IMPORTED_MODULE_8__["default"])([{
         elem: 'div',
         className: 'col',
@@ -5374,7 +5376,19 @@ var GetModal = /*#__PURE__*/function () {
     }
   }, {
     key: "confirm",
-    value: function confirm() {}
+    value: function confirm() {
+      var _this2 = this;
+
+      var content = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      this.content = content.map(function (elem) {
+        elem = Object(_anketa_lib_getHtmlElement__WEBPACK_IMPORTED_MODULE_11__["default"])(elem);
+
+        _this2.modalContent.append(elem);
+
+        elem.textContent = 'test for content';
+        return elem;
+      });
+    }
   }, {
     key: "alert",
     value: function alert() {}

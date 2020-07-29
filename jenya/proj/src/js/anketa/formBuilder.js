@@ -94,6 +94,10 @@ class formBuilder {
             }), this.options.storageKey);
         });
 
+        this.options.modal.confirm(content.confirm);
+
+
+
 
     }
 
@@ -196,6 +200,8 @@ class formBuilder {
             },
             content: 'Add Content'
         })
+
+        getEvent(addContent, 'click', this.addForm.bind(this));
 
         const row = getRow([{
             elem: 'div',
