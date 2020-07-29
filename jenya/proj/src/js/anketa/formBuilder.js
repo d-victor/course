@@ -28,9 +28,13 @@ class formBuilder {
     }
 
     addForm() {
-        const content = [];
+        const content = {
+            'promt': [],
+            'confirm': [],
+            'alert': []
+        };
 
-        content.push(
+        content.promt.push(
             {
                 elem: 'input',
                 className: 'input',
@@ -62,11 +66,17 @@ class formBuilder {
                 },
             },
         );
+        content.confirm.push(
+            {
+                elem: 'p',
+                className: 'confirm-text',
+            }
+        )
 
 
 
 
-        this.options.modal.promt(content, !this.options.modal.content).then(data => {
+        this.options.modal.promt(content.promt, !this.options.modal.content).then(data => {
             this.addFormBtn.classList.add('hidden');
             this.rowBtn.classList.remove('hidden');
             this.titleBtn.classList.remove('hidden');
@@ -150,6 +160,7 @@ class formBuilder {
     }
 
     _addTitle(e) {
+        const textTitle = prompt("Add your title");
         console.log(textTitle);
         if (textTitle === null || textTitle === '') return;
 

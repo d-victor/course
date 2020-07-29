@@ -4884,8 +4884,12 @@ var formBuilder = /*#__PURE__*/function () {
     value: function addForm() {
       var _this = this;
 
-      var content = [];
-      content.push({
+      var content = {
+        'promt': [],
+        'confirm': [],
+        'alert': []
+      };
+      content.promt.push({
         elem: 'input',
         className: 'input',
         attr: {
@@ -4913,7 +4917,11 @@ var formBuilder = /*#__PURE__*/function () {
           required: ''
         }
       });
-      this.options.modal.promt(content, !this.options.modal.content).then(function (data) {
+      content.confirm.push({
+        elem: 'p',
+        className: 'confirm-text'
+      });
+      this.options.modal.promt(content.promt, !this.options.modal.content).then(function (data) {
         _this.addFormBtn.classList.add('hidden');
 
         _this.rowBtn.classList.remove('hidden');
@@ -4981,6 +4989,7 @@ var formBuilder = /*#__PURE__*/function () {
   }, {
     key: "_addTitle",
     value: function _addTitle(e) {
+      var textTitle = prompt("Add your title");
       console.log(textTitle);
       if (textTitle === null || textTitle === '') return;
       this.rowCount = this.rowCount + 1;

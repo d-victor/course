@@ -4867,35 +4867,39 @@ var FormBuilder = /*#__PURE__*/function () {
       var _this = this;
 
       var content = [];
-      content.push({
-        elem: 'input',
-        className: 'input',
-        attr: {
-          type: 'text',
-          name: 'name',
-          placeholder: 'name'
-        }
-      }, {
-        elem: 'input',
-        className: 'input',
-        attr: {
-          type: 'text',
-          name: 'method',
-          value: 'POST',
-          placeholder: 'method',
-          required: ''
-        }
-      }, {
-        elem: 'input',
-        className: 'input action',
-        attr: {
-          type: 'text',
-          name: 'action',
-          value: '',
-          placeholder: 'action',
-          required: ''
-        }
-      });
+
+      if (!this.options.modal.content) {
+        content.push({
+          elem: 'input',
+          className: 'input',
+          attr: {
+            type: 'text',
+            name: 'name',
+            placeholder: 'name'
+          }
+        }, {
+          elem: 'input',
+          className: 'input',
+          attr: {
+            type: 'text',
+            name: 'method',
+            value: 'POST',
+            placeholder: 'method',
+            required: ''
+          }
+        }, {
+          elem: 'input',
+          className: 'input action',
+          attr: {
+            type: 'text',
+            name: 'action',
+            value: '',
+            placeholder: 'action',
+            required: ''
+          }
+        });
+      }
+
       this.options.modal.promt(content, !this.options.modal.content).then(function (data) {
         _this.addFormBtn.classList.add('hidden');
 
