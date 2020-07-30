@@ -27,11 +27,11 @@ class formBuilder {
 
     }
 
-    addForm() {
+    modalBuildObj() {
         const content = {
-            'promt': [],
-            'confirm': [],
-            'alert': []
+            promt: [],
+            conf: [],
+            alrt: []
         };
 
         content.promt.push(
@@ -66,17 +66,21 @@ class formBuilder {
                 },
             },
         );
-        content.confirm.push(
+        content.conf.push(
             {
                 elem: 'p',
                 className: 'confirm-text',
             }
         )
 
+        return content;
 
+    }
 
+    addForm(contentInf, formType) {
 
-        this.options.modal.promt(content.promt, !this.options.modal.content).then(data => {
+        // console.log(contentInf.promt, formType);
+        formType(contentInf.promt, !this.options.modal.content).then(data => {
             this.addFormBtn.classList.add('hidden');
             this.rowBtn.classList.remove('hidden');
             this.titleBtn.classList.remove('hidden');
@@ -94,11 +98,6 @@ class formBuilder {
             }), this.options.storageKey);
         });
 
-        this.options.modal.confirm(content.confirm);
-
-
-
-
     }
 
 
@@ -113,7 +112,7 @@ class formBuilder {
         });
 
 
-        getEvent(this.addFormBtn, 'click', this.addForm.bind(this));
+        getEvent(this.addFormBtn, 'click', this.addForm.bind(this, this.modalBuildObj(), this.options.modal.promt()));
 
         this.rowBtn = getHtmlElement({
             elem: 'button',

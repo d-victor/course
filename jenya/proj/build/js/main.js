@@ -87,9 +87,9 @@
 /******/ ({
 
 /***/ "../../main/proj/src/js/anketa/lib/localstorage/setLocalstorage.js":
-/*!************************************************************************************************************!*\
-  !*** /Users/jeconda/Documents/frontEnd/course/main/proj/src/js/anketa/lib/localstorage/setLocalstorage.js ***!
-  \************************************************************************************************************/
+/*!*************************************************************************************************!*\
+  !*** C:/Users/1/Desktop/web/course/main/proj/src/js/anketa/lib/localstorage/setLocalstorage.js ***!
+  \*************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4880,14 +4880,12 @@ var formBuilder = /*#__PURE__*/function () {
     key: "getFormist",
     value: function getFormist() {}
   }, {
-    key: "addForm",
-    value: function addForm() {
-      var _this = this;
-
+    key: "modalBuildObj",
+    value: function modalBuildObj() {
       var content = {
-        'promt': [],
-        'confirm': [],
-        'alert': []
+        promt: [],
+        conf: [],
+        alrt: []
       };
       content.promt.push({
         elem: 'input',
@@ -4917,11 +4915,19 @@ var formBuilder = /*#__PURE__*/function () {
           required: ''
         }
       });
-      content.confirm.push({
+      content.conf.push({
         elem: 'p',
         className: 'confirm-text'
       });
-      this.options.modal.promt(content.promt, !this.options.modal.content).then(function (data) {
+      return content;
+    }
+  }, {
+    key: "addForm",
+    value: function addForm(contentInf, formType) {
+      var _this = this;
+
+      // console.log(contentInf.promt, formType);
+      formType(contentInf.promt, !this.options.modal.content).then(function (data) {
         _this.addFormBtn.classList.add('hidden');
 
         _this.rowBtn.classList.remove('hidden');
@@ -4938,7 +4944,6 @@ var formBuilder = /*#__PURE__*/function () {
           activeForm: data
         }), _this.options.storageKey);
       });
-      this.options.modal.confirm(content.confirm);
     }
   }, {
     key: "setAdminTemplate",
@@ -4951,7 +4956,7 @@ var formBuilder = /*#__PURE__*/function () {
         },
         content: 'Add form'
       });
-      Object(_lib_getEvent__WEBPACK_IMPORTED_MODULE_9__["default"])(this.addFormBtn, 'click', this.addForm.bind(this));
+      Object(_lib_getEvent__WEBPACK_IMPORTED_MODULE_9__["default"])(this.addFormBtn, 'click', this.addForm.bind(this, this.modalBuildObj(), this.options.modal.promt()));
       this.rowBtn = Object(_lib_getHtmlElement__WEBPACK_IMPORTED_MODULE_7__["default"])({
         elem: 'button',
         className: 'row-btn hidden',
