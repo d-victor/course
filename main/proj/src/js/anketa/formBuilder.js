@@ -4,6 +4,7 @@ import getEvent from "./lib/getEvent";
 import GetModal from "../modalWindow/getModal";
 import defaultOptions from "./lib/defaultOptions";
 import setLocalStorage from "./lib/localstorage/setLocalstorage";
+import getLocalStorage from "./lib/localstorage/getLocalstorage";
 
 class FormBuilder {
     constructor(options = {}) {
@@ -29,55 +30,94 @@ class FormBuilder {
     
     addForm() {
         const content = [];
-    
+        const btnAddAttr = getHtmlElement({
+            elem:'button',
+            className:'primary-btn',
+            attr: {
+                type:'button'
+            },
+            content:'Add custom attr',
+        });
+        
+        getEvent(btnAddAttr, 'click', () => {
+            const nameNewAttr = prompt('Что за...?');
+            const newAttributeInput = getHtmlElement({
+                elem: 'input',
+                className: 'input',
+                attr: {
+                    type: 'text',
+                    name: nameNewAttr,
+                    placeholder: nameNewAttr
+                }
+            },);
+            
+            const formGroup = document.querySelector('.modal-content .form-group');
+            
+            formGroup.append(newAttributeInput);
+        });
+        
         content.push(
             {
-                elem: 'input',
-                className: 'input',
-                attr: {
-                    type: 'text',
-                    name: 'name',
-                    placeholder: 'name'
-                },
+                elem:'div',
+                className: 'form-group',
+                content: [
+                    {
+                        elem: 'input',
+                        className: 'input',
+                        attr: {
+                            type: 'text',
+                            name: 'name',
+                            placeholder: 'name'
+                        },
+                    },
+                    {
+                        elem: 'input',
+                        className: 'input',
+                        attr: {
+                            type: 'text',
+                            name: 'method',
+                            value: 'POST',
+                            placeholder: 'method',
+                            required: ''
+                        },
+                    },
+                    {
+                        elem: 'input',
+                        className: 'input action',
+                        attr: {
+                            type: 'text',
+                            name: 'action',
+                            value: '',
+                            placeholder: 'action',
+                            required: '',
+                        },
+                    },
+                ]
             },
             {
-                elem: 'input',
-                className: 'input',
-                attr: {
-                    type: 'text',
-                    name: 'method',
-                    value: 'POST',
-                    placeholder: 'method',
-                    required: ''
-                },
-            },
-            {
-                elem: 'input',
-                className: 'input action',
-                attr: {
-                    type: 'text',
-                    name: 'action',
-                    value: '',
-                    placeholder: 'action',
-                    required: '',
-                },
-            },
+                elem: 'div',
+                className:'action',
+                content: btnAddAttr
+            }
         );
-    
+        
         this.options.modal.promt(content, !this.options.modal.content).then(data => {
-            this.addFormBtn.classList.add('hidden');
-            this.rowBtn.classList.remove('hidden');
-            this.titleBtn.classList.remove('hidden');
+            this._showBtn();
+            
             const newForm  = {
                 elem: 'form',
+                className: this.options.formClass,
                 attr: {
                     ...data,
                     'data-id-form': ++this.formCount
                 },
+                content: []
             };
             
+            this.activeForm = newForm;
+            
             setLocalStorage(JSON.stringify({
-                activeForm: data
+                activeForm: newForm
             }), this.options.storageKey);
             
         });
@@ -140,6 +180,17 @@ class FormBuilder {
         
         const wrapper = this.options.wrapper;
         wrapper.append(container);
+        
+        const tmp = getLocalStorage(this.options.storageKey);
+        
+        const activeForm = tmp ? JSON.parse(tmp) : false;
+        if (activeForm && activeForm.activeForm) this._showBtn();
+    }
+    
+    _showBtn() {
+        this.addFormBtn.classList.add('hidden');
+        this.rowBtn.classList.remove('hidden');
+        this.titleBtn.classList.remove('hidden');
     }
     
     _addTitle(e) {
@@ -149,44 +200,69 @@ class FormBuilder {
         
         this.rowCount = this.rowCount + 1;
         
-        const title = getHtmlElement({
+        const title = {
             elem: 'h2',
             className: 'title',
             content: textTitle,
-        });
+        };
         
-        const row = getRow([{
+        const newRowObj = {
             elem: 'div',
             className: 'col',
-            content: title
-        }], this);
+            content: [title]
+        };
+    
+        this._saveActiveForm(newRowObj);
+        
+        const row = getRow([newRowObj], this);
         
         this.mainForm.append(row);
+    }
+    
+    _saveToLocal(data){
+        if (!data) return;
+        
+        setLocalStorage(JSON.stringify(data), this.options.storageKey)
     }
     
     content(){
         console.log(this);
     }
     
+    _saveActiveForm(data){
+        this.activeForm.content.push(data);
+    
+        this._saveToLocal({
+            activeForm: this.activeForm
+        });
+    }
+    
     addRow(e) {
         this.rowCount = this.rowCount + 1;
         
-        const addContent = getHtmlElement({
+        let addContent = {
             elem: 'button',
             className: 'addContent',
             attr: {
                 type:'button'
             },
             content: 'Add content'
-        });
+        };
         
-        getEvent(addContent, 'click', this.content.bind(this));
-        
-        const row = getRow([{
+        let row = [{
             elem: 'div',
             className: 'col',
-            content: addContent,
-        }], this);
+        }];
+        
+        this._saveActiveForm(row);
+        
+        addContent = getHtmlElement(addContent);
+    
+        getEvent(addContent, 'click', this.content.bind(this));
+        
+        row[0].content = addContent;
+        
+        row = getRow(row, this);
         
         this.mainForm.append(row);
     }

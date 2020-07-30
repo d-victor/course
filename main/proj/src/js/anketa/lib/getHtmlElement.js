@@ -14,8 +14,9 @@ function getHtmlElement(options) {
     } else if (options.content !== undefined && typeof options.content !== 'string' && (options.content.nodeType === 1 || options.content.nodeType === 11)) {
         element.append(options.content);
     } else if (Array.isArray(options.content)) {
-        options.content.forEach((elem)=>{
-            element.append(elem)
+        options.content.forEach((elem)=> {
+            if (elem.elem) elem = getHtmlElement(elem);
+            element.append(elem);
         });
     }
     

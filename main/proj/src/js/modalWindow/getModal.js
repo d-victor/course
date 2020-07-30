@@ -23,7 +23,7 @@ class GetModal {
     
     promt(content = [], changeContentStatus = false) {
         if (changeContentStatus) {
-            this.content = content.map((elem)=> {
+            content.map((elem)=> {
                 elem = getHtmlElement(elem);
                 this.modalContent.append(elem);
         
@@ -36,8 +36,9 @@ class GetModal {
             this._btnOk.addEventListener('click', () => {
                 const data = {};
                 let validateStatus = true;
-    
-                this.content.forEach(elem => {
+                const inputList = [...this.modalContent.querySelectorAll('input')];
+                
+                inputList.forEach(elem => {
                     if (elem.required && elem.value === '') {
                         validateStatus = false;
                         elem.classList.add('error');
