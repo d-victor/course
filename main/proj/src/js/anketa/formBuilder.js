@@ -5,6 +5,8 @@ import GetModal from "../modalWindow/getModal";
 import defaultOptions from "./lib/defaultOptions";
 import setLocalStorage from "./lib/localstorage/setLocalstorage";
 import getLocalStorage from "./lib/localstorage/getLocalstorage";
+import getContentBtn from "./lib/getContentBtn";
+import getParentWithAttr from "./lib/getParentWithAttr";
 
 class FormBuilder {
     constructor(options = {}) {
@@ -172,7 +174,7 @@ class FormBuilder {
                 elem: 'div',
                 className: 'col-10 main-add-form',
             }
-        ]);
+        ], this, 'admin');
         
         this.mainForm = rowMain.querySelector('.main-add-form');
         
@@ -183,9 +185,30 @@ class FormBuilder {
         
         const tmp = getLocalStorage(this.options.storageKey);
         
-        const activeForm = tmp ? JSON.parse(tmp) : false;
-        if (activeForm && activeForm.activeForm) this._showBtn();
+        if(!this.activeForm) this.activeForm = tmp ? JSON.parse(tmp).activeForm : false;
+        
+        if (this.activeForm) {
+            this._showBtn();
+            this.getHtmlForm();
+        }
     }
+    
+    getHtmlForm(){
+        if (this.options.mode === 'admin') {
+            this.activeForm.content.forEach(elem => {
+                this.rowCount = elem.attr['data-id'] > this.rowCount ? elem.attr['data-id'] : this.rowCount;
+                
+                elem = getHtmlElement(elem);
+                
+                if (elem.children.length === 0) {
+                    elem.append(getContentBtn.call(this));
+                }
+                
+                this.mainForm.append(elem)
+            });
+            this.rowCount++;
+        }
+    };
     
     _showBtn() {
         this.addFormBtn.classList.add('hidden');
@@ -198,8 +221,6 @@ class FormBuilder {
         
         if (textTitle === null || textTitle === '') return;
         
-        this.rowCount = this.rowCount + 1;
-        
         const title = {
             elem: 'h2',
             className: 'title',
@@ -211,8 +232,6 @@ class FormBuilder {
             className: 'col',
             content: [title]
         };
-    
-        this._saveActiveForm(newRowObj);
         
         const row = getRow([newRowObj], this);
         
@@ -225,11 +244,13 @@ class FormBuilder {
         setLocalStorage(JSON.stringify(data), this.options.storageKey)
     }
     
-    content(){
-        console.log(this);
+    addContent(e) {
+        const htmlRow = getParentWithAttr(e.currentTarget, 'data-id');
     }
     
     _saveActiveForm(data){
+        if (!this.activeForm) return;
+        
         this.activeForm.content.push(data);
     
         this._saveToLocal({
@@ -238,31 +259,11 @@ class FormBuilder {
     }
     
     addRow(e) {
-        this.rowCount = this.rowCount + 1;
+        const row = getRow([], this);
         
-        let addContent = {
-            elem: 'button',
-            className: 'addContent',
-            attr: {
-                type:'button'
-            },
-            content: 'Add content'
-        };
+        const addContent = getContentBtn.call(this);
         
-        let row = [{
-            elem: 'div',
-            className: 'col',
-        }];
-        
-        this._saveActiveForm(row);
-        
-        addContent = getHtmlElement(addContent);
-    
-        getEvent(addContent, 'click', this.content.bind(this));
-        
-        row[0].content = addContent;
-        
-        row = getRow(row, this);
+        row.append(addContent);
         
         this.mainForm.append(row);
     }

@@ -1,23 +1,25 @@
 import getHtmlElement from "./getHtmlElement";
 
-function getRow(children = [], self) {
-    let options = {
+function getRow(children = [], self, flag) {
+    let rowObj = {
         elem: 'div',
         className: 'row',
     };
     
-    if (self && self.rowCount) {
-        options.attr = {
-            'data-id': self.rowCount,
+    if (self && flag !== 'admin') {
+        rowObj.attr = {
+            'data-id': self.rowCount++,
         }
     }
     
-    const row = getHtmlElement(options);
+    console.log(self.rowCount);
     
-    children.forEach((child) => {
-        row.append(getHtmlElement(child));
-    });
+    rowObj.content = [...children];
     
+    self._saveActiveForm(Object.assign({}, rowObj));
+    
+    const row = getHtmlElement(rowObj);
+   
     return row;
 }
 

@@ -5,7 +5,7 @@ function getHtmlElement(options) {
         element.setAttribute(key, options.attr[key]);
     }
     
-    options.className = options.className.split(' ');
+    options.className = Array.isArray(options.className) ? options.className : options.className.split(' ');
     
     element.classList.add(...options.className);
    

@@ -1998,6 +1998,70 @@ module.exports.f = function (C) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/object-assign.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js/internals/object-assign.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var DESCRIPTORS = __webpack_require__(/*! ../internals/descriptors */ "./node_modules/core-js/internals/descriptors.js");
+var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js/internals/fails.js");
+var objectKeys = __webpack_require__(/*! ../internals/object-keys */ "./node_modules/core-js/internals/object-keys.js");
+var getOwnPropertySymbolsModule = __webpack_require__(/*! ../internals/object-get-own-property-symbols */ "./node_modules/core-js/internals/object-get-own-property-symbols.js");
+var propertyIsEnumerableModule = __webpack_require__(/*! ../internals/object-property-is-enumerable */ "./node_modules/core-js/internals/object-property-is-enumerable.js");
+var toObject = __webpack_require__(/*! ../internals/to-object */ "./node_modules/core-js/internals/to-object.js");
+var IndexedObject = __webpack_require__(/*! ../internals/indexed-object */ "./node_modules/core-js/internals/indexed-object.js");
+
+var nativeAssign = Object.assign;
+var defineProperty = Object.defineProperty;
+
+// `Object.assign` method
+// https://tc39.github.io/ecma262/#sec-object.assign
+module.exports = !nativeAssign || fails(function () {
+  // should have correct order of operations (Edge bug)
+  if (DESCRIPTORS && nativeAssign({ b: 1 }, nativeAssign(defineProperty({}, 'a', {
+    enumerable: true,
+    get: function () {
+      defineProperty(this, 'b', {
+        value: 3,
+        enumerable: false
+      });
+    }
+  }), { b: 2 })).b !== 1) return true;
+  // should work with symbols and should have deterministic property order (V8 bug)
+  var A = {};
+  var B = {};
+  // eslint-disable-next-line no-undef
+  var symbol = Symbol();
+  var alphabet = 'abcdefghijklmnopqrst';
+  A[symbol] = 7;
+  alphabet.split('').forEach(function (chr) { B[chr] = chr; });
+  return nativeAssign({}, A)[symbol] != 7 || objectKeys(nativeAssign({}, B)).join('') != alphabet;
+}) ? function assign(target, source) { // eslint-disable-line no-unused-vars
+  var T = toObject(target);
+  var argumentsLength = arguments.length;
+  var index = 1;
+  var getOwnPropertySymbols = getOwnPropertySymbolsModule.f;
+  var propertyIsEnumerable = propertyIsEnumerableModule.f;
+  while (argumentsLength > index) {
+    var S = IndexedObject(arguments[index++]);
+    var keys = getOwnPropertySymbols ? objectKeys(S).concat(getOwnPropertySymbols(S)) : objectKeys(S);
+    var length = keys.length;
+    var j = 0;
+    var key;
+    while (length > j) {
+      key = keys[j++];
+      if (!DESCRIPTORS || propertyIsEnumerable.call(S, key)) T[key] = S[key];
+    }
+  } return T;
+} : nativeAssign;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/object-create.js":
 /*!*********************************************************!*\
   !*** ./node_modules/core-js/internals/object-create.js ***!
@@ -3544,6 +3608,25 @@ if (DESCRIPTORS && !(NAME in FunctionPrototype)) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/modules/es.object.assign.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/core-js/modules/es.object.assign.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
+var assign = __webpack_require__(/*! ../internals/object-assign */ "./node_modules/core-js/internals/object-assign.js");
+
+// `Object.assign` method
+// https://tc39.github.io/ecma262/#sec-object.assign
+$({ target: 'Object', stat: true, forced: Object.assign !== assign }, {
+  assign: assign
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/modules/es.object.get-own-property-descriptor.js":
 /*!*******************************************************************************!*\
   !*** ./node_modules/core-js/modules/es.object.get-own-property-descriptor.js ***!
@@ -4817,6 +4900,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_defaultOptions__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./lib/defaultOptions */ "./src/js/anketa/lib/defaultOptions.js");
 /* harmony import */ var _lib_localstorage_setLocalstorage__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./lib/localstorage/setLocalstorage */ "./src/js/anketa/lib/localstorage/setLocalstorage.js");
 /* harmony import */ var _lib_localstorage_getLocalstorage__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./lib/localstorage/getLocalstorage */ "./src/js/anketa/lib/localstorage/getLocalstorage.js");
+/* harmony import */ var _lib_getContentBtn__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./lib/getContentBtn */ "./src/js/anketa/lib/getContentBtn.js");
+/* harmony import */ var _lib_getParentWithAttr__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./lib/getParentWithAttr */ "./src/js/anketa/lib/getParentWithAttr.js");
 
 
 
@@ -4836,6 +4921,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
 
 
 
@@ -4986,14 +5073,38 @@ var FormBuilder = /*#__PURE__*/function () {
       }, {
         elem: 'div',
         className: 'col-10 main-add-form'
-      }]);
+      }], this, 'admin');
       this.mainForm = rowMain.querySelector('.main-add-form');
       container.append(rowMain);
       var wrapper = this.options.wrapper;
       wrapper.append(container);
       var tmp = Object(_lib_localstorage_getLocalstorage__WEBPACK_IMPORTED_MODULE_13__["default"])(this.options.storageKey);
-      var activeForm = tmp ? JSON.parse(tmp) : false;
-      if (activeForm && activeForm.activeForm) this._showBtn();
+      if (!this.activeForm) this.activeForm = tmp ? JSON.parse(tmp).activeForm : false;
+
+      if (this.activeForm) {
+        this._showBtn();
+
+        this.getHtmlForm();
+      }
+    }
+  }, {
+    key: "getHtmlForm",
+    value: function getHtmlForm() {
+      var _this2 = this;
+
+      if (this.options.mode === 'admin') {
+        this.activeForm.content.forEach(function (elem) {
+          _this2.rowCount = elem.attr['data-id'] > _this2.rowCount ? elem.attr['data-id'] : _this2.rowCount;
+          elem = Object(_lib_getHtmlElement__WEBPACK_IMPORTED_MODULE_7__["default"])(elem);
+
+          if (elem.children.length === 0) {
+            elem.append(_lib_getContentBtn__WEBPACK_IMPORTED_MODULE_14__["default"].call(_this2));
+          }
+
+          _this2.mainForm.append(elem);
+        });
+        this.rowCount++;
+      }
     }
   }, {
     key: "_showBtn",
@@ -5007,7 +5118,6 @@ var FormBuilder = /*#__PURE__*/function () {
     value: function _addTitle(e) {
       var textTitle = prompt('Добавьте заголовок!');
       if (textTitle === null || textTitle === '') return;
-      this.rowCount = this.rowCount + 1;
       var title = {
         elem: 'h2',
         className: 'title',
@@ -5018,9 +5128,6 @@ var FormBuilder = /*#__PURE__*/function () {
         className: 'col',
         content: [title]
       };
-
-      this._saveActiveForm(newRowObj);
-
       var row = Object(_lib_getRow__WEBPACK_IMPORTED_MODULE_8__["default"])([newRowObj], this);
       this.mainForm.append(row);
     }
@@ -5031,13 +5138,14 @@ var FormBuilder = /*#__PURE__*/function () {
       Object(_lib_localstorage_setLocalstorage__WEBPACK_IMPORTED_MODULE_12__["default"])(JSON.stringify(data), this.options.storageKey);
     }
   }, {
-    key: "content",
-    value: function content() {
-      console.log(this);
+    key: "addContent",
+    value: function addContent(e) {
+      var htmlRow = Object(_lib_getParentWithAttr__WEBPACK_IMPORTED_MODULE_15__["default"])(e.currentTarget, 'data-id');
     }
   }, {
     key: "_saveActiveForm",
     value: function _saveActiveForm(data) {
+      if (!this.activeForm) return;
       this.activeForm.content.push(data);
 
       this._saveToLocal({
@@ -5047,26 +5155,9 @@ var FormBuilder = /*#__PURE__*/function () {
   }, {
     key: "addRow",
     value: function addRow(e) {
-      this.rowCount = this.rowCount + 1;
-      var addContent = {
-        elem: 'button',
-        className: 'addContent',
-        attr: {
-          type: 'button'
-        },
-        content: 'Add content'
-      };
-      var row = [{
-        elem: 'div',
-        className: 'col'
-      }];
-
-      this._saveActiveForm(row);
-
-      addContent = Object(_lib_getHtmlElement__WEBPACK_IMPORTED_MODULE_7__["default"])(addContent);
-      Object(_lib_getEvent__WEBPACK_IMPORTED_MODULE_9__["default"])(addContent, 'click', this.content.bind(this));
-      row[0].content = addContent;
-      row = Object(_lib_getRow__WEBPACK_IMPORTED_MODULE_8__["default"])(row, this);
+      var row = Object(_lib_getRow__WEBPACK_IMPORTED_MODULE_8__["default"])([], this);
+      var addContent = _lib_getContentBtn__WEBPACK_IMPORTED_MODULE_14__["default"].call(this);
+      row.append(addContent);
       this.mainForm.append(row);
     }
   }]);
@@ -5104,6 +5195,37 @@ var defaultOptions = {
   mode: 'admin'
 };
 /* harmony default export */ __webpack_exports__["default"] = (defaultOptions);
+
+/***/ }),
+
+/***/ "./src/js/anketa/lib/getContentBtn.js":
+/*!********************************************!*\
+  !*** ./src/js/anketa/lib/getContentBtn.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _getHtmlElement__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getHtmlElement */ "./src/js/anketa/lib/getHtmlElement.js");
+/* harmony import */ var _getEvent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getEvent */ "./src/js/anketa/lib/getEvent.js");
+
+
+
+function getContentBtn() {
+  var addContent = Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    elem: 'button',
+    className: 'addContent',
+    attr: {
+      type: 'button'
+    },
+    content: 'Add content'
+  });
+  Object(_getEvent__WEBPACK_IMPORTED_MODULE_1__["default"])(addContent, 'click', this.addContent.bind(this));
+  return addContent;
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (getContentBtn);
 
 /***/ }),
 
@@ -5200,7 +5322,7 @@ function getHtmlElement(options) {
     element.setAttribute(key, options.attr[key]);
   }
 
-  options.className = options.className.split(' ');
+  options.className = Array.isArray(options.className) ? options.className : options.className.split(' ');
 
   (_element$classList = element.classList).add.apply(_element$classList, _toConsumableArray(options.className));
 
@@ -5222,6 +5344,25 @@ function getHtmlElement(options) {
 
 /***/ }),
 
+/***/ "./src/js/anketa/lib/getParentWithAttr.js":
+/*!************************************************!*\
+  !*** ./src/js/anketa/lib/getParentWithAttr.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function getParentWithAttr(elem, attr) {
+  var parent = elem.parentNode;
+  if (parent.getAttribute(attr) === null && parent.tagName.toLowerCase() !== 'body') getParentWithAttr(parent, attr);else if (parent.tagName.toLowerCase() === 'body') return false;
+  return parent;
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (getParentWithAttr);
+
+/***/ }),
+
 /***/ "./src/js/anketa/lib/getRow.js":
 /*!*************************************!*\
   !*** ./src/js/anketa/lib/getRow.js ***!
@@ -5231,33 +5372,79 @@ function getHtmlElement(options) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var core_js_modules_es_array_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.for-each */ "./node_modules/core-js/modules/es.array.for-each.js");
-/* harmony import */ var core_js_modules_es_array_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_for_each__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _getHtmlElement__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./getHtmlElement */ "./src/js/anketa/lib/getHtmlElement.js");
+/* harmony import */ var core_js_modules_es_symbol__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.symbol */ "./node_modules/core-js/modules/es.symbol.js");
+/* harmony import */ var core_js_modules_es_symbol__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_symbol__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_symbol_description__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.symbol.description */ "./node_modules/core-js/modules/es.symbol.description.js");
+/* harmony import */ var core_js_modules_es_symbol_description__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_symbol_description__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var core_js_modules_es_symbol_iterator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.symbol.iterator */ "./node_modules/core-js/modules/es.symbol.iterator.js");
+/* harmony import */ var core_js_modules_es_symbol_iterator__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_symbol_iterator__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var core_js_modules_es_array_from__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es.array.from */ "./node_modules/core-js/modules/es.array.from.js");
+/* harmony import */ var core_js_modules_es_array_from__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_from__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var core_js_modules_es_array_iterator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/es.array.iterator */ "./node_modules/core-js/modules/es.array.iterator.js");
+/* harmony import */ var core_js_modules_es_array_iterator__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_iterator__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! core-js/modules/es.array.slice */ "./node_modules/core-js/modules/es.array.slice.js");
+/* harmony import */ var core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! core-js/modules/es.function.name */ "./node_modules/core-js/modules/es.function.name.js");
+/* harmony import */ var core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var core_js_modules_es_object_assign__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! core-js/modules/es.object.assign */ "./node_modules/core-js/modules/es.object.assign.js");
+/* harmony import */ var core_js_modules_es_object_assign__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_assign__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/core-js/modules/es.object.to-string.js");
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var core_js_modules_es_regexp_to_string__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! core-js/modules/es.regexp.to-string */ "./node_modules/core-js/modules/es.regexp.to-string.js");
+/* harmony import */ var core_js_modules_es_regexp_to_string__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_regexp_to_string__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! core-js/modules/es.string.iterator */ "./node_modules/core-js/modules/es.string.iterator.js");
+/* harmony import */ var core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! core-js/modules/web.dom-collections.iterator */ "./node_modules/core-js/modules/web.dom-collections.iterator.js");
+/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var _getHtmlElement__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./getHtmlElement */ "./src/js/anketa/lib/getHtmlElement.js");
 
+
+
+
+
+
+
+
+
+
+
+
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 
 
 function getRow() {
   var children = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   var self = arguments.length > 1 ? arguments[1] : undefined;
-  var options = {
+  var flag = arguments.length > 2 ? arguments[2] : undefined;
+  var rowObj = {
     elem: 'div',
     className: 'row'
   };
 
-  if (self && self.rowCount) {
-    options.attr = {
-      'data-id': self.rowCount
+  if (self && flag !== 'admin') {
+    rowObj.attr = {
+      'data-id': self.rowCount++
     };
   }
 
-  var row = Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_2__["default"])(options);
-  children.forEach(function (child) {
-    row.append(Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_2__["default"])(child));
-  });
+  console.log(self.rowCount);
+  rowObj.content = _toConsumableArray(children);
+
+  self._saveActiveForm(Object.assign({}, rowObj));
+
+  var row = Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_12__["default"])(rowObj);
   return row;
 }
 
