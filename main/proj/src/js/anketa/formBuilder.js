@@ -7,6 +7,7 @@ import setLocalStorage from "./lib/localstorage/setLocalstorage";
 import getLocalStorage from "./lib/localstorage/getLocalstorage";
 import getContentBtn from "./lib/getContentBtn";
 import getParentWithAttr from "./lib/getParentWithAttr";
+import getElementBuildForm from "./lib/getElementBuildForm";
 
 class FormBuilder {
     constructor(options = {}) {
@@ -246,6 +247,8 @@ class FormBuilder {
     
     addContent(e) {
         const htmlRow = getParentWithAttr(e.currentTarget, 'data-id');
+        
+        getElementBuildForm.apply(this, [htmlRow]);
     }
     
     _saveActiveForm(data){

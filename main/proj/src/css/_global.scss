@@ -6,3 +6,19 @@
     border: 1px solid grey;
 }
 
+.elem-list {
+    list-style-type: none;
+    padding-left: 20px;
+    border:1px solid black;
+    
+    li {
+        padding: 15px;
+        border-bottom: 1px solid black;
+        cursor: pointer;
+        
+        &:hover{
+            background-color: lightgrey;
+        }
+    }
+}
+

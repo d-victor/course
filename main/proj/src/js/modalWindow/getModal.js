@@ -21,8 +21,10 @@ class GetModal {
         })
     }
     
-    promt(content = [], changeContentStatus = false) {
+    promt(content = [], changeContentStatus = false) {console.log(content, changeContentStatus)
         if (changeContentStatus) {
+            this.modalContent.innerHTML = '';
+            
             content.map((elem)=> {
                 elem = getHtmlElement(elem);
                 this.modalContent.append(elem);
