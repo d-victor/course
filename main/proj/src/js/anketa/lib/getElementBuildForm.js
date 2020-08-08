@@ -1,113 +1,158 @@
 import getHtmlElement from "./getHtmlElement";
 import getEvent from "./getEvent";
+import elementForm from "./elementForm";
 
-function addElem(row, e) {
-    const op = this.options;
-    const inputText = e.currentTarget.dataset.key;
-    const dataType = e.currentTarget.dataset.type;
-    
-    this.activeInput = {
-        elem: inputText,
-        className: op.inputDefaultClass,
-        attr: {}
-    };
-    
-    const handler = (e) => {
-        const dataType = e.currentTarget.dataset.type;
-        const inputText = e.currentTarget.dataset.key;
-        
-        let modal;
-        
-        if (dataType !== 'type') {
-            op.modal.promt([{
-                elem: 'input',
-                attr: {
-                    type: 'text',
-                    name: inputText
-                }
-            }], true).then(data => {
-                for (let key in data) {
-                    this.activeInput.attr[key] = data[key];
-                }
-            })
-        } else {
-            this.activeInput.attr[dataType] = inputText;
-        }
-    };
-    
-    row.append(getAttrRow(op.elements[inputText].sort(), handler, inputText));
-}
-
-function getAttrRow(attrList, handler, inputText) {
-    const attrElem = [].concat(attrList).sort();
+function getTemplate(itemList) {
+    const wrapper = getHtmlElement({
+        elem: 'div'
+    });
     
     const ul = getHtmlElement({
-        elem: 'ul'
+        elem: 'ul',
+        className: 'elem-list'
     });
-    const w = getHtmlElement({
-        elem: 'div',
-        className: 'elem-list',
-        content: ul
-    });
+    
     let li;
     
-    attrElem.forEach((attr) => {
+    itemList.forEach(item => {
         li = getHtmlElement({
             elem: 'li',
-            className: 'elem-item',
             attr: {
-                'data-key': attr,
-                'data-type': inputText === 'input' || inputText === 'button' ? 'type' : '',
+                'data-key': item
             },
-            content: attr
+            content: item
         });
-        
-        getEvent(li, 'click', handler);
         
         ul.append(li);
     });
     
-    w.append(ul);
+    wrapper.append(ul);
     
-    return w;
+    return wrapper;
+}
+
+function hidden(elem) {
+    elem.classList.add('hidden');
+}
+
+function show(elem) {
+    elem.classList.remove('hidden');
+}
+
+function setActiveInputTemplate(elem) {
+    this.activeIntup.template.append(elem);
+}
+
+function setElementForm(e) {
+    const elem = e.target;
+    if (e.currentTarget === e.target || elem.classList.contains('addContent') || elem.dataset.sample === '1' || elem.classList.contains('active-input') || elem.classList.contains('attr-value')) return;
     
+    const elemKey = elem.dataset.key;
+    const activeInput = this.activeIntup;
+    const activeInputObj = activeInput.obj;
+    const parent = elem.parentElement.parentElement;
+    const nextCol = parent.nextElementSibling;
+    const s = {
+        elem: 'button',
+        className: 'dfds',
+        attr: {
+            type: 'text',
+            value: 'dfds',
+        }
+    };
+    
+    if (!activeInputObj.elem) {
+        activeInputObj.elem = elemKey;
+        activeInputObj.attr = {};
+        
+        hidden(parent);
+        
+        activeInput.inputElem = getHtmlElement({
+            elem: elemKey,
+            attr: {
+                'data-sample': '1'
+            }
+        });
+        
+        setActiveInputTemplate.call(this, activeInput.inputElem);
+        
+        if (elemKey === 'input' || elemKey === 'button'){
+            show(nextCol);
+        } else {
+            show(nextCol.nextElementSibling);
+        }
+        if (elemKey === 'button') {
+            [...nextCol.querySelectorAll('li')].forEach(li => {
+                const key = li.dataset.key;
+                if (key !== 'button' && key !== 'reset' && key !== 'submit') {
+                    hidden(li);
+                }
+            });
+            
+            this.options.modal.promt([{
+                elem: 'input',
+                attr:{
+                    name: 'value'
+                }
+            }], true).then(data => {
+                activeInputObj.content = data.value;
+                activeInput.inputElem.textContent = data.value;
+            });
+        }
+    } else if (activeInputObj.elem === 'button' || activeInputObj.elem === 'input' && !activeInputObj.attr.type) {
+        activeInputObj.attr.type = elemKey;
+        activeInput.inputElem.setAttribute('type', elemKey);
+        
+        hidden(parent);
+        show(nextCol);
+        
+    } else if ((activeInputObj.elem === 'select' || activeInputObj.elem === 'textarea') || activeInputObj.attr.type) {
+        if (!activeInputObj.attr[elemKey]) {
+            const attrValueInput = getHtmlElement({
+                elem: 'input',
+                className: 'attr-value',
+                attr: {
+                    name: elemKey,
+                    placeholder: elemKey,
+                }
+            });
+            
+            getEvent(attrValueInput, 'change', e => {
+                const elem = e.target;
+                const value = elem.value;
+                const name = elem.getAttribute('name');
+                
+                activeInput.inputElem.setAttribute(name, value);
+                activeInputObj.attr[name] = value;
+                console.log(activeInputObj)
+            });
+            
+            setActiveInputTemplate.call(this, attrValueInput);
+        }
+        activeInputObj.attr[elemKey] = elemKey;
+    }
+    console.log(elemKey, parent, nextCol, activeInput);
 }
 
 function getElementBuildForm(row) {
-    const op = this.options;
-    const elemList = op.elements;
+    const mainTemplate = getTemplate(elementForm.elements);
+    const typeTemplate = getTemplate(elementForm.type);
+    const formAttrTemplate = getTemplate(elementForm.formAttr);
     
-    const elemWrap = getHtmlElement({
+    this.activeIntup = {};
+    this.activeIntup.obj = {};
+    
+    this.activeIntup.template = getHtmlElement({
         elem: 'div',
-        className: 'elem-list'
+        className: 'active-input'
     });
     
-    const ulElem = getHtmlElement({
-        elem: 'ul'
-    });
+    hidden(typeTemplate);
+    hidden(formAttrTemplate);
     
-    let li;
+    getEvent(row, 'click', setElementForm.bind(this));
     
-    for (let key in elemList) {
-        li = getHtmlElement({
-            elem: 'li',
-            className: 'elem-item',
-            attr: {
-                'data-key': key,
-            },
-            content: key,
-        });
-        
-        getEvent(li, 'click', (e) => {
-            addElem.call(this, row, e);
-        });
-        
-        ulElem.append(li);
-    }
-    
-    elemWrap.append(ulElem);
-    
-    row.append(elemWrap);
+    row.append(mainTemplate, typeTemplate, formAttrTemplate, this.activeIntup.template);
 }
 
 export default getElementBuildForm;
