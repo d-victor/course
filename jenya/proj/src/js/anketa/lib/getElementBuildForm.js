@@ -5,7 +5,6 @@ import elementForm from "./elementForm";
 function getTemplate(itemList){
     const wrapper = getHtmlElement({
         elem: 'div',
-
     });
 
     const ul = getHtmlElement({
@@ -48,12 +47,16 @@ function setElementForm(e){
     const elem = e.target;
     // console.log(e.currentTarget, e.target);
     if(e.currentTarget === elem || elem.classList.contains('addContent') || elem.dataset.sample === '1' || elem.classList.contains('active-input') || elem.classList.contains('attr-value')) return;
-
+    // added class modificator
+    elem.classList.add('checked-input');
+    
     const elemKey = elem.dataset.key;
     const activeInput = this.activeInput;
     const activeInputObj = activeInput.obj;
     const parent = elem.parentElement.parentElement;
     const nextCol = parent.nextElementSibling;
+
+    console.log(activeInput.template);
 
     if(!activeInputObj.elem){
         activeInputObj.elem = elemKey;
@@ -120,16 +123,29 @@ function setElementForm(e){
                 const value = elem.value;
                 const name = elem.getAttribute('name');
                 
-                activeInput.inputElem.setAttribute(name, value)
+                activeInput.inputElem.setAttribute(name, value);
+
+                // activeInput.inputElem.classList.add('checked-input');
+
                 activeInputObj.attr[name] = value;
             });
+
+            
+            getEvent(activeInput.template, 'click', () => {
+                const conf = confirm('Do you want to delete this elem?');
+                if(!conf) return;
+                const el = e.target;
+                console.log(el, activeInput);
+
+                // activeInput.template.remove();
+            })
 
             setActiveInputTemplate.call(this, attrValueInput);
         }
         activeInputObj.attr[elemKey] = elemKey;
     }
 
-    console.log(elemKey, parent, nextCol, activeInput);
+    // console.log(activeInput.inputElem);
 }
 
 function getElementBuildForm(row){

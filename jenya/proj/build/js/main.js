@@ -5359,12 +5359,15 @@ function setActiveInputTemplate(elem) {
 function setElementForm(e) {
   var elem = e.target; // console.log(e.currentTarget, e.target);
 
-  if (e.currentTarget === elem || elem.classList.contains('addContent') || elem.dataset.sample === '1' || elem.classList.contains('active-input') || elem.classList.contains('attr-value')) return;
+  if (e.currentTarget === elem || elem.classList.contains('addContent') || elem.dataset.sample === '1' || elem.classList.contains('active-input') || elem.classList.contains('attr-value')) return; // added class modificator
+
+  elem.classList.add('checked-input');
   var elemKey = elem.dataset.key;
   var activeInput = this.activeInput;
   var activeInputObj = activeInput.obj;
   var parent = elem.parentElement.parentElement;
   var nextCol = parent.nextElementSibling;
+  console.log(activeInput.template);
 
   if (!activeInputObj.elem) {
     activeInputObj.elem = elemKey;
@@ -5427,16 +5430,22 @@ function setElementForm(e) {
         var elem = e.target;
         var value = elem.value;
         var name = elem.getAttribute('name');
-        activeInput.inputElem.setAttribute(name, value);
+        activeInput.inputElem.setAttribute(name, value); // activeInput.inputElem.classList.add('checked-input');
+
         activeInputObj.attr[name] = value;
+      });
+      Object(_getEvent__WEBPACK_IMPORTED_MODULE_14__["default"])(activeInput.template, 'click', function () {
+        var conf = confirm('Do you want to delete this elem?');
+        if (!conf) return;
+        var el = e.target;
+        console.log(el, activeInput); // activeInput.template.remove();
       });
       setActiveInputTemplate.call(this, attrValueInput);
     }
 
     activeInputObj.attr[elemKey] = elemKey;
-  }
+  } // console.log(activeInput.inputElem);
 
-  console.log(elemKey, parent, nextCol, activeInput);
 }
 
 function getElementBuildForm(row) {
