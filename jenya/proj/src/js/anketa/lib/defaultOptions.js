@@ -1,33 +1,14 @@
 const defaultOptions = {
     wrapper: document.querySelector('body'),
     storageKey: 'formBuilder',
+    formClass: 'formBuilder',
+    inputDefaultClass: 'form-builder-input',
     elements: {
-        html: ['id', 'className', 'customAttr'],
-        form: ['action', 'autocomplete', 'method', 'name'],
-        globalAttr: [
-            'name',
-            'value',
-            'readonly',
-            'disabled',
-            'maxlength',
-            'min',
-            'max',
-            'pattern',
-            'multiple',
-            'placeholder',
-            'required',
-            'step',
-            'autofocus',
-            'autocomplete',
-            'option',
-            'selected',
-        ],
         label: ['for'],
         input: [
             'button',
             'checkbox',
             'file',
-            'hidden',
             'image',
             'password',
             'radio',
@@ -59,6 +40,29 @@ const defaultOptions = {
             'submit',
         ],
     },
-    mode: 'admin'
-}
+    attrElemForm: {
+        globalAttr: [
+            'type',
+            'name',
+            'hidden',
+            'value',
+            'readonly',
+            'disabled',
+            'maxlength',
+            'min',
+            'max',
+            'pattern',
+            'multiple',
+            'placeholder',
+            'required',
+            'step',
+            'autofocus',
+            'autocomplete',
+            'selected',
+        ],
+    },
+    mode: 'admin',
+    form: ['action', 'autocomplete', 'method', 'name'],
+};
+
 export default defaultOptions;
