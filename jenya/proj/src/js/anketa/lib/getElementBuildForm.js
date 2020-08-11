@@ -56,7 +56,7 @@ function setElementForm(e){
     const parent = elem.parentElement.parentElement;
     const nextCol = parent.nextElementSibling;
 
-    console.log(activeInput.template);
+    console.log(activeInput);
 
     if(!activeInputObj.elem){
         activeInputObj.elem = elemKey;
@@ -130,15 +130,25 @@ function setElementForm(e){
                 activeInputObj.attr[name] = value;
             });
 
-            
-            getEvent(activeInput.template, 'click', () => {
-                const conf = confirm('Do you want to delete this elem?');
-                if(!conf) return;
-                const el = e.target;
-                console.log(el, activeInput);
-
-                // activeInput.template.remove();
+            parent.children.forEach((el) => {
+                getEvent(el, 'click', () => {
+                    // console.log(e.target.getAttribute('data-key'));
+                    // console.log(activeInputObj.attr[elemKey]);
+                    console.log(activeInputObj.attr);
+                    const tar = e.target.getAttribute('data-key');
+                    const attrDel = activeInputObj.attr[elemKey];
+                    if(tar === attrDel) attrValueInput.hasAttribute(tar).remove();
+                })
             })
+
+            // getEvent(parent.children, 'click', (e) => {
+            //     // const conf = confirm('Do you want to delete this elem?');
+            //     // if(!conf) return;
+            //     // attrValueInput.remove();
+            //     // console.log(attrValueInput);
+            //     // console.log(parent.children);
+                
+            // })
 
             setActiveInputTemplate.call(this, attrValueInput);
         }

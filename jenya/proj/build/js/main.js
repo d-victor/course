@@ -5367,7 +5367,7 @@ function setElementForm(e) {
   var activeInputObj = activeInput.obj;
   var parent = elem.parentElement.parentElement;
   var nextCol = parent.nextElementSibling;
-  console.log(activeInput.template);
+  console.log(activeInput);
 
   if (!activeInputObj.elem) {
     activeInputObj.elem = elemKey;
@@ -5434,12 +5434,23 @@ function setElementForm(e) {
 
         activeInputObj.attr[name] = value;
       });
-      Object(_getEvent__WEBPACK_IMPORTED_MODULE_14__["default"])(activeInput.template, 'click', function () {
-        var conf = confirm('Do you want to delete this elem?');
-        if (!conf) return;
-        var el = e.target;
-        console.log(el, activeInput); // activeInput.template.remove();
-      });
+      parent.children.forEach(function (el) {
+        Object(_getEvent__WEBPACK_IMPORTED_MODULE_14__["default"])(el, 'click', function () {
+          // console.log(e.target.getAttribute('data-key'));
+          // console.log(activeInputObj.attr[elemKey]);
+          console.log(activeInputObj.attr);
+          var tar = e.target.getAttribute('data-key');
+          var attrDel = activeInputObj.attr[elemKey];
+          if (tar === attrDel) attrValueInput.hasAttribute(tar).remove();
+        });
+      }); // getEvent(parent.children, 'click', (e) => {
+      //     // const conf = confirm('Do you want to delete this elem?');
+      //     // if(!conf) return;
+      //     // attrValueInput.remove();
+      //     // console.log(attrValueInput);
+      //     // console.log(parent.children);
+      // })
+
       setActiveInputTemplate.call(this, attrValueInput);
     }
 
