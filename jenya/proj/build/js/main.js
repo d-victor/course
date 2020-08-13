@@ -5361,13 +5361,12 @@ function setElementForm(e) {
 
   if (e.currentTarget === elem || elem.classList.contains('addContent') || elem.dataset.sample === '1' || elem.classList.contains('active-input') || elem.classList.contains('attr-value')) return; // added class modificator
 
-  elem.classList.add('checked-input');
+  elem.classList.toggle('checked-input');
   var elemKey = elem.dataset.key;
   var activeInput = this.activeInput;
   var activeInputObj = activeInput.obj;
   var parent = elem.parentElement.parentElement;
-  var nextCol = parent.nextElementSibling;
-  console.log(activeInput);
+  var nextCol = parent.nextElementSibling; // console.log(activeInput);
 
   if (!activeInputObj.elem) {
     activeInputObj.elem = elemKey;
@@ -5435,13 +5434,18 @@ function setElementForm(e) {
         activeInputObj.attr[name] = value;
       });
       parent.children.forEach(function (el) {
-        Object(_getEvent__WEBPACK_IMPORTED_MODULE_14__["default"])(el, 'click', function () {
-          // console.log(e.target.getAttribute('data-key'));
-          // console.log(activeInputObj.attr[elemKey]);
-          console.log(activeInputObj.attr);
+        Object(_getEvent__WEBPACK_IMPORTED_MODULE_14__["default"])(el, 'click', function (e) {
+          var eElem = e.target;
           var tar = e.target.getAttribute('data-key');
           var attrDel = activeInputObj.attr[elemKey];
-          if (tar === attrDel) attrValueInput.hasAttribute(tar).remove();
+          var wrp = activeInput.template;
+
+          if (tar === attrDel) {
+            console.log(eElem);
+            attrValueInput.remove();
+          }
+
+          ;
         });
       }); // getEvent(parent.children, 'click', (e) => {
       //     // const conf = confirm('Do you want to delete this elem?');
@@ -5693,9 +5697,9 @@ function getRow() {
     rowObj.attr = {
       'data-id': self.rowCount++
     };
-  }
+  } // console.log(self.rowCount);
 
-  console.log(self.rowCount);
+
   rowObj.content = _toConsumableArray(children);
 
   self._saveActiveForm(Object.assign({}, rowObj));

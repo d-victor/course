@@ -2,7 +2,7 @@ import getHtmlElement from "./getHtmlElement";
 import getEvent from "./getEvent";
 import elementForm from "./elementForm";
 
-function getTemplate(itemList){
+function getTemplate(itemList) {
     const wrapper = getHtmlElement({
         elem: 'div',
     });
@@ -17,7 +17,7 @@ function getTemplate(itemList){
     itemList.forEach(item => {
         li = getHtmlElement({
             elem: 'li',
-            attr:{
+            attr: {
                 'data-key': item
             },
             content: item
@@ -31,34 +31,34 @@ function getTemplate(itemList){
     return wrapper;
 }
 
-function show(elem){
+function show(elem) {
     elem.classList.remove('hidden');
 }
 
-function hidden(elem){
+function hidden(elem) {
     elem.classList.add('hidden');
 }
 
-function setActiveInputTemplate(elem){
+function setActiveInputTemplate(elem) {
     this.activeInput.template.append(elem);
 }
 
-function setElementForm(e){
+function setElementForm(e) {
     const elem = e.target;
     // console.log(e.currentTarget, e.target);
-    if(e.currentTarget === elem || elem.classList.contains('addContent') || elem.dataset.sample === '1' || elem.classList.contains('active-input') || elem.classList.contains('attr-value')) return;
+    if (e.currentTarget === elem || elem.classList.contains('addContent') || elem.dataset.sample === '1' || elem.classList.contains('active-input') || elem.classList.contains('attr-value')) return;
     // added class modificator
-    elem.classList.add('checked-input');
-    
+    elem.classList.toggle('checked-input');
+
     const elemKey = elem.dataset.key;
     const activeInput = this.activeInput;
     const activeInputObj = activeInput.obj;
     const parent = elem.parentElement.parentElement;
     const nextCol = parent.nextElementSibling;
 
-    console.log(activeInput);
+    // console.log(activeInput);
 
-    if(!activeInputObj.elem){
+    if (!activeInputObj.elem) {
         activeInputObj.elem = elemKey;
         activeInputObj.attr = {};
 
@@ -66,23 +66,23 @@ function setElementForm(e){
 
         activeInput.inputElem = getHtmlElement({
             elem: elemKey,
-            attr:{
+            attr: {
                 'data-sample': '1'
             }
         });
 
         setActiveInputTemplate.call(this, activeInput.inputElem);
 
-        if(elemKey === 'input' || elemKey === 'button'){
+        if (elemKey === 'input' || elemKey === 'button') {
             show(nextCol);
         } else {
             show(nextCol.nextElementSibling);
         }
-        if(elemKey === 'button'){
+        if (elemKey === 'button') {
             [...nextCol.querySelectorAll('li')].forEach(li => {
                 // console.log(li, 'button', 'reset', 'submit');
                 const key = li.dataset.key;
-                if(key !== 'button' && key !== 'reset' && key !== 'submit') {
+                if (key !== 'button' && key !== 'reset' && key !== 'submit') {
                     hidden(li);
                 }
             });
@@ -99,7 +99,7 @@ function setElementForm(e){
 
             });
         }
-    } else if(activeInputObj.elem === 'button' || activeInputObj.elem === 'input' && !activeInputObj.attr.type){
+    } else if (activeInputObj.elem === 'button' || activeInputObj.elem === 'input' && !activeInputObj.attr.type) {
         // console.log('button && input');
         activeInputObj.attr.type = elemKey;
         activeInput.inputElem.setAttribute('type', elemKey);
@@ -107,13 +107,13 @@ function setElementForm(e){
         show(nextCol);
 
         // console.log(activeInputObj);
-    } else if((activeInputObj.elem === 'select' || activeInputObj.elem === 'textarea') || activeInputObj.attr.type){
+    } else if ((activeInputObj.elem === 'select' || activeInputObj.elem === 'textarea') || activeInputObj.attr.type) {
         console.log('seeeeelect && textarea');
-        if(!activeInputObj.attr[elemKey]){
+        if (!activeInputObj.attr[elemKey]) {
             const attrValueInput = getHtmlElement({
                 elem: 'input',
                 className: 'attr-value',
-                attr:{
+                attr: {
                     name: elemKey,
                     placeholder: elemKey
                 }
@@ -122,7 +122,7 @@ function setElementForm(e){
                 const elem = e.target;
                 const value = elem.value;
                 const name = elem.getAttribute('name');
-                
+
                 activeInput.inputElem.setAttribute(name, value);
 
                 // activeInput.inputElem.classList.add('checked-input');
@@ -131,13 +131,18 @@ function setElementForm(e){
             });
 
             parent.children.forEach((el) => {
-                getEvent(el, 'click', () => {
-                    // console.log(e.target.getAttribute('data-key'));
-                    // console.log(activeInputObj.attr[elemKey]);
-                    console.log(activeInputObj.attr);
+                getEvent(el, 'click', (e) => {
+                    const eElem = e.target;
                     const tar = e.target.getAttribute('data-key');
                     const attrDel = activeInputObj.attr[elemKey];
-                    if(tar === attrDel) attrValueInput.hasAttribute(tar).remove();
+                    const wrp = activeInput.template;
+
+
+                    if (tar === attrDel) {
+                        console.log(eElem);
+                        attrValueInput.remove();
+
+                    };
                 })
             })
 
@@ -147,7 +152,7 @@ function setElementForm(e){
             //     // attrValueInput.remove();
             //     // console.log(attrValueInput);
             //     // console.log(parent.children);
-                
+
             // })
 
             setActiveInputTemplate.call(this, attrValueInput);
@@ -158,7 +163,7 @@ function setElementForm(e){
     // console.log(activeInput.inputElem);
 }
 
-function getElementBuildForm(row){
+function getElementBuildForm(row) {
     const mainTemplate = getTemplate(elementForm.elements);
     const typeTemplate = getTemplate(elementForm.type);
     const formAttrTemplate = getTemplate(elementForm.formAttr);
@@ -174,7 +179,7 @@ function getElementBuildForm(row){
     hidden(typeTemplate);
     hidden(formAttrTemplate);
 
-    
+
     getEvent(row, 'click', setElementForm.bind(this));
 
     row.append(mainTemplate, typeTemplate, formAttrTemplate, this.activeInput.template);
