@@ -4222,6 +4222,153 @@ defineIterator(String, 'String', function (iterated) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/modules/es.string.replace.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/core-js/modules/es.string.replace.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var fixRegExpWellKnownSymbolLogic = __webpack_require__(/*! ../internals/fix-regexp-well-known-symbol-logic */ "./node_modules/core-js/internals/fix-regexp-well-known-symbol-logic.js");
+var anObject = __webpack_require__(/*! ../internals/an-object */ "./node_modules/core-js/internals/an-object.js");
+var toObject = __webpack_require__(/*! ../internals/to-object */ "./node_modules/core-js/internals/to-object.js");
+var toLength = __webpack_require__(/*! ../internals/to-length */ "./node_modules/core-js/internals/to-length.js");
+var toInteger = __webpack_require__(/*! ../internals/to-integer */ "./node_modules/core-js/internals/to-integer.js");
+var requireObjectCoercible = __webpack_require__(/*! ../internals/require-object-coercible */ "./node_modules/core-js/internals/require-object-coercible.js");
+var advanceStringIndex = __webpack_require__(/*! ../internals/advance-string-index */ "./node_modules/core-js/internals/advance-string-index.js");
+var regExpExec = __webpack_require__(/*! ../internals/regexp-exec-abstract */ "./node_modules/core-js/internals/regexp-exec-abstract.js");
+
+var max = Math.max;
+var min = Math.min;
+var floor = Math.floor;
+var SUBSTITUTION_SYMBOLS = /\$([$&'`]|\d\d?|<[^>]*>)/g;
+var SUBSTITUTION_SYMBOLS_NO_NAMED = /\$([$&'`]|\d\d?)/g;
+
+var maybeToString = function (it) {
+  return it === undefined ? it : String(it);
+};
+
+// @@replace logic
+fixRegExpWellKnownSymbolLogic('replace', 2, function (REPLACE, nativeReplace, maybeCallNative, reason) {
+  var REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE = reason.REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE;
+  var REPLACE_KEEPS_$0 = reason.REPLACE_KEEPS_$0;
+  var UNSAFE_SUBSTITUTE = REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE ? '$' : '$0';
+
+  return [
+    // `String.prototype.replace` method
+    // https://tc39.github.io/ecma262/#sec-string.prototype.replace
+    function replace(searchValue, replaceValue) {
+      var O = requireObjectCoercible(this);
+      var replacer = searchValue == undefined ? undefined : searchValue[REPLACE];
+      return replacer !== undefined
+        ? replacer.call(searchValue, O, replaceValue)
+        : nativeReplace.call(String(O), searchValue, replaceValue);
+    },
+    // `RegExp.prototype[@@replace]` method
+    // https://tc39.github.io/ecma262/#sec-regexp.prototype-@@replace
+    function (regexp, replaceValue) {
+      if (
+        (!REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE && REPLACE_KEEPS_$0) ||
+        (typeof replaceValue === 'string' && replaceValue.indexOf(UNSAFE_SUBSTITUTE) === -1)
+      ) {
+        var res = maybeCallNative(nativeReplace, regexp, this, replaceValue);
+        if (res.done) return res.value;
+      }
+
+      var rx = anObject(regexp);
+      var S = String(this);
+
+      var functionalReplace = typeof replaceValue === 'function';
+      if (!functionalReplace) replaceValue = String(replaceValue);
+
+      var global = rx.global;
+      if (global) {
+        var fullUnicode = rx.unicode;
+        rx.lastIndex = 0;
+      }
+      var results = [];
+      while (true) {
+        var result = regExpExec(rx, S);
+        if (result === null) break;
+
+        results.push(result);
+        if (!global) break;
+
+        var matchStr = String(result[0]);
+        if (matchStr === '') rx.lastIndex = advanceStringIndex(S, toLength(rx.lastIndex), fullUnicode);
+      }
+
+      var accumulatedResult = '';
+      var nextSourcePosition = 0;
+      for (var i = 0; i < results.length; i++) {
+        result = results[i];
+
+        var matched = String(result[0]);
+        var position = max(min(toInteger(result.index), S.length), 0);
+        var captures = [];
+        // NOTE: This is equivalent to
+        //   captures = result.slice(1).map(maybeToString)
+        // but for some reason `nativeSlice.call(result, 1, result.length)` (called in
+        // the slice polyfill when slicing native arrays) "doesn't work" in safari 9 and
+        // causes a crash (https://pastebin.com/N21QzeQA) when trying to debug it.
+        for (var j = 1; j < result.length; j++) captures.push(maybeToString(result[j]));
+        var namedCaptures = result.groups;
+        if (functionalReplace) {
+          var replacerArgs = [matched].concat(captures, position, S);
+          if (namedCaptures !== undefined) replacerArgs.push(namedCaptures);
+          var replacement = String(replaceValue.apply(undefined, replacerArgs));
+        } else {
+          replacement = getSubstitution(matched, S, position, captures, namedCaptures, replaceValue);
+        }
+        if (position >= nextSourcePosition) {
+          accumulatedResult += S.slice(nextSourcePosition, position) + replacement;
+          nextSourcePosition = position + matched.length;
+        }
+      }
+      return accumulatedResult + S.slice(nextSourcePosition);
+    }
+  ];
+
+  // https://tc39.github.io/ecma262/#sec-getsubstitution
+  function getSubstitution(matched, str, position, captures, namedCaptures, replacement) {
+    var tailPos = position + matched.length;
+    var m = captures.length;
+    var symbols = SUBSTITUTION_SYMBOLS_NO_NAMED;
+    if (namedCaptures !== undefined) {
+      namedCaptures = toObject(namedCaptures);
+      symbols = SUBSTITUTION_SYMBOLS;
+    }
+    return nativeReplace.call(replacement, symbols, function (match, ch) {
+      var capture;
+      switch (ch.charAt(0)) {
+        case '$': return '$';
+        case '&': return matched;
+        case '`': return str.slice(0, position);
+        case "'": return str.slice(tailPos);
+        case '<':
+          capture = namedCaptures[ch.slice(1, -1)];
+          break;
+        default: // \d\d?
+          var n = +ch;
+          if (n === 0) return match;
+          if (n > m) {
+            var f = floor(n / 10);
+            if (f === 0) return match;
+            if (f <= m) return captures[f - 1] === undefined ? ch.charAt(1) : captures[f - 1] + ch.charAt(1);
+            return match;
+          }
+          capture = captures[n - 1];
+      }
+      return capture === undefined ? '' : capture;
+    });
+  }
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/modules/es.string.split.js":
 /*!*********************************************************!*\
   !*** ./node_modules/core-js/modules/es.string.split.js ***!
@@ -5280,17 +5427,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/core-js/modules/es.object.to-string.js");
 /* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var core_js_modules_es_regexp_to_string__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! core-js/modules/es.regexp.to-string */ "./node_modules/core-js/modules/es.regexp.to-string.js");
-/* harmony import */ var core_js_modules_es_regexp_to_string__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_regexp_to_string__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! core-js/modules/es.string.iterator */ "./node_modules/core-js/modules/es.string.iterator.js");
-/* harmony import */ var core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! core-js/modules/web.dom-collections.iterator */ "./node_modules/core-js/modules/web.dom-collections.iterator.js");
-/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_12__);
-/* harmony import */ var _getHtmlElement__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./getHtmlElement */ "./src/js/anketa/lib/getHtmlElement.js");
-/* harmony import */ var _getEvent__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./getEvent */ "./src/js/anketa/lib/getEvent.js");
-/* harmony import */ var _elementForm__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./elementForm */ "./src/js/anketa/lib/elementForm.js");
+/* harmony import */ var core_js_modules_es_regexp_exec__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! core-js/modules/es.regexp.exec */ "./node_modules/core-js/modules/es.regexp.exec.js");
+/* harmony import */ var core_js_modules_es_regexp_exec__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_regexp_exec__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var core_js_modules_es_regexp_to_string__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! core-js/modules/es.regexp.to-string */ "./node_modules/core-js/modules/es.regexp.to-string.js");
+/* harmony import */ var core_js_modules_es_regexp_to_string__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_regexp_to_string__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! core-js/modules/es.string.iterator */ "./node_modules/core-js/modules/es.string.iterator.js");
+/* harmony import */ var core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_iterator__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! core-js/modules/es.string.replace */ "./node_modules/core-js/modules/es.string.replace.js");
+/* harmony import */ var core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! core-js/modules/web.dom-collections.iterator */ "./node_modules/core-js/modules/web.dom-collections.iterator.js");
+/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var _getHtmlElement__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./getHtmlElement */ "./src/js/anketa/lib/getHtmlElement.js");
+/* harmony import */ var _getEvent__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./getEvent */ "./src/js/anketa/lib/getEvent.js");
+/* harmony import */ var _elementForm__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./elementForm */ "./src/js/anketa/lib/elementForm.js");
+
+
 
 
 
@@ -5322,16 +5475,16 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 function getTemplate(itemList) {
-  var wrapper = Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_13__["default"])({
+  var wrapper = Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_15__["default"])({
     elem: 'div'
   });
-  var ul = Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_13__["default"])({
+  var ul = Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_15__["default"])({
     elem: 'ul',
     className: 'elem-list'
   });
   var li;
   itemList.forEach(function (item) {
-    li = Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_13__["default"])({
+    li = Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_15__["default"])({
       elem: 'li',
       attr: {
         'data-key': item
@@ -5357,8 +5510,10 @@ function setActiveInputTemplate(elem) {
 }
 
 function setElementForm(e) {
+  var _this = this;
+
   var elem = e.target;
-  if (e.currentTarget === e.target || elem.classList.contains('addContent') || elem.dataset.sample === '1' || elem.classList.contains('active-input') || elem.classList.contains('attr-value')) return;
+  if (e.currentTarget === e.target || elem.classList.contains('addContent') || elem.dataset.sample === '1' || elem.classList.contains('active-input') || elem.classList.contains('attr-value') || elem.classList.contains('add-option-btn') || elem.classList.contains('validate-content')) return;
   var elemKey = elem.dataset.key;
   var activeInput = this.activeIntup;
   var activeInputObj = activeInput.obj;
@@ -5373,11 +5528,19 @@ function setElementForm(e) {
     }
   };
 
+  if (elem.classList.contains('add')) {
+    activeInput.inputElem.removeAttribute(elemKey);
+    delete activeInputObj.attr[elemKey];
+    this.activeIntup.template.querySelector("[name=".concat(elemKey, "]")).remove();
+    elem.classList.remove('add');
+    return;
+  }
+
   if (!activeInputObj.elem) {
     activeInputObj.elem = elemKey;
     activeInputObj.attr = {};
     hidden(parent);
-    activeInput.inputElem = Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_13__["default"])({
+    activeInput.inputElem = Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_15__["default"])({
       elem: elemKey,
       attr: {
         'data-sample': '1'
@@ -5410,14 +5573,84 @@ function setElementForm(e) {
         activeInput.inputElem.textContent = data.value;
       });
     }
+
+    if (elemKey === 'select') {
+      activeInputObj.content = [];
+      var addOptionBtn = Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_15__["default"])({
+        elem: 'button',
+        className: 'add-option-btn',
+        attr: {
+          type: 'button'
+        },
+        content: 'Add option'
+      });
+      Object(_getEvent__WEBPACK_IMPORTED_MODULE_16__["default"])(addOptionBtn, 'click', function (e) {
+        _this.options.modal.promt([{
+          elem: 'input',
+          attr: {
+            name: 'value',
+            placeholder: 'value'
+          }
+        }, {
+          elem: 'label',
+          attr: {
+            for: 'selected'
+          },
+          content: 'selected'
+        }, {
+          elem: 'input',
+          attr: {
+            type: 'checkbox',
+            name: 'selected',
+            id: 'selected'
+          }
+        }, {
+          elem: 'label',
+          attr: {
+            for: 'disabled'
+          },
+          content: 'disabled'
+        }, {
+          elem: 'input',
+          attr: {
+            type: 'checkbox',
+            name: 'disabled',
+            id: 'disabled'
+          }
+        }], true).then(function (data) {
+          var option = {
+            elem: 'option',
+            attr: {},
+            content: ''
+          };
+
+          for (var key in data) {
+            if (key === 'value') {
+              option.content = data[key];
+            }
+
+            if (data[key]) {
+              option.attr[key] = '';
+            }
+          }
+
+          activeInput.inputElem.append(Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_15__["default"])(option));
+          activeInputObj.content.push(option);
+          console.log(activeInputObj);
+        });
+
+        var options = Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_15__["default"])();
+      });
+      setActiveInputTemplate.call(this, addOptionBtn);
+    }
   } else if (activeInputObj.elem === 'button' || activeInputObj.elem === 'input' && !activeInputObj.attr.type) {
     activeInputObj.attr.type = elemKey;
     activeInput.inputElem.setAttribute('type', elemKey);
     hidden(parent);
     show(nextCol);
   } else if (activeInputObj.elem === 'select' || activeInputObj.elem === 'textarea' || activeInputObj.attr.type) {
-    if (!activeInputObj.attr[elemKey]) {
-      var attrValueInput = Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_13__["default"])({
+    if (!activeInputObj.attr[elemKey] && elemKey !== 'custom' && elemKey !== 'required') {
+      var attrValueInput = Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_15__["default"])({
         elem: 'input',
         className: 'attr-value',
         attr: {
@@ -5425,7 +5658,8 @@ function setElementForm(e) {
           placeholder: elemKey
         }
       });
-      Object(_getEvent__WEBPACK_IMPORTED_MODULE_14__["default"])(attrValueInput, 'change', function (e) {
+      elem.classList.add('add');
+      Object(_getEvent__WEBPACK_IMPORTED_MODULE_16__["default"])(attrValueInput, 'change', function (e) {
         var elem = e.target;
         var value = elem.value;
         var name = elem.getAttribute('name');
@@ -5434,6 +5668,101 @@ function setElementForm(e) {
         console.log(activeInputObj);
       });
       setActiveInputTemplate.call(this, attrValueInput);
+    } else if (elemKey === 'custom') {
+      var attrValueInputName = {
+        elem: 'input',
+        className: 'attr-name',
+        attr: {
+          name: 'name' + elemKey,
+          placeholder: 'name Attr'
+        }
+      };
+      var attrValueInputValue = {
+        elem: 'input',
+        className: 'attr-value',
+        attr: {
+          name: elemKey,
+          placeholder: 'Enter value attr'
+        }
+      };
+      this.options.modal.promt([attrValueInputName, attrValueInputValue], true).then(function (data) {
+        console.log(data);
+        var attrValueInput = Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_15__["default"])({
+          elem: 'input',
+          className: 'attr-value',
+          attr: {
+            name: data['namecustom'],
+            value: data['custom']
+          }
+        });
+        activeInput.inputElem.setAttribute(data['namecustom'], data['custom']);
+        activeInputObj.attr[data['namecustom']] = data['custom'];
+        setActiveInputTemplate.call(_this, attrValueInput);
+      });
+    } else if (elemKey === 'required') {
+      var selectValidateContent = Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_15__["default"])({
+        elem: 'select',
+        className: 'validate-content',
+        attr: {
+          name: 'validateContent'
+        },
+        content: [{
+          elem: 'option',
+          content: 'Select rul validation'
+        }, {
+          elem: 'option',
+          attr: {
+            value: 'number'
+          },
+          content: 'Only number'
+        }, {
+          elem: 'option',
+          attr: {
+            value: 'string'
+          },
+          content: 'Only letter'
+        }, {
+          elem: 'option',
+          attr: {
+            value: 'string_number'
+          },
+          content: 'Only letter or number'
+        }, {
+          elem: 'option',
+          attr: {
+            value: 'custom'
+          },
+          content: 'Custom validate'
+        }]
+      });
+      Object(_getEvent__WEBPACK_IMPORTED_MODULE_16__["default"])(selectValidateContent, 'change', function (e) {
+        var validateRulKey = e.target.value;
+        Object(_getEvent__WEBPACK_IMPORTED_MODULE_16__["default"])(activeInput.inputElem, 'input', function (e) {
+          var input = e.target;
+          var inputValue = input.value;
+
+          if (validateRulKey === 'number' && /\D/.test(inputValue)) {
+            console.log(1);
+            input.classList.add('error');
+            inputValue = inputValue.replace(/\D/ig, '');
+            input.value = inputValue;
+          } else if (validateRulKey === 'number' && !/\D/.test(inputValue)) {
+            input.classList.remove('error');
+          }
+
+          console.log(/[^\D]+/.test(inputValue));
+
+          if (validateRulKey === 'string' && /[^\D]+/.test(inputValue)) {
+            console.log(1);
+            input.classList.add('error');
+            inputValue = inputValue.replace(/[^\D]+/g, '');
+            input.value = inputValue;
+          } else if (validateRulKey === 'string' && !/[^\D]+/.test(inputValue)) {
+            input.classList.remove('error');
+          }
+        });
+      });
+      setActiveInputTemplate.call(this, selectValidateContent);
     }
 
     activeInputObj.attr[elemKey] = elemKey;
@@ -5443,18 +5772,18 @@ function setElementForm(e) {
 }
 
 function getElementBuildForm(row) {
-  var mainTemplate = getTemplate(_elementForm__WEBPACK_IMPORTED_MODULE_15__["default"].elements);
-  var typeTemplate = getTemplate(_elementForm__WEBPACK_IMPORTED_MODULE_15__["default"].type);
-  var formAttrTemplate = getTemplate(_elementForm__WEBPACK_IMPORTED_MODULE_15__["default"].formAttr);
+  var mainTemplate = getTemplate(_elementForm__WEBPACK_IMPORTED_MODULE_17__["default"].elements);
+  var typeTemplate = getTemplate(_elementForm__WEBPACK_IMPORTED_MODULE_17__["default"].type);
+  var formAttrTemplate = getTemplate(_elementForm__WEBPACK_IMPORTED_MODULE_17__["default"].formAttr);
   this.activeIntup = {};
   this.activeIntup.obj = {};
-  this.activeIntup.template = Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_13__["default"])({
+  this.activeIntup.template = Object(_getHtmlElement__WEBPACK_IMPORTED_MODULE_15__["default"])({
     elem: 'div',
     className: 'active-input'
   });
   hidden(typeTemplate);
   hidden(formAttrTemplate);
-  Object(_getEvent__WEBPACK_IMPORTED_MODULE_14__["default"])(row, 'click', setElementForm.bind(this));
+  Object(_getEvent__WEBPACK_IMPORTED_MODULE_16__["default"])(row, 'click', setElementForm.bind(this));
   row.append(mainTemplate, typeTemplate, formAttrTemplate, this.activeIntup.template);
 }
 
@@ -5899,7 +6228,7 @@ var GetModal = /*#__PURE__*/function () {
               elem.classList.remove('error');
             }
 
-            data[elem.name] = elem.value;
+            data[elem.name] = elem.getAttribute('type') === 'checkbox' || elem.getAttribute('type') === 'radio' ? elem.checked : elem.value;
           });
 
           if (validateStatus) {

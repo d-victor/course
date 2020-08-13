@@ -45,7 +45,7 @@ function setActiveInputTemplate(elem) {
 
 function setElementForm(e) {
     const elem = e.target;
-    if (e.currentTarget === e.target || elem.classList.contains('addContent') || elem.dataset.sample === '1' || elem.classList.contains('active-input') || elem.classList.contains('attr-value')) return;
+    if (e.currentTarget === e.target || elem.classList.contains('addContent') || elem.dataset.sample === '1' || elem.classList.contains('active-input') || elem.classList.contains('attr-value') || elem.classList.contains('add-option-btn') || elem.classList.contains('validate-content')) return;
     
     const elemKey = elem.dataset.key;
     const activeInput = this.activeIntup;
@@ -60,6 +60,15 @@ function setElementForm(e) {
             value: 'dfds',
         }
     };
+    
+    if (elem.classList.contains('add')) {
+        activeInput.inputElem.removeAttribute(elemKey);
+        delete activeInputObj.attr[elemKey];
+        this.activeIntup.template.querySelector(`[name=${elemKey}]`).remove();
+        elem.classList.remove('add');
+        
+        return;
+    }
     
     if (!activeInputObj.elem) {
         activeInputObj.elem = elemKey;
@@ -99,6 +108,82 @@ function setElementForm(e) {
                 activeInput.inputElem.textContent = data.value;
             });
         }
+        if (elemKey === 'select') {
+            activeInputObj.content = [];
+            
+            const addOptionBtn = getHtmlElement({
+                elem: 'button',
+                className: 'add-option-btn',
+                attr: {
+                    type: 'button'
+                },
+                content: 'Add option'
+            });
+    
+            getEvent(addOptionBtn, 'click', (e) => {
+                this.options.modal.promt([{
+                    elem: 'input',
+                    attr: {
+                        name: 'value',
+                        placeholder: 'value'
+                    }
+                },
+                    {
+                        elem: 'label',
+                        attr: {
+                            for: 'selected'
+                        },
+                        content: 'selected'
+                    },
+                    {
+                        elem: 'input',
+                        attr: {
+                            type: 'checkbox',
+                            name: 'selected',
+                            id: 'selected'
+                        }
+                    },
+                    {
+                        elem: 'label',
+                        attr: {
+                            for: 'disabled'
+                        },
+                        content: 'disabled'
+                    },
+                    {
+                        elem: 'input',
+                        attr: {
+                            type: 'checkbox',
+                            name: 'disabled',
+                            id: 'disabled'
+                        }
+                    }
+                ], true).then(data => {
+                    const option = {
+                        elem: 'option',
+                        attr: {},
+                        content: ''
+                    };
+                    for (let key in data) {
+                        if (key === 'value') {
+                            option.content = data[key];
+                        }
+                        if (data[key]) {
+                            option.attr[key] = '';
+                        }
+                    }
+                    
+                    activeInput.inputElem.append(getHtmlElement(option));
+                    
+                    activeInputObj.content.push(option);
+                    
+                    console.log(activeInputObj);
+                });
+                const options = getHtmlElement()
+            });
+    
+            setActiveInputTemplate.call(this, addOptionBtn);
+        }
     } else if (activeInputObj.elem === 'button' || activeInputObj.elem === 'input' && !activeInputObj.attr.type) {
         activeInputObj.attr.type = elemKey;
         activeInput.inputElem.setAttribute('type', elemKey);
@@ -107,7 +192,7 @@ function setElementForm(e) {
         show(nextCol);
         
     } else if ((activeInputObj.elem === 'select' || activeInputObj.elem === 'textarea') || activeInputObj.attr.type) {
-        if (!activeInputObj.attr[elemKey]) {
+        if (!activeInputObj.attr[elemKey] && elemKey !== 'custom' && elemKey !== 'required') {
             const attrValueInput = getHtmlElement({
                 elem: 'input',
                 className: 'attr-value',
@@ -116,6 +201,8 @@ function setElementForm(e) {
                     placeholder: elemKey,
                 }
             });
+            
+            elem.classList.add('add');
             
             getEvent(attrValueInput, 'change', e => {
                 const elem = e.target;
@@ -128,6 +215,108 @@ function setElementForm(e) {
             });
             
             setActiveInputTemplate.call(this, attrValueInput);
+        } else if (elemKey === 'custom') {
+            const attrValueInputName = {
+                elem: 'input',
+                className: 'attr-name',
+                attr: {
+                    name: 'name' + elemKey,
+                    placeholder: 'name Attr',
+                }
+            };
+            const attrValueInputValue = {
+                elem: 'input',
+                className: 'attr-value',
+                attr: {
+                    name: elemKey,
+                    placeholder: 'Enter value attr',
+                }
+            };
+            this.options.modal.promt([attrValueInputName, attrValueInputValue], true)
+                .then((data) => {
+                    console.log(data);
+                    const attrValueInput = getHtmlElement({
+                        elem: 'input',
+                        className: 'attr-value',
+                        attr: {
+                            name: data['namecustom'],
+                            value: data['custom'],
+                        }
+                    });
+                    activeInput.inputElem.setAttribute(data['namecustom'], data['custom']);
+                    activeInputObj.attr[data['namecustom']] = data['custom'];
+                    
+                    setActiveInputTemplate.call(this, attrValueInput);
+                });
+        } else if (elemKey === 'required') {
+            const selectValidateContent = getHtmlElement({
+                elem: 'select',
+                className: 'validate-content',
+                attr: {
+                    name: 'validateContent',
+                },
+                content: [
+                    {
+                        elem: 'option',
+                        content: 'Select rul validation'
+                    },
+                    {
+                        elem: 'option',
+                        attr: {
+                            value: 'number',
+                        },
+                        content: 'Only number'
+                    },
+                    {
+                        elem: 'option',
+                        attr: {
+                            value: 'string',
+                        },
+                        content: 'Only letter'
+                    },
+                    {
+                        elem: 'option',
+                        attr: {
+                            value: 'string_number',
+                        },
+                        content: 'Only letter or number'
+                    },
+                    {
+                        elem: 'option',
+                        attr: {
+                            value: 'custom',
+                        },
+                        content: 'Custom validate'
+                    },
+                ]
+            });
+            
+            getEvent(selectValidateContent, 'change', (e) => {
+                const validateRulKey = e.target.value;
+                
+                getEvent(activeInput.inputElem, 'input', (e)=>{
+                    const input = e.target;
+                    let inputValue = input.value;
+                    
+                    if (validateRulKey === 'number' && /\D/.test(inputValue)) {console.log(1);
+                        input.classList.add('error');
+                        inputValue = inputValue.replace(/\D/ig, '');
+                        input.value = inputValue;
+                    } else if (validateRulKey === 'number' && !/\D/.test(inputValue)) {
+                        input.classList.remove('error');
+                    }
+                    console.log(/[^\D]+/.test(inputValue));
+                    if (validateRulKey === 'string' && /[^\D]+/.test(inputValue)) {console.log(1);
+                        input.classList.add('error');
+                        inputValue = inputValue.replace(/[^\D]+/g, '');
+                        input.value = inputValue;
+                    } else if (validateRulKey === 'string' && !/[^\D]+/.test(inputValue)) {
+                        input.classList.remove('error');
+                    }
+                })
+            });
+            
+            setActiveInputTemplate.call(this, selectValidateContent);
         }
         activeInputObj.attr[elemKey] = elemKey;
     }

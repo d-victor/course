@@ -48,7 +48,7 @@ class GetModal {
                         elem.classList.remove('error');
                     }
     
-                    data[elem.name] = elem.value;
+                    data[elem.name] = (elem.getAttribute('type') === 'checkbox' || elem.getAttribute('type') === 'radio') ? elem.checked : elem.value;
                 });
                 
                 if (validateStatus) {

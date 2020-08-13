@@ -6,6 +6,15 @@
     border: 1px solid grey;
 }
 
+.add {
+    background-color: lightgrey;
+}
+
+.error {
+    color: red;
+    border-color: red;
+}
+
 .elem-list {
     list-style-type: none;
     padding-left: 20px;
