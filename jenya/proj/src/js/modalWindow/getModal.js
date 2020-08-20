@@ -21,11 +21,11 @@ class GetModal {
         })
     }
     
-    promt(content = [], changeContentStatus = false) {
+    promt(content = [], changeContentStatus = false) {console.log(content, changeContentStatus)
         if (changeContentStatus) {
             this.modalContent.innerHTML = '';
-
-            content.map((elem) => {
+            
+            content.map((elem)=> {
                 elem = getHtmlElement(elem);
                 this.modalContent.append(elem);
         
@@ -48,7 +48,7 @@ class GetModal {
                         elem.classList.remove('error');
                     }
     
-                    data[elem.name] = elem.value;
+                    data[elem.name] = (elem.getAttribute('type') === 'checkbox' || elem.getAttribute('type') === 'radio') ? elem.checked : elem.value;
                 });
                 
                 if (validateStatus) {
