@@ -8,6 +8,8 @@ import getLocalStorage from "./lib/localstorage/getLocalstorage";
 import getContentBtn from "./lib/getContentBtn";
 import getParentWithAttr from "./lib/getParentWithAttr";
 import getElementBuildForm from "./lib/getElementBuildForm";
+import hidden from "./lib/hidden";
+import show from "./lib/show";
 
 class FormBuilder {
     constructor(options = {}) {
@@ -126,6 +128,45 @@ class FormBuilder {
         });
     }
     
+    saveActiveItem(e) {
+        if (!(this.activeIntup.obj.attr && this.activeIntup.obj.attr.name !== '----')) {
+            alert('Ошибка вы ничего не выбрали');
+            
+            return;
+        }
+        
+        const targetRow = this.activeForm.content.find(row => {
+            return row.attr['data-id'] === this.activeIntup.id;
+        });
+        
+        targetRow.content.push(this.activeIntup.obj);
+    
+        setLocalStorage(JSON.stringify(this.activeForm), this.options.storageKey);
+        
+        hidden(e.currentTarget.nextSibling.nextSibling.nextSibling);
+        show(e.currentTarget.nextSibling);
+        
+        this.clearActiveIntup();
+        
+        console.log(targetRow.content)
+    }
+    
+    clearActiveIntup() {
+        const activeIntup = this.activeIntup;
+        
+        console.log(delete activeIntup.id);
+        console.log(activeIntup.obj = {});
+        console.log(delete activeIntup.inputElem);
+        const formElem = activeIntup.template.firstChild;
+        console.log(activeIntup.template.innerHTML = '');
+        activeIntup.template.append(formElem);
+        
+        document.querySelectorAll('.elem-list li.add').forEach(item => {
+            item.classList.remove('add');
+        });
+        
+    }
+    
     setAdminTemplate() {
         this.addFormBtn = getHtmlElement({
             elem: 'button',
@@ -194,7 +235,7 @@ class FormBuilder {
         }
     }
     
-    getHtmlForm(){
+    getHtmlForm() {
         if (this.options.mode === 'admin') {
             this.activeForm.content.forEach(elem => {
                 this.rowCount = elem.attr['data-id'] > this.rowCount ? elem.attr['data-id'] : this.rowCount;
@@ -202,7 +243,7 @@ class FormBuilder {
                 elem = getHtmlElement(elem);
                 
                 if (elem.children.length === 0) {
-                    elem.append(getContentBtn.call(this));
+                    getContentBtn.call(this, elem);
                 }
                 
                 this.mainForm.append(elem)
@@ -247,6 +288,8 @@ class FormBuilder {
     
     addContent(e) {
         const htmlRow = getParentWithAttr(e.currentTarget, 'data-id');
+        hidden(e.currentTarget);
+        show(e.currentTarget.nextSibling);
         
         getElementBuildForm.apply(this, [htmlRow]);
     }
@@ -264,9 +307,7 @@ class FormBuilder {
     addRow(e) {
         const row = getRow([], this);
         
-        const addContent = getContentBtn.call(this);
-        
-        row.append(addContent);
+        const addContent = getContentBtn.call(this, row);
         
         this.mainForm.append(row);
     }

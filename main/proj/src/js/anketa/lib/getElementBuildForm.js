@@ -1,6 +1,8 @@
 import getHtmlElement from "./getHtmlElement";
 import getEvent from "./getEvent";
 import elementForm from "./elementForm";
+import hidden from "./hidden";
+import show from "./show";
 
 function getTemplate(itemList) {
     const wrapper = getHtmlElement({
@@ -31,13 +33,7 @@ function getTemplate(itemList) {
     return wrapper;
 }
 
-function hidden(elem) {
-    elem.classList.add('hidden');
-}
 
-function show(elem) {
-    elem.classList.remove('hidden');
-}
 
 function setActiveInputTemplate(elem) {
     this.activeIntup.template.append(elem);
@@ -45,7 +41,7 @@ function setActiveInputTemplate(elem) {
 
 function setElementForm(e) {
     const elem = e.target;
-    if (e.currentTarget === e.target || elem.classList.contains('addContent') || elem.dataset.sample === '1' || elem.classList.contains('active-input') || elem.classList.contains('attr-value') || elem.classList.contains('add-option-btn') || elem.classList.contains('validate-content')) return;
+    if (e.currentTarget === e.target || elem.classList.contains('addContent') || elem.dataset.sample === '1' || elem.classList.contains('active-input') || elem.classList.contains('attr-value') || elem.classList.contains('add-option-btn') || elem.classList.contains('validate-content') || elem.classList.contains('saveElem')) return;
     
     const elemKey = elem.dataset.key;
     const activeInput = this.activeIntup;
@@ -192,7 +188,7 @@ function setElementForm(e) {
         show(nextCol);
         
     } else if ((activeInputObj.elem === 'select' || activeInputObj.elem === 'textarea') || activeInputObj.attr.type) {
-        if (!activeInputObj.attr[elemKey] && elemKey !== 'custom' && elemKey !== 'required') {
+        if (!activeInputObj.attr[elemKey] && elemKey !== 'custom' && elemKey !== 'validate') {
             const attrValueInput = getHtmlElement({
                 elem: 'input',
                 className: 'attr-value',
@@ -203,6 +199,7 @@ function setElementForm(e) {
             });
             
             elem.classList.add('add');
+            activeInput.inputElem.setAttribute(elemKey, '');
             
             getEvent(attrValueInput, 'change', e => {
                 const elem = e.target;
@@ -211,8 +208,9 @@ function setElementForm(e) {
                 
                 activeInput.inputElem.setAttribute(name, value);
                 activeInputObj.attr[name] = value;
-                console.log(activeInputObj)
             });
+    
+            activeInputObj.attr[elemKey] = elemKey === 'name' ? '----' : elemKey;
             
             setActiveInputTemplate.call(this, attrValueInput);
         } else if (elemKey === 'custom') {
@@ -248,7 +246,7 @@ function setElementForm(e) {
                     
                     setActiveInputTemplate.call(this, attrValueInput);
                 });
-        } else if (elemKey === 'required') {
+        } else if (elemKey === 'validate') {
             const selectValidateContent = getHtmlElement({
                 elem: 'select',
                 className: 'validate-content',
@@ -293,32 +291,45 @@ function setElementForm(e) {
             
             getEvent(selectValidateContent, 'change', (e) => {
                 const validateRulKey = e.target.value;
+                activeInput.inputElem.value = '';
+                const regExValidate = {
+                    number: /\D/ig,
+                    string: /[^a-zа-яё\s]+/ig,
+                    string_number: /[^a-zа-яё\s\d]+/ig
+                };
+    
+                if (validateRulKey === 'custom') {
+                    this.options.modal.promt([{
+                        elem: 'input',
+                        attr: {
+                            name: 'customValidateRul'
+                        }
+                    }], true).then(data => {
+                        let regexpString = data['customValidateRul'];
+                        regexpString = regexpString[0] === '/' ? regexpString.slice(1) : regexpString;
+                        regexpString = regexpString[regexpString.length - 1] === '/' ? regexpString.slice(0, -1) : regexpString;
+                        regExValidate[validateRulKey] = new RegExp(regexpString);
+                        
+                        activeInputObj.validate = regExValidate[validateRulKey];
+                    });
+                }
                 
-                getEvent(activeInput.inputElem, 'input', (e)=>{
+                activeInput.inputElem.oninput = (e) => {
                     const input = e.target;
                     let inputValue = input.value;
                     
-                    if (validateRulKey === 'number' && /\D/.test(inputValue)) {console.log(1);
+                    if (regExValidate[validateRulKey].test(inputValue)) {
                         input.classList.add('error');
-                        inputValue = inputValue.replace(/\D/ig, '');
+                        inputValue = inputValue.replace(regExValidate[validateRulKey], '');
                         input.value = inputValue;
-                    } else if (validateRulKey === 'number' && !/\D/.test(inputValue)) {
+                    } else if (!regExValidate[validateRulKey].test(inputValue)) {
                         input.classList.remove('error');
                     }
-                    console.log(/[^\D]+/.test(inputValue));
-                    if (validateRulKey === 'string' && /[^\D]+/.test(inputValue)) {console.log(1);
-                        input.classList.add('error');
-                        inputValue = inputValue.replace(/[^\D]+/g, '');
-                        input.value = inputValue;
-                    } else if (validateRulKey === 'string' && !/[^\D]+/.test(inputValue)) {
-                        input.classList.remove('error');
-                    }
-                })
+                }
             });
             
             setActiveInputTemplate.call(this, selectValidateContent);
         }
-        activeInputObj.attr[elemKey] = elemKey;
     }
     console.log(elemKey, parent, nextCol, activeInput);
 }
@@ -330,6 +341,7 @@ function getElementBuildForm(row) {
     
     this.activeIntup = {};
     this.activeIntup.obj = {};
+    this.activeIntup.id = +row.dataset.id;
     
     this.activeIntup.template = getHtmlElement({
         elem: 'div',
@@ -339,7 +351,7 @@ function getElementBuildForm(row) {
     hidden(typeTemplate);
     hidden(formAttrTemplate);
     
-    getEvent(row, 'click', setElementForm.bind(this));
+    row.onclick = setElementForm.bind(this);
     
     row.append(mainTemplate, typeTemplate, formAttrTemplate, this.activeIntup.template);
 }

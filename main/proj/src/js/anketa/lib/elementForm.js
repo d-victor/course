@@ -47,8 +47,8 @@ const elementForm = {
         'autocomplete',
         'selected',
         'size',
-        'multiple',
-        'custom'
+        'custom',
+        'validate'
     ]
 };
 
