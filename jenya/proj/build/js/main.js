@@ -5531,7 +5531,7 @@ function setElementForm(e) {
   if (elem.classList.contains('checked-input')) {
     activeInput.inputElem.removeAttribute(elemKey);
     delete activeInputObj.attr[elemKey];
-    this.activeIntup.template.querySelector("[name=".concat(elemKey, "]")).remove();
+    activeIntup.template.querySelector("[name=".concat(elemKey, "]")).remove();
     elem.classList.remove('checked-input');
     return;
   }
@@ -5740,6 +5740,7 @@ function setElementForm(e) {
         Object(_getEvent__WEBPACK_IMPORTED_MODULE_16__["default"])(activeInput.inputElem, 'input', function (e) {
           var input = e.target;
           var inputValue = input.value;
+          var position = input.selectionStart;
 
           if (validateRulKey === 'number' && /\D/.test(inputValue)) {
             console.log(1);
@@ -5756,6 +5757,7 @@ function setElementForm(e) {
             console.log(1);
             input.classList.add('error');
             inputValue = inputValue.replace(/[^\D]+/g, '');
+            input.selectionEnd = position;
             input.value = inputValue;
           } else if (validateRulKey === 'string' && !/[^\D]+/.test(inputValue)) {
             input.classList.remove('error');

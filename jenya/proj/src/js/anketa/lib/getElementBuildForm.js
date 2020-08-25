@@ -297,6 +297,7 @@ function setElementForm(e) {
                 getEvent(activeInput.inputElem, 'input', (e)=>{
                     const input = e.target;
                     let inputValue = input.value;
+                    let position = input.selectionStart;
                     
                     if (validateRulKey === 'number' && /\D/.test(inputValue)) {console.log(1);
                         input.classList.add('error');
@@ -309,6 +310,9 @@ function setElementForm(e) {
                     if (validateRulKey === 'string' && /[^\D]+/.test(inputValue)) {console.log(1);
                         input.classList.add('error');
                         inputValue = inputValue.replace(/[^\D]+/g, '');
+
+                        input.selectionEnd = position;
+                        
                         input.value = inputValue;
                     } else if (validateRulKey === 'string' && !/[^\D]+/.test(inputValue)) {
                         input.classList.remove('error');
