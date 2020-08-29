@@ -26,7 +26,7 @@ function getContentBtn(parent) {
     getEvent(addContent, 'click', this.addContent.bind(this));
     getEvent(saveElem, 'click', this.saveActiveItem.bind(this));
     
-    parent.append(addContent, saveElem);
+    parent.prepend(addContent, saveElem);
 }
 
 export default getContentBtn;

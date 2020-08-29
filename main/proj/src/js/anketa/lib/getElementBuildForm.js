@@ -3,6 +3,7 @@ import getEvent from "./getEvent";
 import elementForm from "./elementForm";
 import hidden from "./hidden";
 import show from "./show";
+import setLabel from "./setLabel";
 
 function getTemplate(itemList) {
     const wrapper = getHtmlElement({
@@ -41,7 +42,16 @@ function setActiveInputTemplate(elem) {
 
 function setElementForm(e) {
     const elem = e.target;
-    if (e.currentTarget === e.target || elem.classList.contains('addContent') || elem.dataset.sample === '1' || elem.classList.contains('active-input') || elem.classList.contains('attr-value') || elem.classList.contains('add-option-btn') || elem.classList.contains('validate-content') || elem.classList.contains('saveElem')) return;
+    if (e.currentTarget === e.target
+        || elem.classList.contains('addContent')
+        || elem.dataset.sample === '1'
+        || elem.classList.contains('active-input')
+        || elem.classList.contains('attr-value')
+        || elem.classList.contains('add-option-btn')
+        || elem.classList.contains('validate-content')
+        || elem.classList.contains('saveElem')
+        || elem.name === 'label'
+        || elem.classList.contains('label')) return;
     
     const elemKey = elem.dataset.key;
     const activeInput = this.activeIntup;
@@ -78,8 +88,31 @@ function setElementForm(e) {
                 'data-sample': '1'
             }
         });
+    
+        const inputLabel = getHtmlElement({
+            elem: 'input',
+            attr: {
+                type: 'text',
+                name: 'label',
+                'placeholder': 'Add label text'
+            }
+        });
+    
+        getEvent(inputLabel, 'change', setLabel.bind(this));
+    
+        activeInput.inputLabel = {
+            elem: 'label',
+            content: [
+                {
+                    elem: 'span',
+                    className: 'label'
+                },
+                inputLabel,
+                activeInput.inputElem
+            ],
+        };
         
-        setActiveInputTemplate.call(this, activeInput.inputElem);
+        setActiveInputTemplate.call(this, getHtmlElement(activeInput.inputLabel));
         
         if (elemKey === 'input' || elemKey === 'button'){
             show(nextCol);

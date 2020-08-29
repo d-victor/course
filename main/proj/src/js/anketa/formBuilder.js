@@ -10,6 +10,7 @@ import getParentWithAttr from "./lib/getParentWithAttr";
 import getElementBuildForm from "./lib/getElementBuildForm";
 import hidden from "./lib/hidden";
 import show from "./lib/show";
+import Drag from "../drag/drag"
 
 class FormBuilder {
     constructor(options = {}) {
@@ -138,10 +139,14 @@ class FormBuilder {
         const targetRow = this.activeForm.content.find(row => {
             return row.attr['data-id'] === this.activeIntup.id;
         });
-        
-        targetRow.content.push(this.activeIntup.obj);
     
-        setLocalStorage(JSON.stringify(this.activeForm), this.options.storageKey);
+        this.activeIntup.inputLabel.content[1] = this.activeIntup.obj;
+        
+        targetRow.content.push(this.activeIntup.inputLabel);
+   
+        setLocalStorage(JSON.stringify({
+            activeForm: this.activeForm,
+        }), this.options.storageKey);
         
         hidden(e.currentTarget.nextSibling.nextSibling.nextSibling);
         show(e.currentTarget.nextSibling);
@@ -154,11 +159,8 @@ class FormBuilder {
     clearActiveIntup() {
         const activeIntup = this.activeIntup;
         
-        console.log(delete activeIntup.id);
-        console.log(activeIntup.obj = {});
-        console.log(delete activeIntup.inputElem);
         const formElem = activeIntup.template.firstChild;
-        console.log(activeIntup.template.innerHTML = '');
+        
         activeIntup.template.append(formElem);
         
         document.querySelectorAll('.elem-list li.add').forEach(item => {
@@ -198,6 +200,23 @@ class FormBuilder {
             },
             content: 'Add title'
         });
+        
+        this.dragRowBtn = getHtmlElement({
+            elem: 'button',
+            className: 'drag-start-btn hidden',
+            attr: {
+                type:'button'
+            },
+            content: 'Start drag'
+        });
+        
+        getEvent(this.dragRowBtn, 'click', () => {
+            
+            this.drag = new Drag({
+                wrapper: this.mainForm
+            });
+            
+        });
     
         getEvent(this.titleBtn, 'click', this._addTitle.bind(this));
         
@@ -210,7 +229,7 @@ class FormBuilder {
             {
                 elem: 'div',
                 className: 'col-2 sidebar',
-                content: [this.addFormBtn, this.rowBtn, this.titleBtn]
+                content: [this.addFormBtn, this.rowBtn, this.titleBtn, this.dragRowBtn]
             },
             {
                 elem: 'div',
@@ -238,11 +257,12 @@ class FormBuilder {
     getHtmlForm() {
         if (this.options.mode === 'admin') {
             this.activeForm.content.forEach(elem => {
+                
                 this.rowCount = elem.attr['data-id'] > this.rowCount ? elem.attr['data-id'] : this.rowCount;
                 
                 elem = getHtmlElement(elem);
                 
-                if (elem.children.length === 0) {
+                if (elem.dataset.title !== 'title') {
                     getContentBtn.call(this, elem);
                 }
                 
@@ -256,6 +276,7 @@ class FormBuilder {
         this.addFormBtn.classList.add('hidden');
         this.rowBtn.classList.remove('hidden');
         this.titleBtn.classList.remove('hidden');
+        this.dragRowBtn.classList.remove('hidden');
     }
     
     _addTitle(e) {
@@ -275,7 +296,7 @@ class FormBuilder {
             content: [title]
         };
         
-        const row = getRow([newRowObj], this);
+        const row = getRow([newRowObj], this, undefined, 'title');
         
         this.mainForm.append(row);
     }
