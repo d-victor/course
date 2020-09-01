@@ -8,7 +8,7 @@ function getDragBtn() {
         content: 'Drag',
     });
     
-    getEvent(dragBtn, 'click', this._goDrag.bind(this));
+    getEvent(dragBtn, 'mousedown', this._goDrag.bind(this));
     
     return dragBtn;
 }

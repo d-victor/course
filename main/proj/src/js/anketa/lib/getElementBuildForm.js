@@ -42,16 +42,7 @@ function setActiveInputTemplate(elem) {
 
 function setElementForm(e) {
     const elem = e.target;
-    if (e.currentTarget === e.target
-        || elem.classList.contains('addContent')
-        || elem.dataset.sample === '1'
-        || elem.classList.contains('active-input')
-        || elem.classList.contains('attr-value')
-        || elem.classList.contains('add-option-btn')
-        || elem.classList.contains('validate-content')
-        || elem.classList.contains('saveElem')
-        || elem.name === 'label'
-        || elem.classList.contains('label')) return;
+    if (!elem.dataset.key) return;
     
     const elemKey = elem.dataset.key;
     const activeInput = this.activeIntup;

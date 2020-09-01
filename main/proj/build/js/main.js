@@ -5863,7 +5863,7 @@ function setElementForm(e) {
   var _this = this;
 
   var elem = e.target;
-  if (e.currentTarget === e.target || elem.classList.contains('addContent') || elem.dataset.sample === '1' || elem.classList.contains('active-input') || elem.classList.contains('attr-value') || elem.classList.contains('add-option-btn') || elem.classList.contains('validate-content') || elem.classList.contains('saveElem') || elem.name === 'label' || elem.classList.contains('label')) return;
+  if (!elem.dataset.key) return;
   var elemKey = elem.dataset.key;
   var activeInput = this.activeIntup;
   var activeInputObj = activeInput.obj;
@@ -6554,6 +6554,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! core-js/modules/web.dom-collections.iterator */ "./node_modules/core-js/modules/web.dom-collections.iterator.js");
 /* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_16__);
 /* harmony import */ var _lib_getDragBtn__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./lib/getDragBtn */ "./src/js/drag/lib/getDragBtn.js");
+/* harmony import */ var _lib_getSizeElem__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./lib/getSizeElem */ "./src/js/drag/lib/getSizeElem.js");
+/* harmony import */ var _lib_getCoords__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./lib/getCoords */ "./src/js/drag/lib/getCoords.js");
+/* harmony import */ var _lib_getEvent__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./lib/getEvent */ "./src/js/drag/lib/getEvent.js");
 
 
 
@@ -6598,13 +6601,15 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
+
+
+
 var Drag = /*#__PURE__*/function () {
   function Drag() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
     _classCallCheck(this, Drag);
 
-    console.log('sdfasdf');
     if (!options.wrapper) return;
     this.options = _objectSpread({
       dragBtnClass: 'drag-btn',
@@ -6635,13 +6640,86 @@ var Drag = /*#__PURE__*/function () {
     }
   }, {
     key: "_goDrag",
-    value: function _goDrag() {}
+    value: function _goDrag(e) {
+      var _this2 = this;
+
+      var op = this.options;
+      var dragElem = e.currentTarget.parentElement;
+      var styleDropElem = getComputedStyle(dragElem);
+
+      var _getSizeElem = Object(_lib_getSizeElem__WEBPACK_IMPORTED_MODULE_18__["default"])(dragElem),
+          width = _getSizeElem.width,
+          height = _getSizeElem.height;
+
+      var _getCoords = Object(_lib_getCoords__WEBPACK_IMPORTED_MODULE_19__["default"])(dragElem),
+          top = _getCoords.top,
+          left = _getCoords.left;
+
+      var pageY = e.pageY;
+      var pageX = e.pageX;
+      var displayDrop = styleDropElem.display;
+      this.dragElem = dragElem.cloneNode(true);
+
+      if (styleDropElem.margin) {
+        this.dragElem.style.margin = '0';
+      }
+
+      this.dragElem.style.width = "".concat(width, "px");
+      this.dragElem.style.height = "".concat(height, "px");
+      this.dragElem.style.top = "".concat(top, "px");
+      this.dragElem.style.left = "".concat(left, "px");
+      this.dragElem.classList.add(op.dragOn);
+      dragElem.classList.add(op.dragItemActiveWrapper);
+      document.body.append(this.dragElem);
+
+      var goDragging = function goDragging(e) {
+        console.log(top);
+        _this2.dragElem.style.top = "".concat(top - (pageY - e.pageY), "px");
+        _this2.dragElem.style.display = 'none';
+        console.log(document.elementFromPoint(pageX, e.pageY));
+        var isDragElem = '';
+        _this2.dragElem.style.display = displayDrop;
+      };
+
+      var onMouseUp = function onMouseUp() {
+        document.removeEventListener('mouseup', onMouseUp);
+        document.removeEventListener('mousemove', goDragging);
+
+        _this2.dragElem.remove();
+
+        dragElem.classList.remove(op.dragItemActiveWrapper);
+      };
+
+      Object(_lib_getEvent__WEBPACK_IMPORTED_MODULE_20__["default"])(document, 'mouseup', onMouseUp);
+      Object(_lib_getEvent__WEBPACK_IMPORTED_MODULE_20__["default"])(document, 'mousemove', goDragging);
+    }
   }]);
 
   return Drag;
 }();
 
 /* harmony default export */ __webpack_exports__["default"] = (Drag);
+
+/***/ }),
+
+/***/ "./src/js/drag/lib/getCoords.js":
+/*!**************************************!*\
+  !*** ./src/js/drag/lib/getCoords.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var getCoords = function getCoords(elem) {
+  var box = elem.getBoundingClientRect();
+  return {
+    top: box.top,
+    left: box.left
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (getCoords);
 
 /***/ }),
 
@@ -6665,7 +6743,7 @@ function getDragBtn() {
     className: this.options.dragBtnClass,
     content: 'Drag'
   });
-  Object(_getEvent__WEBPACK_IMPORTED_MODULE_1__["default"])(dragBtn, 'click', this._goDrag.bind(this));
+  Object(_getEvent__WEBPACK_IMPORTED_MODULE_1__["default"])(dragBtn, 'mousedown', this._goDrag.bind(this));
   return dragBtn;
 }
 
@@ -6791,6 +6869,26 @@ function getHtmlElement(options) {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (getHtmlElement);
+
+/***/ }),
+
+/***/ "./src/js/drag/lib/getSizeElem.js":
+/*!****************************************!*\
+  !*** ./src/js/drag/lib/getSizeElem.js ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var getSizeElem = function getSizeElem(elem) {
+  return {
+    width: elem.offsetWidth,
+    height: elem.offsetHeight
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (getSizeElem);
 
 /***/ }),
 

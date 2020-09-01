@@ -1,0 +1,21 @@
+.drag-btn {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+[data-drag-id] {
+    position: relative;
+}
+
+.drag-active {
+    border: 1px solid lightgrey;
+    position: fixed;
+    z-index: 1111;
+    background-color: white;
+}
+
+.drag-active-wrapper {
+    opacity: .5;
+}
