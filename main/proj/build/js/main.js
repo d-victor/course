@@ -5541,8 +5541,12 @@ var FormBuilder = /*#__PURE__*/function () {
         content: 'Start drag'
       });
       Object(_lib_getEvent__WEBPACK_IMPORTED_MODULE_11__["default"])(this.dragRowBtn, 'click', function () {
+        var formBuilder = _this3;
         _this3.drag = new _drag_drag__WEBPACK_IMPORTED_MODULE_21__["default"]({
-          wrapper: _this3.mainForm
+          wrapper: _this3.mainForm,
+          afterChange: function afterChange(drag) {
+            console.log(formBuilder, drag);
+          }
         });
       });
       Object(_lib_getEvent__WEBPACK_IMPORTED_MODULE_11__["default"])(this.titleBtn, 'click', this._addTitle.bind(this));
@@ -6557,6 +6561,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_getSizeElem__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./lib/getSizeElem */ "./src/js/drag/lib/getSizeElem.js");
 /* harmony import */ var _lib_getCoords__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./lib/getCoords */ "./src/js/drag/lib/getCoords.js");
 /* harmony import */ var _lib_getEvent__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./lib/getEvent */ "./src/js/drag/lib/getEvent.js");
+/* harmony import */ var _lib_changeItemToArray__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./lib/changeItemToArray */ "./src/js/drag/lib/changeItemToArray.js");
 
 
 
@@ -6598,6 +6603,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -6671,14 +6677,31 @@ var Drag = /*#__PURE__*/function () {
       this.dragElem.classList.add(op.dragOn);
       dragElem.classList.add(op.dragItemActiveWrapper);
       document.body.append(this.dragElem);
+      var newPageY = pageY;
+      var oneIndex = +dragElem.dataset.id;
+      var twoIndex;
+      var direction;
 
       var goDragging = function goDragging(e) {
-        console.log(top);
+        direction = newPageY - e.pageY > 0;
         _this2.dragElem.style.top = "".concat(top - (pageY - e.pageY), "px");
         _this2.dragElem.style.display = 'none';
-        console.log(document.elementFromPoint(pageX, e.pageY));
-        var isDragElem = '';
+        var isDragElem = document.elementFromPoint(pageX, e.pageY);
+        isDragElem = isDragElem ? isDragElem.closest('[data-drag-id]') : isDragElem;
         _this2.dragElem.style.display = displayDrop;
+        console.log(isDragElem, direction);
+
+        if (isDragElem && direction && isDragElem !== dragElem && isDragElem.dataset.id) {
+          isDragElem.before(dragElem);
+          twoIndex = +isDragElem.dataset.id;
+          console.log(twoIndex);
+        } else if (isDragElem && !direction && isDragElem !== dragElem && isDragElem.dataset.id) {
+          isDragElem.after(dragElem);
+          twoIndex = +isDragElem.dataset.id;
+          console.log(twoIndex);
+        }
+
+        newPageY = e.pageY;
       };
 
       var onMouseUp = function onMouseUp() {
@@ -6687,7 +6710,9 @@ var Drag = /*#__PURE__*/function () {
 
         _this2.dragElem.remove();
 
+        _this2.indexDragList = Object(_lib_changeItemToArray__WEBPACK_IMPORTED_MODULE_21__["default"])(_this2.indexDragList, oneIndex, twoIndex, direction);
         dragElem.classList.remove(op.dragItemActiveWrapper);
+        if (_this2.options.afterChange) _this2.options.afterChange(_this2);
       };
 
       Object(_lib_getEvent__WEBPACK_IMPORTED_MODULE_20__["default"])(document, 'mouseup', onMouseUp);
@@ -6699,6 +6724,50 @@ var Drag = /*#__PURE__*/function () {
 }();
 
 /* harmony default export */ __webpack_exports__["default"] = (Drag);
+
+/***/ }),
+
+/***/ "./src/js/drag/lib/changeItemToArray.js":
+/*!**********************************************!*\
+  !*** ./src/js/drag/lib/changeItemToArray.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_es_array_index_of__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.index-of */ "./node_modules/core-js/modules/es.array.index-of.js");
+/* harmony import */ var core_js_modules_es_array_index_of__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_index_of__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.array.slice */ "./node_modules/core-js/modules/es.array.slice.js");
+/* harmony import */ var core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var core_js_modules_es_array_splice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.array.splice */ "./node_modules/core-js/modules/es.array.splice.js");
+/* harmony import */ var core_js_modules_es_array_splice__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_splice__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+
+var changeItemToArray = function changeItemToArray() {
+  var arr = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var index1 = arguments.length > 1 ? arguments[1] : undefined;
+  var index2 = arguments.length > 2 ? arguments[2] : undefined;
+  var direction = arguments.length > 3 ? arguments[3] : undefined;
+  if (arr.length === 0 || index1 === undefined || index2 === undefined) return arr.slice();
+  arr = arr.slice();
+  var indexOne = arr.indexOf(index1);
+  var indexTwo = arr.indexOf(index2);
+
+  if (direction) {
+    arr.splice(indexTwo, 0, arr[indexOne]);
+    arr.splice(indexOne + 1, 1);
+  } else {
+    arr.splice(indexTwo + 1, 0, arr[indexOne]);
+    arr.splice(indexOne, 1);
+  }
+
+  return arr;
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (changeItemToArray);
 
 /***/ }),
 

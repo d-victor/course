@@ -211,9 +211,12 @@ class FormBuilder {
         });
         
         getEvent(this.dragRowBtn, 'click', () => {
-            
+            const formBuilder = this;
             this.drag = new Drag({
-                wrapper: this.mainForm
+                wrapper: this.mainForm,
+                afterChange: function (drag) {
+                    console.log(formBuilder, drag);
+                },
             });
             
         });

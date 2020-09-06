@@ -2,6 +2,7 @@ import getDragBtn from "./lib/getDragBtn";
 import getSizeElem from "./lib/getSizeElem";
 import getCoords from "./lib/getCoords";
 import getEvent from "./lib/getEvent";
+import changeItemToArray from "./lib/changeItemToArray";
 
 class Drag {
     constructor(options = {}) {
@@ -62,28 +63,48 @@ class Drag {
         
         document.body.append(this.dragElem);
         
+        let newPageY = pageY;
+        let oneIndex = +dragElem.dataset.id;
+        let twoIndex;
+        let direction;
+        
         const goDragging = (e) => {
-            console.log(top);
+            direction = (newPageY - e.pageY) > 0;
             this.dragElem.style.top = `${top - (pageY - e.pageY)}px`;
             
             this.dragElem.style.display = 'none';
-            console.log(document.elementFromPoint(pageX, e.pageY));
-            const isDragElem = '';
+            let isDragElem = document.elementFromPoint(pageX, e.pageY);
+            isDragElem = isDragElem ? isDragElem.closest('[data-drag-id]') : isDragElem;
             this.dragElem.style.display = displayDrop;
+            console.log(isDragElem, direction);
+            if (isDragElem && direction && isDragElem !== dragElem && isDragElem.dataset.id) {
+                isDragElem.before(dragElem);
+                twoIndex = +isDragElem.dataset.id;
+                console.log(twoIndex)
+            } else if (isDragElem && !direction && isDragElem !== dragElem && isDragElem.dataset.id) {
+                isDragElem.after(dragElem);
+                twoIndex = +isDragElem.dataset.id;
+                
+                console.log(twoIndex)
+            }
             
+            newPageY = e.pageY;
         };
         
         const onMouseUp = () => {
             document.removeEventListener('mouseup', onMouseUp);
             document.removeEventListener('mousemove', goDragging);
             this.dragElem.remove();
+    
+            this.indexDragList = changeItemToArray(this.indexDragList, oneIndex, twoIndex, direction);
             
             dragElem.classList.remove(op.dragItemActiveWrapper);
+            
+            if (this.options.afterChange) this.options.afterChange(this);
         };
         
         getEvent(document, 'mouseup', onMouseUp);
         getEvent(document, 'mousemove', goDragging)
-        
     }
 }
 
