@@ -1,6 +1,7 @@
 const defaultOptions = {
     wrapper: document.querySelector('body'),
     storageKey: 'formBuilder',
+    storageSavedKey: 'savedFormBuilder',
     formClass: 'formBuilder',
     inputDefaultClass: 'form-builder-input',
     elements: {

@@ -16,16 +16,15 @@ class MySuperSlider {
     
     addClass(arg, obj) {
         const {name, age} = obj;
-        console.log(name, age)
         document.querySelector('body').classList.add(...arg)
     };
     
     addSlide() {
-        console.log('aaa')
+    
     }
     
     _go() {
-        console.log()
+    
     }
     
 }

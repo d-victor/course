@@ -10,8 +10,6 @@ function setLabel(e) {
     const inputLabelIndex = activeInputLabel.content.map(item => item.elem).indexOf('input');
     
     activeInputLabel.content.splice(inputLabelIndex, 1);
-    
-    console.log(this, spanLabel, activeInputLabel);
 }
 
 export default setLabel;

@@ -15,8 +15,6 @@ function getRow(children = [], self, flag, data) {
         rowObj.attr['data-id'] = self.rowCount++;
     }
     
-    console.log(self.rowCount);
-    
     rowObj.content = [...children];
     
     self._saveActiveForm(Object.assign({}, rowObj));

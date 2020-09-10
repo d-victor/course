@@ -17,6 +17,10 @@ class Drag {
             ...options,
         };
         
+        this.events = {
+            afterChange: new Event('afterChange'),
+        };
+        
         this.dragList = [...this.options.wrapper.children];
         
         this.dragElem = null;
@@ -31,6 +35,8 @@ class Drag {
             const dragBtn = getDragBtn.call(this);
             
             this.indexDragList.push(index);
+            
+            //itemDrag.addEventListener('afterChange', this.options.afterChange.bind(this));
             
             itemDrag.dataset.dragId = index;
             itemDrag.append(dragBtn)
@@ -76,16 +82,14 @@ class Drag {
             let isDragElem = document.elementFromPoint(pageX, e.pageY);
             isDragElem = isDragElem ? isDragElem.closest('[data-drag-id]') : isDragElem;
             this.dragElem.style.display = displayDrop;
-            console.log(isDragElem, direction);
+            
             if (isDragElem && direction && isDragElem !== dragElem && isDragElem.dataset.id) {
                 isDragElem.before(dragElem);
                 twoIndex = +isDragElem.dataset.id;
-                console.log(twoIndex)
+                
             } else if (isDragElem && !direction && isDragElem !== dragElem && isDragElem.dataset.id) {
                 isDragElem.after(dragElem);
                 twoIndex = +isDragElem.dataset.id;
-                
-                console.log(twoIndex)
             }
             
             newPageY = e.pageY;
@@ -100,7 +104,9 @@ class Drag {
             
             dragElem.classList.remove(op.dragItemActiveWrapper);
             
-            if (this.options.afterChange) this.options.afterChange(this);
+            //if (this.options.afterChange) this.options.afterChange(this, oneIndex, twoIndex, direction);
+            this.lastChangeIndex = [oneIndex, twoIndex, direction];
+            dragElem.dispatchEvent(this.events.afterChange);
         };
         
         getEvent(document, 'mouseup', onMouseUp);

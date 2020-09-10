@@ -196,8 +196,6 @@ function setElementForm(e) {
                     activeInput.inputElem.append(getHtmlElement(option));
                     
                     activeInputObj.content.push(option);
-                    
-                    console.log(activeInputObj);
                 });
                 const options = getHtmlElement()
             });
@@ -256,7 +254,6 @@ function setElementForm(e) {
             };
             this.options.modal.promt([attrValueInputName, attrValueInputValue], true)
                 .then((data) => {
-                    console.log(data);
                     const attrValueInput = getHtmlElement({
                         elem: 'input',
                         className: 'attr-value',
@@ -355,7 +352,6 @@ function setElementForm(e) {
             setActiveInputTemplate.call(this, selectValidateContent);
         }
     }
-    console.log(elemKey, parent, nextCol, activeInput);
 }
 
 function getElementBuildForm(row) {

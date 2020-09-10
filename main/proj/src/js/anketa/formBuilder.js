@@ -11,6 +11,7 @@ import getElementBuildForm from "./lib/getElementBuildForm";
 import hidden from "./lib/hidden";
 import show from "./lib/show";
 import Drag from "../drag/drag"
+import changeItemToArrayObject from "./lib/changeItemToArrayObject";
 
 class FormBuilder {
     constructor(options = {}) {
@@ -26,23 +27,19 @@ class FormBuilder {
         this.rowCount = 0;
         
         this.formCount = 0;
-    
+        
         this.options.mode === 'admin' && this.setAdminTemplate();
-    }
-    
-    getFormList(){
-    
     }
     
     addForm() {
         const content = [];
         const btnAddAttr = getHtmlElement({
-            elem:'button',
-            className:'primary-btn',
+            elem: 'button',
+            className: 'primary-btn',
             attr: {
-                type:'button'
+                type: 'button'
             },
-            content:'Add custom attr',
+            content: 'Add custom attr',
         });
         
         getEvent(btnAddAttr, 'click', () => {
@@ -64,7 +61,7 @@ class FormBuilder {
         
         content.push(
             {
-                elem:'div',
+                elem: 'div',
                 className: 'form-group',
                 content: [
                     {
@@ -102,7 +99,7 @@ class FormBuilder {
             },
             {
                 elem: 'div',
-                className:'action',
+                className: 'action',
                 content: btnAddAttr
             }
         );
@@ -110,7 +107,7 @@ class FormBuilder {
         this.options.modal.promt(content, !this.options.modal.content).then(data => {
             this._showBtn();
             
-            const newForm  = {
+            const newForm = {
                 elem: 'form',
                 className: this.options.formClass,
                 attr: {
@@ -139,11 +136,11 @@ class FormBuilder {
         const targetRow = this.activeForm.content.find(row => {
             return row.attr['data-id'] === this.activeIntup.id;
         });
-    
+        
         this.activeIntup.inputLabel.content[1] = this.activeIntup.obj;
         
         targetRow.content.push(this.activeIntup.inputLabel);
-   
+        
         setLocalStorage(JSON.stringify({
             activeForm: this.activeForm,
         }), this.options.storageKey);
@@ -152,8 +149,6 @@ class FormBuilder {
         show(e.currentTarget.nextSibling);
         
         this.clearActiveIntup();
-        
-        console.log(targetRow.content)
     }
     
     clearActiveIntup() {
@@ -174,38 +169,67 @@ class FormBuilder {
             elem: 'button',
             className: 'add-form-btn',
             attr: {
-                type:'button'
+                type: 'button'
             },
             content: 'Add form'
         });
         
         getEvent(this.addFormBtn, 'click', this.addForm.bind(this));
-    
+        
         this.rowBtn = getHtmlElement({
             elem: 'button',
             className: 'row-btn hidden',
             attr: {
-                type:'button'
+                type: 'button'
             },
             content: 'Add row'
         });
-    
+        
         getEvent(this.rowBtn, 'click', this.addRow.bind(this));
-    
+        
         this.titleBtn = getHtmlElement({
             elem: 'button',
             className: 'title-btn hidden',
             attr: {
-                type:'button'
+                type: 'button'
             },
             content: 'Add title'
+        });
+        
+        this.saveActiveFormBtn = getHtmlElement({
+            elem: 'button',
+            className: "save hidden",
+            attr: {
+                type: 'button'
+            },
+            content: "Save"
+        });
+        
+        getEvent(this.saveActiveFormBtn, 'click', () => {
+            let savedForm = getLocalStorage(this.options.storageSavedKey);
+            
+            savedForm = savedForm ? JSON.parse(savedForm).savedForm : [];
+            savedForm.push(Object.assign(this.activeForm));
+            
+            setLocalStorage(JSON.stringify({
+                savedForm: savedForm,
+            }), this.options.storageSavedKey);
+            
+            setLocalStorage(JSON.stringify({
+                activeForm: '',
+            }), this.options.storageKey);
+            
+            this.activeForm = {};
+            this.mainForm.innerHTML = '';
+            
+            this._startBtn();
         });
         
         this.dragRowBtn = getHtmlElement({
             elem: 'button',
             className: 'drag-start-btn hidden',
             attr: {
-                type:'button'
+                type: 'button'
             },
             content: 'Start drag'
         });
@@ -214,25 +238,43 @@ class FormBuilder {
             const formBuilder = this;
             this.drag = new Drag({
                 wrapper: this.mainForm,
-                afterChange: function (drag) {
-                    console.log(formBuilder, drag);
+                afterChange: function () {
+                    const activeForm = JSON.parse(getLocalStorage(formBuilder.options.storageKey)).activeForm;
+                    const [oneIndex, twoIndex, direction] = this.lastChangeIndex;
+                    
+                    changeItemToArrayObject(activeForm.content, oneIndex, twoIndex, direction);
+                    
+                    formBuilder._saveToLocal({
+                        activeForm: activeForm,
+                    });
                 },
             });
             
+            [...this.mainForm.children].map(item => item.addEventListener('afterChange', function () {
+                const activeForm = JSON.parse(getLocalStorage(formBuilder.options.storageKey)).activeForm;
+                const [oneIndex, twoIndex, direction] = this.lastChangeIndex;
+                
+                changeItemToArrayObject(activeForm.content, oneIndex, twoIndex, direction);
+                
+                formBuilder._saveToLocal({
+                    activeForm: activeForm,
+                });
+            }.bind(this.drag)));
+            
         });
-    
+        
         getEvent(this.titleBtn, 'click', this._addTitle.bind(this));
         
         const container = getHtmlElement({
             elem: 'div',
             className: 'container'
         });
-    
+        
         const rowMain = getRow([
             {
                 elem: 'div',
                 className: 'col-2 sidebar',
-                content: [this.addFormBtn, this.rowBtn, this.titleBtn, this.dragRowBtn]
+                content: [this.addFormBtn, this.rowBtn, this.titleBtn, this.dragRowBtn, this.saveActiveFormBtn],
             },
             {
                 elem: 'div',
@@ -249,7 +291,7 @@ class FormBuilder {
         
         const tmp = getLocalStorage(this.options.storageKey);
         
-        if(!this.activeForm) this.activeForm = tmp ? JSON.parse(tmp).activeForm : false;
+        if (!this.activeForm) this.activeForm = tmp ? JSON.parse(tmp).activeForm : false;
         
         if (this.activeForm) {
             this._showBtn();
@@ -280,6 +322,15 @@ class FormBuilder {
         this.rowBtn.classList.remove('hidden');
         this.titleBtn.classList.remove('hidden');
         this.dragRowBtn.classList.remove('hidden');
+        this.saveActiveFormBtn.classList.remove('hidden');
+    }
+    
+    _startBtn() {
+        this.addFormBtn.classList.remove('hidden');
+        this.rowBtn.classList.add('hidden');
+        this.titleBtn.classList.add('hidden');
+        this.dragRowBtn.classList.add('hidden');
+        this.saveActiveFormBtn.classList.add('hidden');
     }
     
     _addTitle(e) {
@@ -304,7 +355,7 @@ class FormBuilder {
         this.mainForm.append(row);
     }
     
-    _saveToLocal(data){
+    _saveToLocal(data) {
         if (!data) return;
         
         setLocalStorage(JSON.stringify(data), this.options.storageKey)
@@ -318,11 +369,11 @@ class FormBuilder {
         getElementBuildForm.apply(this, [htmlRow]);
     }
     
-    _saveActiveForm(data){
+    _saveActiveForm(data) {
         if (!this.activeForm) return;
         
         this.activeForm.content.push(data);
-    
+        
         this._saveToLocal({
             activeForm: this.activeForm
         });
