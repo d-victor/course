@@ -1,0 +1,49 @@
+<?php
+const PATH_FILE = __DIR__ . '/name.json';
+$title = 'main';
+var_dump($_POST);
+$age = 50;
+$arr1 = [
+    'name' => "Kolay",
+    'age' => 24
+];
+
+if (isset($_GET['name'])) {
+  $arr1['name'] = $_GET['name'];
+  $arr1['age'] = $_GET['age'];
+}
+$file = file_get_contents(PATH_FILE);
+var_dump($file);
+$data = json_decode($file, true);
+var_dump($data);
+$data[] =  $arr1;
+
+file_put_contents(PATH_FILE, json_encode($data))
+
+?>
+<!doctype html>
+<html lang="en">
+<?php include_once __DIR__ . '/header/hed.phtml'; ?>
+<body>
+<?= 'sdfd'; ?>
+<form action="index.phtml" method="get">
+    <input name="name" type="text">
+    <input name="age" type="text">
+    <input type="submit" value="submit">
+</form>
+<div>
+    <ul>
+        <?php foreach ($arr1 as $key => $value) : ?>
+            <li><span><?= $key; ?></span> <span><?= $value; ?></span></li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+<?php include_once __DIR__ . '/footer/footr.phtml';  ?>
+<script>
+      var age = <?= $age; ?>;
+      var data = JSON.parse('<?= $file; ?>');
+      console.log(data);
+</script>
+</body>
+</html>
+
