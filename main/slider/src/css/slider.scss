@@ -1,0 +1,114 @@
+$white: #fff;
+$black: #000;
+$black75: rgba(0,0,0,.75);
+
+$dotsColor: $black75;
+
+%center{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.slider-my  {
+    position: relative;
+    
+    > * {
+        visibility: hidden;
+        position: absolute;
+    }
+    
+    &.slider-init > * {
+        visibility: visible;
+        position: static;
+    }
+    
+    img {
+        width: 100%;
+        display: block;
+    }
+    
+    .slider-arrow {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        background-color: rgba(255,255,255,.75);
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 50%;
+        
+        &::after{
+            position: absolute;
+            content: '';
+            width: 15px;
+            height: 15px;
+            border-top: 2px solid black;
+            border-left: 2px solid black;
+            @extend %center
+        }
+        
+        &.next{
+            right: 25px;
+            
+            &::after{
+                transform-origin: 7px center;
+                transform: translate(-50%, -50%) rotate(135deg);
+            }
+        }
+        
+        &.prev{
+            left: 25px;
+            
+            &::after{
+                transform-origin: 11px 4px;
+                transform: translate(-50%, -50%) rotate(-45deg);
+            }
+        }
+    }
+}
+
+.slider-list {
+    overflow: hidden;
+    position: relative;
+}
+
+.slider-track {
+    display: flex;
+    justify-content: space-between;
+}
+
+.slider-dots {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    
+    > li {
+        margin: 5px;
+        
+        > * {
+            background-color: $dotsColor;
+            display: block;
+            border-radius: 50%;
+        }
+    }
+    
+    &.dots-image {
+        justify-content: space-between;
+    
+        > li {
+            width: auto;
+            flex-grow: 1;
+        
+            > * {
+                width: 100%;
+                height: auto;
+                display: block;
+                padding-top: 40%;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                border-radius: 10px;
+            }
+        }
+    }
+}
